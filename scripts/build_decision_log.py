@@ -37,13 +37,23 @@ def parse_record(path: Path) -> dict:
     # The file is: ---\n<frontmatter>\n---\n<body>. Splitting on "---" twice gives
     # ["", frontmatter, body]. maxsplit=2 protects any "---" inside the body.
     _, frontmatter, body = text.split("---", 2)
-    meta = yaml.safe_load(frontmatter) or {}  # {} guards against an empty block
+    meta = yaml.load(frontmatter, Loader=yaml.BaseLoader) or {}  # {} guards against an empty block
     meta["_body"] = body.strip()              # underscore keys = our internal extras
     meta["_file"] = path.name
+    # Take the id from the filename's 4-digit prefix, NOT the frontmatter `id:`.
+    # YAML reads a leading-zero number as octal, so `id: 0010` parses to 8 and
+    # silently collides with 0008. The filename is always the clean 4-digit id,
+    # so it is the safe source of truth.
+    meta["id"] = path.name[:4]
     # Normalize the list-y fields: None -> [], a bare scalar -> [scalar], list stays.
     for key in LIST_FIELDS:
         val = meta.get(key)
-        meta[key] = [] if val is None else (val if isinstance(val, list) else [val])
+        if not val:
+            meta[key] = []
+        elif isinstance(val, list):
+            meta[key] = val
+        else:
+            meta[key] = [val]
     return meta
 
 
