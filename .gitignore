@@ -1,0 +1,16 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# Virtual environment (managed by uv; never committed)
+.venv/
+
+# Secrets and local environment
+.env
+
+# Data scratchpad
+data/
+
+# OS / editor cruft
+.DS_Store
