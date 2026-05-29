@@ -11,9 +11,10 @@ graph TD
   n0005["0005: Serve via llama.cpp and GGUF on CPU, not bitsandbytes"]:::accepted
   n0006["0006: Split dependencies into a CPU/dev group and a GPU/train group"]:::accepted
   n0007["0007: Use Codespaces plus a committed devcontainer as the canonical dev environment"]:::accepted
-  n0008["0008: Use claude-haiku-4-5 as the LLM-as-judge"]:::accepted
+  n0008["0008: Use claude-haiku-4-5 as the LLM-as-judge"]:::superseded
   n0009["0009: Constrain decoding to a Conventional Commits grammar (GBNF)"]:::accepted
   n0010["0010: Run uv sync in the devcontainer postCreateCommand"]:::accepted
+  n0011["0011: Switch the LLM-as-judge from Claude Haiku to Gemini 2.5 Flash (free tier)"]:::accepted
   n0003 --- n0002
   n0004 --- n0002
   n0005 --- n0004
@@ -21,6 +22,8 @@ graph TD
   n0009 --- n0004
   n0009 --- n0005
   n0010 --- n0007
+  n0008 -. superseded by .-> n0011
+  n0011 --- n0002
   classDef proposed fill:#fff7e6,stroke:#d4a017;
   classDef accepted fill:#e6f4ea,stroke:#137333;
   classDef superseded fill:#f1f3f4,stroke:#9aa0a6,color:#5f6368;

@@ -2,9 +2,9 @@
 id: 0008
 title: Use claude-haiku-4-5 as the LLM-as-judge
 date: 2026-05-29
-status: accepted
+status: superseded
 supersedes: []
-superseded_by: []
+superseded_by: [0011]
 relates_to: []
 tags: [eval]
 ---
