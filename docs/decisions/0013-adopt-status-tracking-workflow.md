@@ -2,9 +2,9 @@
 id: 0013
 title: Adopt STATUS.md, three-lane doc tracking, and GitHub-synced Project knowledge
 date: 2026-05-30
-status: accepted
+status: superseded
 supersedes: []
-superseded_by: []
+superseded_by: [0014]
 relates_to: [0001]
 tags: [infra]
 ---

@@ -3,13 +3,13 @@
 _Living status. Update in the same commit as the work._
 _Plan lives in ROADMAP.md; design in MASTER.md + docs/decisions/._
 
-**Head:** 779a11d
+**Head:** 4fc0fad
 **Phase:** Data — inspection done, filter logic next
 **Calendar:** Day 2 (May 30, 2026), running ahead of schedule
 
 ## Done
 - Setup: devcontainer + uv lockfile; CPU deps; 3 secrets injected; 15 smoke tests pass.
-- Decision log: 13 ADRs (0011 -> 0008 supersede; 0012 = redistribute filtered dataset under source license terms; 0013 = STATUS.md + three-lane tracking + GitHub-synced Project knowledge).
+- Decision log: 14 ADRs (0011 -> 0008 and 0013 -> 0014 supersedes; 0012 = license redistribution; 0014 = Project sync abandoned, org-blocked, manual STATUS continuity).
 - Data inspection: CommitChronicle loaded/inspected; token distribution measured; exploration in notebooks/.
 
 ## In progress
@@ -29,6 +29,7 @@ _Plan lives in ROADMAP.md; design in MASTER.md + docs/decisions/._
   in the dataset card; carry the sensitive-data note forward.
 
 ## Quirks
-- W&B web UI blocked on school wifi (DNS/filter); training is cloud-to-cloud and fine; view via hotspot.
+- W&B web UI blocked on school wifi (DNS/filter); training is cloud-to-cloud and fine; view via hotspot (maybe it was ethernet thing).
 - Streaming + interpreter shutdown can throw a cosmetic exit crash; guard exploration scripts with os._exit(0).
 - "PyTorch not found" from transformers is expected in the CPU Codespace (tokenizer-only).
+- Org disables connectors/integrations (no Project GitHub sync) and blocks W&B UI; continuity is by pasting this file, not syncing (ADR 0014).
