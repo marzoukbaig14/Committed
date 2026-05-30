@@ -181,7 +181,7 @@ Hugging Face Hub is the source of truth for all artifacts. Training environments
 - Drop merge commits, revert commits, and bot commits (Dependabot, GitHub Actions bot, and so on)
 - Single language to start (Python), which is well represented in CommitChronicle
 
-**Output:** a `username/committed-train` Hub dataset, target 30 to 50k pairs.
+**Output:** a `username/committed-train` Hub dataset, target 30 to 50k pairs. Retains the `repo` and `license` columns for per-row provenance (see ADR 0012 and Licensing).
 
 **Schema (modular for v1 and v2):**
 ```python
@@ -319,7 +319,7 @@ Honest estimate: v1 core in roughly two to three weeks; core plus the production
 
 - Code: MIT
 - LoRA adapter: Apache 2.0 (inherited from Qwen3-1.7B)
-- Filtered dataset: CommitChronicle's license passes through; verify the terms before public release
+- Filtered dataset: redistributed under the source's terms (ADR 0012). CommitChronicle aggregates permissively licensed repos (MIT, Apache-2.0, BSD-3-Clause); we retain the `repo` and `license` columns for per-row provenance, attribute CommitChronicle and its paper (arXiv 2308.07655) in the dataset card, and carry the sensitive-data caveat forward. Automated scrubbing is deferred and noted as a known limitation.
 
 ---
 

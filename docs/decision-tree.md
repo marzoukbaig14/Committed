@@ -15,6 +15,7 @@ graph TD
   n0009["0009: Constrain decoding to a Conventional Commits grammar (GBNF)"]:::accepted
   n0010["0010: Run uv sync in the devcontainer postCreateCommand"]:::accepted
   n0011["0011: Switch the LLM-as-judge from Claude Haiku to Gemini 2.5 Flash (free tier)"]:::accepted
+  n0012["0012: Redistribute filtered CommitChronicle derivative under source license terms"]:::accepted
   n0003 --- n0002
   n0004 --- n0002
   n0005 --- n0004
