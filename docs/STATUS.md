@@ -3,7 +3,7 @@
 _Living status. Update in the same commit as the work._
 _Plan lives in ROADMAP.md; design in MASTER.md + docs/decisions/._
 
-**Head:** 2164aba
+**Head:** ddb56d1
 **Phase:** Data — inspection done, filter logic next
 **Calendar:** Day 2 (May 30, 2026), running ahead of schedule
 
