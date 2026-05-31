@@ -11,6 +11,7 @@ _Plan lives in ROADMAP.md; design in MASTER.md + docs/decisions/._
 - Setup: devcontainer + uv lockfile; CPU deps; 3 secrets injected; 15 smoke tests pass.
 - Decision log: 14 ADRs (0011 -> 0008 and 0013 -> 0014 supersedes; 0012 = license redistribution; 0014 = Project sync abandoned, org-blocked, manual STATUS continuity).
 - Data inspection: CommitChronicle loaded/inspected; token distribution measured; exploration in notebooks/.
+- Decision log: 15 ADRs (0011 -> 0008 and 0013 -> 0014 supersedes; 0012 = license redistribution; 0014 = Project sync abandoned, org-blocked; 0015 = adopt Claude Code as decision-log agent).
 
 ## In progress
 - (nothing active)
