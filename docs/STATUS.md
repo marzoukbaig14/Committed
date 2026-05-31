@@ -3,9 +3,8 @@
 _Living status. Update in the same commit as the work._
 _Plan lives in ROADMAP.md; design in MASTER.md + docs/decisions/._
 
-**Head:** ddb56d1
 **Phase:** Data — inspection done, filter logic next
-**Calendar:** Day 2 (May 30, 2026), running ahead of schedule
+**Calendar:** Day 3 (May 30, 2026), running ahead of schedule
 
 ## Done
 - Setup: devcontainer + uv lockfile; CPU deps; 3 secrets injected; 15 smoke tests pass.
