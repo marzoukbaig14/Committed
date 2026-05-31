@@ -19,6 +19,7 @@ graph TD
   n0013["0013: Adopt STATUS.md, three-lane doc tracking, and GitHub-synced Project knowledge"]:::superseded
   n0014["0014: Abandon Project GitHub sync (org-blocked); manual STATUS.md continuity"]:::accepted
   n0015["0015: Adopt Claude Code as the decision-log agent"]:::accepted
+  n0016["0016: Require id-echo confirmation before agent decision-log changes"]:::accepted
   n0003 --- n0002
   n0004 --- n0002
   n0005 --- n0004
@@ -33,6 +34,8 @@ graph TD
   n0014 --- n0001
   n0015 --- n0001
   n0015 --- n0014
+  n0016 --- n0001
+  n0016 --- n0015
   classDef proposed fill:#fff7e6,stroke:#d4a017;
   classDef accepted fill:#e6f4ea,stroke:#137333;
   classDef superseded fill:#f1f3f4,stroke:#9aa0a6,color:#5f6368;

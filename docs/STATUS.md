@@ -3,7 +3,7 @@
 _Living status. Update in the same commit as the work._
 _Plan lives in ROADMAP.md; design in MASTER.md + docs/decisions/._
 
-**Head:** 4fc0fad
+**Head:** 2164aba
 **Phase:** Data — inspection done, filter logic next
 **Calendar:** Day 2 (May 30, 2026), running ahead of schedule
 
@@ -11,7 +11,7 @@ _Plan lives in ROADMAP.md; design in MASTER.md + docs/decisions/._
 - Setup: devcontainer + uv lockfile; CPU deps; 3 secrets injected; 15 smoke tests pass.
 - Decision log: 14 ADRs (0011 -> 0008 and 0013 -> 0014 supersedes; 0012 = license redistribution; 0014 = Project sync abandoned, org-blocked, manual STATUS continuity).
 - Data inspection: CommitChronicle loaded/inspected; token distribution measured; exploration in notebooks/.
-- Decision log: 15 ADRs (0011 -> 0008 and 0013 -> 0014 supersedes; 0012 = license redistribution; 0014 = Project sync abandoned, org-blocked; 0015 = adopt Claude Code as decision-log agent).
+- Decision log: 16 ADRs (0011 -> 0008 and 0013 -> 0014 supersedes; 0012 = license redistribution; 0014 = Project sync abandoned, org-blocked; 0015 = adopt Claude Code as decision-log agent; 0016 = id-echo confirmation protocol for decision-log changes).
 
 ## In progress
 - (nothing active)

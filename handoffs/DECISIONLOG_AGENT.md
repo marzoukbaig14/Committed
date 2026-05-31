@@ -268,3 +268,19 @@ After creating all of them, run the generator and confirm the log and tree build
 - `scripts/build_decision_log.py` exists and runs.
 - `docs/DECISION_LOG.md` and `docs/decision-tree.md` are generated and committed.
 - The human understands the confirm-then-log-then-update protocol and can read the tree.
+
+## Confirmation protocol (id-echo)
+
+Before creating, editing, or committing any decision-log change, the agent must:
+
+1. Present a change preview: the ADR id, title, status, supersedes/relates_to, and a one-line
+   statement of the decision; for an edit or supersede, the exact file(s) and the specific field
+   changes; and the exact commit message.
+2. Stop. Write no file and run no git command until the human replies with `CONFIRM <id>` where
+   `<id>` matches the id in the preview. A reply that does not contain the matching id means "not
+   confirmed" — ask again or revise; do not proceed.
+3. If anything about the requested change is ambiguous, ask one focused clarifying question rather
+   than guessing.
+
+This sits on top of Claude Code's built-in per-edit diff approval; it is an added discipline, not
+a replacement for reviewing each diff.
