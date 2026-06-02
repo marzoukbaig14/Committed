@@ -1,0 +1,50 @@
+Scanned 1,000,000 commits.
+
+Top 12 languages:
+  JavaScript           182,284
+  Python               173,630
+  Java                 123,003
+  TypeScript           116,924
+  Go                   101,149
+  C++                  60,430
+  C                    54,303
+  C#                   40,745
+  Rust                 29,438
+  Ruby                 26,659
+  PHP                  24,515
+  Dart                 16,086
+
+Python single-file commits: 94,315  (9.4% of scanned)
+  STRICT  CC match (as locked):            2,672  (2.83%)
+  RELAXED CC match (case-insensitive + !):  2,941  (3.12%)
+  recovery from relaxing:                   +269
+
+Non-matching Python single-file subjects: 91,374
+  very short (<15 chars, likely junk):     2,576  (2.8%)
+
+25 random non-matchers to READ -- good-but-unformatted, or junk?
+  "ight fine I'll make it public"
+  'Remove cleanWs from beginning stage'
+  'Markdown prevention as info.'
+  'Remove redundant XSLT file'
+  'update release notes to include pr ref'
+  'Cache requirements check results'
+  'added :beetle: URL and homepage URL to package.json'
+  "[Chore] Fix bottles' hashes PR header"
+  'Catch unexpected errors in the events monitor'
+  'Add support for plotting lon-lat grid with cartopy'
+  'improve readme file for terminal'
+  'add further hint for missing charge and ionmode'
+  'Ensure get_connected_sites respects provided jimage'
+  '[jax2tf] Fix for jnp.roll with shape polymorphism'
+  'Remove duplicate gcloud start cmd'
+  'doc(wiki): Destroyed Visual Studio 2010 Setup (markdown)'
+  'Relax range in test_exchange_rate_manager.py.'
+  'do not cover programming error'
+  'Update new_instrument.rst'
+  'Added new task to stub and edited docstrings.'
+  'fix helipad provision call'
+  'flip grav data sign for right hand sign cartesian coordinates'
+  'ppo summary writer bugfix'
+  'properties/new_astnode_ada.mako: do not rely on tagged types for nodes'
+  "Don't allow duplicated ABIs"

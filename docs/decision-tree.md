@@ -22,6 +22,7 @@ graph TD
   n0016["0016: Require id-echo confirmation before agent decision-log changes"]:::accepted
   n0017["0017: Relax the Conventional Commits filter regex and define the normalization spec"]:::accepted
   n0018["0018: Revise the dataset-size target from 30-50k to ~20-30k"]:::accepted
+  n0019["0019: Adopt the HPC cluster as primary training compute, keeping the v1 core free-tier reproducible"]:::accepted
   n0003 --- n0002
   n0004 --- n0002
   n0005 --- n0004
@@ -40,6 +41,7 @@ graph TD
   n0016 --- n0015
   n0017 --- n0009
   n0018 --- n0017
+  n0019 --- n0003
   classDef proposed fill:#fff7e6,stroke:#d4a017;
   classDef accepted fill:#e6f4ea,stroke:#137333;
   classDef superseded fill:#f1f3f4,stroke:#9aa0a6,color:#5f6368;

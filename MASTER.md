@@ -8,7 +8,7 @@ This document is the single source of truth for the design of Committed. Read it
 
 ## Thesis
 
-Committed is a small language model, fine-tuned to generate Conventional Commits messages from code diffs, that **runs locally so your code never leaves your machine.** It is built and deployed end to end on free infrastructure.
+Committed is a small language model, fine-tuned to generate Conventional Commits messages from code diffs, that **runs locally so your code never leaves your machine.** It is built and deployed end to end on free infrastructure. The v1 core is reproducible on free infrastructure (a free Colab T4 fits the 1.7B QLoRA on this dataset); an institutional HPC cluster is used only to accelerate training and run the stretch ablations (ADR 0019).
 
 The positioning is **private, local, and distilled.** A model small enough to run on a laptop or in a free CPU container means zero per-call cost at scale, no network latency, offline capability, and most importantly no proprietary diff ever sent to a third-party API. The deeper technique on display is distillation: taking a frontier model's ability to write good commit messages and compressing it into a roughly one-to-two billion parameter model that anyone can run.
 
@@ -116,7 +116,7 @@ v1 is split into a hard **core**, a strongly recommended **production layer**, a
 
 ### Dev environment and CI
 - GitHub Codespaces with a committed devcontainer (the canonical, reproducible dev environment)
-- Colab T4 as the primary training box, Kaggle as backup, Northeastern cluster for larger runs
+- Training primary: an institutional HPC cluster (many GPUs, ~1 TB storage). Colab T4 / Kaggle kept as the free-tier-reproducible fallback — the v1 core fine-tune must remain runnable on a free T4 to preserve the free-infrastructure thesis (ADR 0019)
 - GitHub Actions: ruff + pytest + an eval-regression gate
 
 ### Dependency split (important)
@@ -210,7 +210,7 @@ Hugging Face Hub is the source of truth for all artifacts. Training environments
 ## Training Plan
 
 - **Method:** QLoRA (4-bit base plus a LoRA adapter) via Unsloth and TRL's SFTTrainer
-- **Hardware:** Colab free T4 primary, Kaggle backup, NE cluster for larger runs
+- **Hardware:** institutional HPC cluster primary (many GPUs, ~1 TB storage); Colab T4 / Kaggle as the free-tier-reproducible fallback. The v1 core fine-tune stays runnable on a free T4 (ADR 0019)
 - **Checkpoints:** push to the Hub every N steps; never rely on Colab disk alone
 - **Tracking:** every run logged to W&B with hyperparameters, eval metrics, and sample generations
 
