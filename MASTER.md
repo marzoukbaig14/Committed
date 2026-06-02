@@ -173,15 +173,26 @@ Hugging Face Hub is the source of truth for all artifacts. Training environments
 
 **Source:** CommitChronicle (Hugging Face, roughly 10.7M commits, pre-filtered).
 
-**Filter pipeline:**
-- Conventional Commits regex: `^(feat|fix|refactor|docs|test|chore|perf|style|build|ci)(\(.+\))?: .+`
+**Filter pipeline (regex relaxed per ADR 0017):**
+- Conventional Commits regex on the subject line (first line), case-insensitive, with an optional `(scope)`, an optional breaking-change `!`, and a required `: ` separator:
+  `^(feat|fix|refactor|docs|test|chore|perf|style|build|ci|doc)(\([^)]+\))?!?: .+` (IGNORECASE). The `doc` alias is normalized to `docs`. Deliberately excluded: `revert` (revert commits are dropped), non-standard types (`deps`/`wip`/`release`), bracketed-type styles (`[Chore]`, deferred), and subjects with no colon or a path prefix (left to a possible future classifier-based harvest of good-but-unformatted messages).
 - Message length: 5 to 200 characters
-- **Diff size: capped to fit a small-model context.** The exact threshold is set empirically by inspecting the token distribution of real samples, not picked in advance. (The original plan stated a line range that did not correspond to any token budget; we cap by tokens instead. The model's sequence length is a training hyperparameter, not a locked decision.)
+- **Diff size: capped by tokens to fit a small-model context.** Over-cap diffs are dropped, not truncated, since a truncated diff could omit the very change the message describes. The exact threshold is set empirically by inspecting the token distribution of real samples, not picked in advance. (The original plan stated a line range that did not correspond to any token budget; we cap by tokens instead. The model's sequence length is a training hyperparameter, not a locked decision.)
 - Single-file changes only, to start: an easier task with less noise
 - Drop merge commits, revert commits, and bot commits (Dependabot, GitHub Actions bot, and so on)
 - Single language to start (Python), which is well represented in CommitChronicle
 
-**Output:** a `username/committed-train` Hub dataset, target 30 to 50k pairs. Retains the `repo` and `license` columns for per-row provenance (see ADR 0012 and Licensing).
+**Target normalization (ADR 0017):** applied to the matched subject line to build the training target.
+1. lowercase the type (`Fix:` -> `fix:`)
+2. map `doc` -> `docs`
+3. strip the breaking-change `!` (`feat!:` -> `feat:`)
+4. subject line only — multi-line commits are kept, the body is dropped
+5. strip surrounding whitespace
+6. strip a single trailing period
+7. scope casing left unchanged (scopes are identifiers; lowercasing would distort them)
+8. description casing left unchanged (blind lowercasing mangles acronyms; accepted v1 limitation)
+
+**Output (target revised per ADR 0018):** a `username/committed-train` Hub dataset, target 20 to 30k raw matches and 15 to 25k usable pairs after the structural filters, revised down from 30 to 50k. A full-scale scan measured the relaxed CC match rate on Python single-file commits at roughly 3.1% (an earlier 1.2% estimate came from a biased contiguous sample); 15 to 25k is adequate for a narrow QLoRA fine-tune, and the exact figure finalizes after the build pass. Retains the `repo` and `license` columns for per-row provenance (see ADR 0012 and Licensing).
 
 **Schema (modular for v1 and v2):**
 ```python
@@ -288,7 +299,7 @@ committed/
 │   ├── serving/               # api.py (FastAPI), Dockerfile
 │   └── utils/                 # hub.py
 ├── configs/                   # YAML training configs per run
-├── notebooks/                 # exploration only, not production
+├── analysis/                  # exploration scripts + saved results (analysis/results/)
 ├── app/
 │   └── gradio_app.py          # HF Spaces entry point
 └── tests/
@@ -325,7 +336,7 @@ Honest estimate: v1 core in roughly two to three weeks; core plus the production
 
 ## Open Questions
 
-- Exact final dataset size (target 30 to 50k; depends on filter strictness, decided after inspecting real samples)
+- Exact final dataset size (20 to 30k raw and 15 to 25k usable, from a measured ~3.1% relaxed CC match rate on Python single-file; finalized after the build pass — see ADR 0018)
 - Whether to run the LoRA rank ablation inside v1 or defer to v2 (time-dependent)
 - The v2 reasoning-trace budget (pending Northeastern compute access or an Anthropic API budget)
 - All of v3 (RAG, multi-format, IDE integration, larger models), revisited after v1 ships
