@@ -1,0 +1,707 @@
+kept 40 rows after scanning 136124 (0.03% kept)
+
+======================================================================
+MESSAGE: fix: do not load historic in memory in clean_old_history command
+DIFF (first 600 chars):
+@@ -60,7 +60,7 @@ class Command(populate_history.Command):
+history_model_manager = history_model_manager.filter(
+history_date__lt=start_date
+)
+- found = len(history_model_manager)
++ found = history_model_manager.count()
+self.log("{0} has {1} old historical entries".format(model, found), 2)
+if not found:
+continue
+
+
+======================================================================
+MESSAGE: fix: do not access detector
+DIFF (first 600 chars):
+@@ -45,4 +45,4 @@ def reset_callback_modules(module_names: Optional[List[str]] = None):
+"""Clean the issue records of every callback-based module."""
+modules = ModuleLoader().get_detection_modules(EntryPoint.CALLBACK, module_names)
+for module in modules:
+- module.detector.reset_module()
++ module.reset_module()
+
+
+======================================================================
+MESSAGE: fix: Last block not being added to disassembly block list
+DIFF (first 600 chars):
+@@ -88,6 +88,11 @@ class Disassembly:
+index += 1
++ # Add the last block
++
++ current_block.update_length(blocklen)
++ self.blocks.append(current_block)
++
+# Resolve cross-references
+for block in self.blocks:
+
+
+======================================================================
+MESSAGE: feat: create task
+DIFF (first 600 chars):
+@@ -37,6 +37,8 @@ from maintenance.tasks_create_database import (get_or_create_infra,
+from notification.scripts import script_mongo_log_rotate
+from util.providers import get_deploy_settings
++import json
++import requests
+LOG = get_task_logger(__name__)
+@@ -1816,6 +1818,46 @@ def database_set_ssl_not_required(self, database, user, task, since_step=0):
+)
++@app.task(bind=True)
++@only_one(key="update_apps_bind_name", timeout=600)
++def update_apps_bind_name(self):
++ try:
++ db = Database
++ databases = db.objects.all()
++
++ for database in databases:
++ data_query = "query=tsuru_service_instance_bind{se
+
+======================================================================
+MESSAGE: feat: add apps_bind_name field on model database history
+DIFF (first 600 chars):
+@@ -97,6 +97,9 @@ class DatabaseHistory(models.Model):
+description = models.TextField(
+verbose_name=_("Description"), null=True, blank=True
+)
++ apps_bind_name = models.TextField(
++ verbose_name=_("apps_bind_name"), null=True, blank=True
++ )
+class Database(BaseModel):
+
+
+======================================================================
+MESSAGE: fix: Error on current step in rollback
+DIFF (first 600 chars):
+@@ -89,6 +89,9 @@ class DatabaseMigrateAdmin(DatabaseMaintenanceTaskAdmin):
+if not success:
+return redirect
++ if rollback_from.is_region_migrate:
++ TaskRegister.region_migrate_rollback(rollback_from.database, request.user, step_manager=rollback_from)
++
+TaskRegister.database_migrate_rollback(rollback_from.database, request.user, step_manager=rollback_from)
+return self.redirect_to_database(rollback_from)
+
+
+======================================================================
+MESSAGE: fix: count task database apps bind name
+DIFF (first 600 chars):
+@@ -1870,7 +1870,7 @@ def update_database_apps_bind_name(self):
+db = Database
+databases = db.objects.all()
+- database_count = databases.count()
++ database_count = 0
+for database in databases:
+data_query = "query=tsuru_service_instance_bind{service_instance="
+@@ -1893,6 +1893,7 @@ def update_database_apps_bind_name(self):
+database_objects = db.objects.filter(id=database.id).first()
+database_objects.apps_bind_name = apps_bind_name
+database_objects.save()
++ database_count += 1
+except Exception as e:
+task_history.update_status_for(TaskHistory.STATUS_ERROR, details=e)
+@@ -1902,7 +1903,7 @@ def upda
+
+======================================================================
+MESSAGE: fix: add max_connections=None on StrictRedisCluster
+DIFF (first 600 chars):
+@@ -678,6 +678,7 @@ class RedisCluster(Redis):
+{'host': instance.address, 'port': instance.port}
+for instance in self.instances_filtered
+],
++ max_connections=None,
+password=self.databaseinfra.password,
+socket_timeout=REDIS_CONNECTION_DEFAULT_TIMEOUT if default_timeout else self.connection_timeout_in_seconds,
+socket_connect_timeout=REDIS_CONNECTION_SOCKET_TIMEOUT if default_timeout else self.connection_socket_timeout_in_seconds,
+
+
+======================================================================
+MESSAGE: chore: disable secure cookies if in dev mode
+DIFF (first 600 chars):
+@@ -85,7 +85,8 @@ def create_session_cookie(token, expiry):
+cookie["path"] = "/"
+# send only on requests from first-party domains
+cookie["samesite"] = "Strict"
+- # only HTTPS sites
++ if not config["DEV"]:
++ # only set cookie on HTTPS sites in production
+cookie["secure"] = True
+# not accessible from javascript
+cookie["httponly"] = True
+
+
+======================================================================
+MESSAGE: feat: verify bind name exits
+DIFF (first 600 chars):
+@@ -1822,36 +1822,38 @@ def database_set_ssl_not_required(self, database, user, task, since_step=0):
+@only_one(key="update_apps_bind_name", timeout=600)
+def update_apps_bind_name(self):
+try:
++ worker_name = get_worker_name()
++ task_history = TaskHistory.register(
++ request=self.request, user=None, worker_name=worker_name)
++ task_history.relevance = TaskHistory.RELEVANCE_WARNING
++
+db = Database
+databases = db.objects.all()
+for database in databases:
+data_query = "query=tsuru_service_instance_bind{service_instance="
+- query = "'{}'".format(database)
++ query = "'{}'".format(database.name)
+data_qu
+
+======================================================================
+MESSAGE: fix: fix sample document
+DIFF (first 600 chars):
+@@ -819,7 +819,7 @@ class AgnosticCollection(AgnosticBaseProperties):
+"""Get a cursor over the index documents for this collection. ::
+async def print_indexes():
+- for index in await db.test.list_indexes():
++ async for index in db.test.list_indexes():
+print(index)
+If the only index is the default index on ``_id``, this might print::
+
+
+======================================================================
+MESSAGE: fix: sync path for wandb logs with path output
+DIFF (first 600 chars):
+@@ -71,7 +71,7 @@ def train(model_params, dataset_train, dataset_val, training_params, path_output
+logger.info("{PROJECT/GROUP/RUN} name not found, initializing as {'temp_project'/'temp_group'/'temp_run'}")
+# Initialize WandB with metrics and hyperparameters
+- wandb.init(project=project_name, group=group_name, name=run_name, config=cfg)
++ wandb.init(project=project_name, group=group_name, name=run_name, config=cfg, dir=path_output)
+# BALANCE SAMPLES AND PYTORCH LOADER
+conditions = all([training_params[TrainingParamsKW.BALANCE_SAMPLES][BalanceSamplesKW.APPLIED],
+
+
+======================================================================
+MESSAGE: test: test onnx functions
+DIFF (first 600 chars):
++import os
++import nibabel as nib
++import torch
++import numpy as np
++import json
++import shutil
++
++from ivadomed import utils as imed_utils
++from ivadomed import models as imed_models
++
++
++PATH_BIDS = 'testing_data'
++IMAGE_PATH = os.path.join(PATH_BIDS, "sub-test001", "anat", "sub-test001_T1w.nii.gz")
++PATH_MODEL = os.path.join(PATH_BIDS, 'model')
++PATH_MODEL_ONNX = os.path.join(PATH_MODEL, 'model.onnx')
++PATH_MODEL_PT = PATH_MODEL_ONNX.replace('onnx', 'pt')
++LENGTH_3D = (112, 112, 112)
++
++
++def test_onnx():
++ model = imed_models.UNet3D(1, 1)
++ if not os.path.exists(PATH_MODEL):
++ os.mkdir(PAT
+
+======================================================================
+MESSAGE: chore: remove numpy related deprecations
+DIFF (first 600 chars):
+@@ -192,7 +192,7 @@ def structurewise_uncertainty(fname_lst, fname_hard, fname_unc_vox, fname_out):
+if i_mc_label > 0:
+data_tmp[mc_dict["mc_labeled"][i_mc][i_class] == i_mc_label] = 1.
+- data_class_obj_mc.append(data_tmp.astype(np.bool))
++ data_class_obj_mc.append(data_tmp.astype(bool))
+# COMPUTE IoU
+# Init intersection and union
+
+
+======================================================================
+MESSAGE: feat: code review
+DIFF (first 600 chars):
+@@ -1819,8 +1819,49 @@ def database_set_ssl_not_required(self, database, user, task, since_step=0):
+@app.task(bind=True)
+-@only_one(key="update_apps_bind_name", timeout=600)
+-def update_apps_bind_name(self):
++@only_one(key="update_database_apps_bind_name", timeout=600)
++def update_database_apps_bind_name(self):
++ '''
++ this function goes to prometheus and fetches all apps bind name from databases.
++
++ return prometheus:
++ {
++ "status":"success",
++ "data":{
++ "resultType":"vector",
++ "result":[
++ {
++ "metric":{
++ "service_instance":"account_management_api_redis_qa",
++ "service":"tsuru-dbaas-dev
+
+======================================================================
+MESSAGE: fix: update notification mail tests to use terminal driver
+DIFF (first 600 chars):
+from tests import TestCase
+from src.masonite.notification import Notification, Notifiable
+from src.masonite.mail import Mailable
++from src.masonite.facades import Config
+from masoniteorm.models import Model
+@@ -41,6 +42,13 @@ class TestMailDriver(TestCase):
+def setUp(self):
+super().setUp()
+self.notification = self.application.make("notification")
++ # use terminal driver as email driver for testing
++ self.default_driver = Config.get("mail.drivers.default")
++ Config.set("mail.drivers.default", "terminal")
++
++ def tearDown(self):
++ super().tearDown()
++ Config.set("mail.drivers.default", self.defa
+
+======================================================================
+MESSAGE: fix: fix new command with new cleo api
+DIFF (first 600 chars):
+@@ -57,7 +57,7 @@ class NewCommand(Command):
+)
+try:
+if repo and provider not in self.providers:
+- return self.error(
++ return self.line_error(
+"'provider' option must be in {}".format(",".join(self.providers))
+)
+@@ -66,7 +66,7 @@ class NewCommand(Command):
+if branch != "False":
+branch_data = self.get_branch_provider_data(provider, branch)
+if "name" not in branch_data:
+- return self.error("Branch {0} does not exist.".format(branch))
++ return self.line_error("Branch {0} does not exist.".format(branch))
+zipball = self.get_branch_archive_url(provider, repo, branch)
+elif version != "False":
+@@ -83,
+
+======================================================================
+MESSAGE: fix: use default mail driver defined in config/mail to send mail notifications
+DIFF (first 600 chars):
+"""Mail notification driver."""
+from .BaseDriver import BaseDriver
++from ...configuration import config
+class MailDriver(BaseDriver):
+@@ -18,12 +19,4 @@ class MailDriver(BaseDriver):
+if not mailable._to:
+recipients = notifiable.route_notification_for("mail")
+mailable = mailable.to(recipients)
+- """
+- if mail driver is set in options then use that
+- else use terminal as default driver.
+- """
+- return (
+- self.application.make("mail")
+- .mailable(mailable)
+- .send(driver=self.options.get("driver", "terminal"))
+- )
++ return self.application.make("mail").mailable(mailable).send()
+
+
+======================================================================
+MESSAGE: fix: display real version in Masonite commands help
+DIFF (first 600 chars):
+@@ -2,6 +2,7 @@ import os
+from cleo import Application as CommandApplication
+from .response_handler import response_handler
++from .. import __version__
+from ..commands import (
+TinkerCommand,
+CommandCapsule,
+@@ -63,7 +64,7 @@ class Kernel:
+def register_commands(self):
+self.application.bind(
+"commands",
+- CommandCapsule(CommandApplication("Masonite Version:", "4.0")).add(
++ CommandCapsule(CommandApplication("Masonite", __version__)).add(
+TinkerCommand(),
+KeyCommand(),
+ServeCommand(self.application),
+
+
+======================================================================
+MESSAGE: fix: display real version in Masonite starter commands help
+DIFF (first 600 chars):
+@@ -6,14 +6,15 @@ successfully import commands for you.
+"""
+from cleo import Application
++
++from .. import __version__
+from .ProjectCommand import (
+ProjectCommand,
+)
+-
+from .KeyCommand import KeyCommand
+from .InstallCommand import InstallCommand
+-application = Application("Masonite Starter Version:", 4.0)
++application = Application("Masonite Starter", __version__)
+application.add(ProjectCommand())
+application.add(KeyCommand())
+
+
+======================================================================
+MESSAGE: fix: fix failing tests for vue3 preset
+DIFF (first 600 chars):
+@@ -10,11 +10,9 @@ class TestVue(unittest.TestCase):
+def test_update_package_array(self):
+expected_packages = {
+- 'vue': '^3.0.0',
+- '@vue/compiler-sfc': '^3.0.0',
+- 'laravel-mix': '^6.0.0-beta.7',
+- 'vue-loader': '^16.0.0-beta.8',
+- 'postcss': '^8.1.1'
++ 'vue': '^3.0.4',
++ '@vue/compiler-sfc': '^3.0.4',
++ 'vue-loader': '^16.1.2',
+}
+# Verify it works with no existing packages
+self.assertDictEqual(expected_packages, Vue3().update_package_array())
+
+
+======================================================================
+MESSAGE: fix: fix tests with new cleo tester api
+DIFF (first 600 chars):
+@@ -36,11 +36,11 @@ class TestNewCommand(unittest.TestCase):
+def test_cannot_craft_to_not_empty_directory(self):
+# run command without arguments, target is the current directory which is not empty
+with self.assertRaises(ProjectTargetNotEmpty):
+- self.command_tester.execute([])
++ self.command_tester.execute()
+def test_handle_not_implemented_provider(self):
+- self.command_tester.execute([('target', 'new_project'), ('--provider', 'bitbucket')])
+- self.assertEqual("'provider' option must be in github,gitlab\n", self.command_tester.get_display())
++ self.command_tester.execute("new_project --provide
+
+======================================================================
+MESSAGE: docs: Fix the swift middleware doc needs more info  to set s3 api
+DIFF (first 600 chars):
+@@ -19,12 +19,26 @@ To enable this middleware to your configuration, add the s3api middleware
+in front of the auth middleware. See ``proxy-server.conf-sample`` for more
+detail and configurable options.
+-To set up your client, the access key will be the concatenation of the
+-account and user strings that should look like test:tester, and the
+-secret access key is the account password. The host should also point
+-to the swift storage hostname.
++To set up your client, ensure you are using the tempauth or keystone auth
++system for swift project.
++When your swift on a SAIO environment, make sure yo
+
+======================================================================
+MESSAGE: test: Use threads instead of MP in reverse tunnel test
+DIFF (first 600 chars):
+@@ -5,7 +5,8 @@ import socket
+import sys
+import time
+from copy import deepcopy
+-from multiprocessing import Process, Queue
++from multiprocessing import Queue
++from threading import Thread
+import env
+import pytest
+@@ -490,10 +491,6 @@ class TestRemoteMachine(BaseRemoteMachineTest):
+print(p.communicate())
+assert data == b"hello world"
+- @pytest.mark.skip(
+- sys.version_info >= (3, 8) and sys.platform.startswith("darwin"),
+- reason="Hangs when using spawn instead of fork (macOS 3.8+ default)",
+- )
+def test_reverse_tunnel(self):
+with self._connect() as rem:
+@@ -508,11 +505,11 @@ s.close()
+p = (rem
+
+======================================================================
+MESSAGE: chore: drop codecs from setup.py
+DIFF (first 600 chars):
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+-import codecs
+-import os
+-
+from setuptools import setup
+-# Fix for building on non-Windows systems
+-try:
+- codecs.lookup("mbcs")
+-except LookupError:
+- ascii = codecs.lookup("ascii")
+- func = lambda name, enc=ascii: {True: enc}.get(name == "mbcs")
+- codecs.register(func)
+-
+setup()
+
+
+======================================================================
+MESSAGE: feat: dont use random ID
+DIFF (first 600 chars):
+@@ -135,7 +135,7 @@ def to_html(
+fig_dict = validate_coerce_fig_to_dict(fig, validate)
+# ## Generate div id ##
+- plotdivid = str(uuid.uuid4())
++ plotdivid = "plotly-root"
+# ## Serialize figure ##
+jdata = to_json_plotly(fig_dict.get("data", []))
+
+
+======================================================================
+MESSAGE: fix: spelling on PlotlyDataTypeError message
+DIFF (first 600 chars):
+@@ -122,7 +122,7 @@ class PlotlyDataTypeError(PlotlyGraphObjectError):
+format_dict = {'index': path[-1], 'object_name': obj._name}
+message = ("Invalid entry found in '{object_name}' at index, '{index}'"
+.format(**format_dict))
+- note = "It's invalid because it does't contain a valid 'type' value."
++ note = "It's invalid because it doesn't contain a valid 'type' value."
+notes = [note] + list(notes)
+super(PlotlyDataTypeError, self).__init__(
+message=message, path=path, notes=notes
+
+
+======================================================================
+MESSAGE: refactor: introduce PrioritizedRepository
+DIFF (first 600 chars):
+@@ -3,6 +3,7 @@ from __future__ import annotations
+import enum
+from collections import OrderedDict
++from dataclasses import dataclass
+from enum import IntEnum
+from typing import TYPE_CHECKING
+@@ -26,6 +27,12 @@ class Priority(IntEnum):
+SECONDARY = enum.auto()
++@dataclass(frozen=True)
++class PrioritizedRepository:
++ repository: Repository
++ priority: Priority
++
++
+class Pool(AbstractRepository):
+def __init__(
+self,
+@@ -33,9 +40,7 @@ class Pool(AbstractRepository):
+ignore_repository_names: bool = False,
+) -> None:
+super().__init__("poetry-pool")
+- self._repositories: OrderedDict[
+- str, tuple[Rep
+
+======================================================================
+MESSAGE: refactor: deprecate poetry.repositories.http
+DIFF (first 600 chars):
++from __future__ import annotations
++
++import warnings
++
++
++from poetry.repositories.http_repository import ( # isort: skip # nopycln: import # noqa: E501, F401
++ HTTPRepository,
++)
++
++warnings.warn(
++ "Module poetry.repositories.http is renamed and scheduled for removal in poetry"
++ " release 1.4.0. Please migrate to poetry.repositories.http_repository.",
++ DeprecationWarning,
++ stacklevel=2,
++)
+
+
+======================================================================
+MESSAGE: docs: fixing project license in docs config file
+DIFF (first 600 chars):
+@@ -43,9 +43,7 @@ master_doc = "index"
+# General information about the project.
+project = u"Plumbum Shell Combinators"
+-copyright = u"%d, Tomer Filiba, licensed under Attribution-ShareAlike 3.0" % (
+- time.gmtime().tm_year,
+-)
++copyright = u"%d, Tomer Filiba, licensed under MIT" % (time.gmtime().tm_year,)
+# The version info for the project you're documenting, acts as replacement for
+# |version| and |release|, also used in various other places throughout the
+
+
+======================================================================
+MESSAGE: test(solver): make test forward compatible to improved string representation of dependencies
+DIFF (first 600 chars):
+@@ -99,14 +99,14 @@ def test_disjoint_root_constraints_path_dependencies(
+provider.set_package_python_versions("^3.7")
+fixtures = Path(__file__).parent.parent.parent / "fixtures"
+project_dir = fixtures.joinpath("with_conditional_path_deps")
+- path1 = project_dir / "demo_one"
+- root.add_dependency(Factory.create_dependency("demo", {"path": path1}))
+- path2 = project_dir / "demo_two"
+- root.add_dependency(Factory.create_dependency("demo", {"path": path2}))
++ dependency1 = Factory.create_dependency("demo", {"path": project_dir / "demo_one"})
++ root.add_dependency(dependency1)
++ dependency2 = Fact
+
+======================================================================
+MESSAGE: perf(solver): reduce the number of overrides by avoiding adding dummy dependencies if the project's python constraint does not allow any version compatible with the marker of the dependency
+DIFF (first 600 chars):
+@@ -631,7 +631,9 @@ class Provider:
+dep_other.set_constraint(
+dep_other.constraint.intersect(dep_any.constraint)
+)
+- elif not inverted_marker.is_empty():
++ elif not inverted_marker.is_empty() and self._python_constraint.allows_any(
++ get_python_constraint_from_marker(inverted_marker)
++ ):
+# if there is no any marker dependency
+# and the inverted marker is not empty,
+# a dependency with the inverted union of all markers is required
+
+
+======================================================================
+MESSAGE: fix: turn debug message about invalid constraint into warning
+DIFF (first 600 chars):
+@@ -205,7 +205,7 @@ class PackageInfo:
+dependency = Dependency.create_from_pep_508(req, relative_to=root_dir)
+except ValueError:
+# Likely unable to parse constraint so we skip it
+- logger.debug(
++ logger.warning(
+"Invalid constraint (%s) found in %s-%s dependencies, skipping",
+req,
+package.name,
+
+
+======================================================================
+MESSAGE: refactor(provider): extract handling of any marker dependencies into separate method
+DIFF (first 600 chars):
+@@ -740,55 +740,7 @@ class Provider:
+f"<warning>Different requirements found for {warnings}.</warning>"
+)
+- # We need to check if one of the duplicate dependencies
+- # has no markers. If there is one, we need to change its
+- # environment markers to the inverse of the union of the
+- # other dependencies markers.
+- # For instance, if we have the following dependencies:
+- # - ipython
+- # - ipython (1.2.4) ; implementation_name == "pypy"
+- #
+- # the marker for `ipython` will become `implementation_name != "pypy"`.
+- #
+- # Further, we have to merge the constraints of the requirements
+- # without m
+
+======================================================================
+MESSAGE: test: dependencies not matching the project's python constraint are ignored
+DIFF (first 600 chars):
+@@ -418,6 +418,30 @@ def test_solver_fails_if_mismatch_root_python_versions(
+solver.solve()
++def test_solver_ignores_python_restricted_if_mismatch_root_package_python_versions(
++ solver: Solver, repo: Repository, package: ProjectPackage
++):
++ solver.provider.set_package_python_versions("~3.8")
++ package.add_dependency(
++ Factory.create_dependency("A", {"version": "1.0", "python": "<3.8"})
++ )
++ package.add_dependency(
++ Factory.create_dependency(
++ "B", {"version": "1.0", "markers": "python_version < '3.8'"}
++ )
++ )
++
++ package_a = get_package("A", "1.0")
++ package_b = get_package("B", "1.0")
+
+
+======================================================================
+MESSAGE: fix: take `virtualenvs.prefer-active-python` into account when getting current environment
+DIFF (first 600 chars):
+@@ -20,6 +20,7 @@ from pathlib import Path
+from subprocess import CalledProcessError
+from typing import TYPE_CHECKING
+from typing import Any
++from typing import cast
+import packaging.tags
+import tomlkit
+@@ -556,6 +557,26 @@ class EnvManager:
+)
+return executable
++ def _get_python_version(self) -> tuple[int, int, int]:
++ version_info = tuple(sys.version_info[:3])
++
++ if self._poetry.config.get("virtualenvs.prefer-active-python"):
++ executable = self._detect_active_python()
++
++ if executable:
++ python_patch = decode(
++ subprocess.check_output(
++ list_to_shell_command(
++ [executable, "-c", GET_PYT
+
+======================================================================
+MESSAGE: fix: use already calculated relative url
+DIFF (first 600 chars):
+@@ -180,11 +180,7 @@ class Locker:
+root_dir = self._lock.path.parent
+if package.source_type == "directory":
+# root dir should be the source of the package relative to the lock path
+- root_dir = Path(
+- os.path.relpath(
+- Path(package.source_url), self._lock.path.parent
+- )
+- ).resolve()
++ root_dir = Path(package.source_url)
+if isinstance(constraint, list):
+for c in constraint:
+
+
+======================================================================
+MESSAGE: fix: need to look for folder in src
+DIFF (first 600 chars):
+@@ -69,6 +69,11 @@ class InstalledRepository(Repository):
+# this is required to handle pathlib oddity on win32 python==3.5
+path = lib.joinpath(path)
+paths.add(path)
++
++ src_path = env.path / "src" / name
++ if not paths and src_path.exists():
++ paths.add(src_path)
++
+return paths
+@classmethod
+
+
+======================================================================
+MESSAGE: refactor(provider): move code to merge dependencies by constraint to separate method
+DIFF (first 600 chars):
+@@ -546,43 +546,20 @@ class Provider:
+self.debug(f"<debug>Duplicate dependencies for {dep_name}</debug>")
+deps = self._merge_dependencies_by_marker(deps)
++ deps = self._merge_dependencies_by_constraint(deps)
+- # Merging dependencies by constraint
+- by_constraint: dict[VersionConstraint, list[Dependency]] = defaultdict(list)
+- for dep in deps:
+- by_constraint[dep.constraint].append(dep)
+- for constraint, _deps in by_constraint.items():
+- new_markers = []
+- for dep in _deps:
+- marker = dep.marker.without_extras()
+- if marker.is_any():
+- # No marker or only extras
+- continue
+-
+- new_markers.appen
+
+======================================================================
+MESSAGE: refactor: access attribute _locked only via method _get_locked
+DIFF (first 600 chars):
+@@ -413,7 +413,7 @@ class VersionSolver:
+# prefer locked version of compatible (not exact same) dependency;
+# required in order to not unnecessarily update dependencies with
+# extras, e.g. "coverage" vs. "coverage[toml]"
+- locked = self._locked.get(dependency.name, None)
++ locked = self._get_locked(dependency, allow_similar=True)
+if locked is not None:
+package = next(
+(p for p in packages if p.version == locked.version), None
+@@ -487,7 +487,9 @@ class VersionSolver:
+incompatibility
+)
+- def _get_locked(self, dependency: Dependency) -> Package | None:
++ def _get_locked(
++ self, dependency: Depen

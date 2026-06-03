@@ -1,9 +1,9 @@
 """
 test_filter.py — Regression tests for the dataset filter.
 
-These are pure-logic tests (no tokenizer, no network), so they run fast in the
-Codespace and in CI. build_row's token-cap step is tested with count_tokens
-monkeypatched, so no model download happens.
+Pure-logic tests (no tokenizer, no network), so they run fast in the Codespace and
+in CI. build_row's token-cap step is tested with count_tokens monkeypatched, so no
+model download happens.
 
 Run:  uv run pytest tests/test_filter.py -v
 """
@@ -47,17 +47,19 @@ def test_match_conventional_commit(subject, matches):
     assert (f.match_conventional_commit(subject) is not None) is matches
 
 
-def _rec(language="Python", mods=1):
-    return {"language": language, "mods": [{"diff": "d"}] * mods}
+def _rec(language="Python", mods=1, path="src/x.py"):
+    # Each mod carries a file path so the .py gate has something to check.
+    return {"language": language, "mods": [{"diff": "d", "new_path": path}] * mods}
 
 
 @pytest.mark.parametrize("record, subject, ok", [
-    (_rec(),              "feat: add x",        True),
-    (_rec(language="Go"), "feat: add x",        False),
-    (_rec(mods=2),        "feat: add x",        False),
-    (_rec(),              "feat: " + "x" * 300, False),   # over the 200 ceiling
-    (_rec(),              "Merge branch x",     False),
-    (_rec(),              'Revert "feat: x"',   False),
+    (_rec(),                    "feat: add x",        True),
+    (_rec(language="Go"),       "feat: add x",        False),   # wrong repo language
+    (_rec(mods=2),              "feat: add x",        False),   # multi-file
+    (_rec(path="src/app.ts"),   "feat: add x",        False),   # Python-labeled repo, non-.py file
+    (_rec(),                    "feat: " + "x" * 300, False),   # over the 200 ceiling
+    (_rec(),                    "Merge branch x",     False),
+    (_rec(),                    'Revert "feat: x"',   False),
 ])
 def test_passes_structural_filters(record, subject, ok):
     assert f.passes_structural_filters(record, subject) is ok
@@ -68,7 +70,7 @@ def test_build_row_keeps_good_record(monkeypatch):
     monkeypatch.setattr(f, "count_tokens", lambda text: 10)
     record = {
         "language": "Python",
-        "mods": [{"diff": "diff --git a/x.py..."}],
+        "mods": [{"diff": "diff --git a/x.py...", "new_path": "x.py"}],
         "message": "Fix(API): handle null.\n\nlong body here",
         "repo": "octocat/hello",
         "license": "MIT",
@@ -83,10 +85,11 @@ def test_build_row_keeps_good_record(monkeypatch):
 
 
 def test_build_row_drops_overcap_diff(monkeypatch):
+    # .py path so it clears the structural gate and actually reaches the token check.
     monkeypatch.setattr(f, "count_tokens", lambda text: f.TOKEN_CAP + 1)
     record = {
         "language": "Python",
-        "mods": [{"diff": "x"}],
+        "mods": [{"diff": "x", "new_path": "x.py"}],
         "message": "feat: add x",
         "repo": "r",
         "license": "MIT",
