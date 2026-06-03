@@ -2,9 +2,9 @@
 id: 0018
 title: Revise the dataset-size target from 30-50k to ~20-30k
 date: 2026-06-02
-status: accepted
+status: superseded
 supersedes: []
-superseded_by: []
+superseded_by: [0023]
 relates_to: [0017]
 tags: [data, scope]
 ---

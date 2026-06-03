@@ -176,11 +176,11 @@ Hugging Face Hub is the source of truth for all artifacts. Training environments
 **Filter pipeline (regex relaxed per ADR 0017):**
 - Conventional Commits regex on the subject line (first line), case-insensitive, with an optional `(scope)`, an optional breaking-change `!`, and a required `: ` separator:
   `^(feat|fix|refactor|docs|test|chore|perf|style|build|ci|doc)(\([^)]+\))?!?: .+` (IGNORECASE). The `doc` alias is normalized to `docs`. Deliberately excluded: `revert` (revert commits are dropped), non-standard types (`deps`/`wip`/`release`), bracketed-type styles (`[Chore]`, deferred), and subjects with no colon or a path prefix (left to a possible future classifier-based harvest of good-but-unformatted messages).
-- Message length: 5 to 200 characters
+- Subject-line length: at most 200 characters (upper outlier guard); no floor — the CC regex already requires a non-empty description (ADR 0020)
 - **Diff size: capped by tokens to fit a small-model context.** Over-cap diffs are dropped, not truncated, since a truncated diff could omit the very change the message describes. The exact threshold is set empirically by inspecting the token distribution of real samples, not picked in advance. (The original plan stated a line range that did not correspond to any token budget; we cap by tokens instead. The model's sequence length is a training hyperparameter, not a locked decision.)
 - Single-file changes only, to start: an easier task with less noise
-- Drop merge commits, revert commits, and bot commits (Dependabot, GitHub Actions bot, and so on)
-- Single language to start (Python), which is well represented in CommitChronicle
+- Drop merge commits, revert commits, and bot commits; bots are detected by the dependency-bump message template, since the author field is anonymized (ADR 0021)
+- All CommitChronicle languages, with each file's language identified by extension via a language→extension map — not the per-repo language column, which mislabels polyglot repos (ADR 0022, ADR 0023)
 
 **Target normalization (ADR 0017):** applied to the matched subject line to build the training target.
 1. lowercase the type (`Fix:` -> `fix:`)
@@ -192,7 +192,7 @@ Hugging Face Hub is the source of truth for all artifacts. Training environments
 7. scope casing left unchanged (scopes are identifiers; lowercasing would distort them)
 8. description casing left unchanged (blind lowercasing mangles acronyms; accepted v1 limitation)
 
-**Output (target revised per ADR 0018):** a `username/committed-train` Hub dataset, target 20 to 30k raw matches and 15 to 25k usable pairs after the structural filters, revised down from 30 to 50k. A full-scale scan measured the relaxed CC match rate on Python single-file commits at roughly 3.1% (an earlier 1.2% estimate came from a biased contiguous sample); 15 to 25k is adequate for a narrow QLoRA fine-tune, and the exact figure finalizes after the build pass. Retains the `repo` and `license` columns for per-row provenance (see ADR 0012 and Licensing).
+**Output (target revised per ADR 0023):** a `username/committed-train` Hub dataset, now spans all CommitChronicle languages (ADR 0023); the earlier Python-only 20–30k raw / 15–25k usable projection (ADR 0018) was inflated by per-repo language mislabeling (ADR 0022), so the size is re-derived and confirmed by the build pass. A full-scale scan measured the relaxed CC match rate on Python single-file commits at roughly 3.1% (an earlier 1.2% estimate came from a biased contiguous sample); 15 to 25k is adequate for a narrow QLoRA fine-tune, and the exact figure finalizes after the build pass. Retains the `repo` and `license` columns for per-row provenance (see ADR 0012 and Licensing).
 
 **Schema (modular for v1 and v2):**
 ```python
@@ -203,7 +203,7 @@ Hugging Face Hub is the source of truth for all artifacts. Training environments
 }
 ```
 
-**Split:** 90/5/5 train/val/eval, stratified by commit type if practical.
+**Split:** 90/5/5 train/val/eval, stratified by commit type and language, or capped per language (ADR 0023).
 
 ---
 
