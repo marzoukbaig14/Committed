@@ -2,9 +2,9 @@
 id: 0025
 title: Set per-language cap (6k), floor (500), and stratification key for dataset build
 date: 2026-06-04
-status: accepted
+status: superseded
 supersedes: []
-superseded_by: []
+superseded_by: [0026]
 relates_to: [0023, 0022]
 tags: [data]
 ---
