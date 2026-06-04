@@ -1,21 +1,19 @@
 """
-count_filtered.py — Estimate the filtered dataset size before the full build.
+count_filtered.py — Estimate the filtered dataset size and language mix.
 
-Streams N raw records, runs the real filter, and reports the pass rate plus a
-projection over the full train split. This is an ESTIMATE — the exact count falls
-out of the full build pass (which filters every record anyway), so don't run two
-full passes. Use this first to check we land near the 15-25k target before
-committing to the long run, especially now that the per-repo `language` field
-turned out to overcount Python.
+Streams N raw records, runs the real filter, and reports the pass rate, a
+projection over the full train split, and the per-language breakdown of kept rows
+(so the all-languages coverage and balance are visible before the build). This is
+an ESTIMATE — the exact count falls out of the build pass; don't run two full passes.
 
-CommitChronicle is ordered by project, so a small window is dominated by a few
-repos — bigger SCAN = better estimate. 200k spans a few hundred repos; bump it
-toward 500k-1M if you want the projection tighter (it just takes longer).
+Bigger SCAN = better estimate (CommitChronicle is ordered by project). 200k spans a
+few hundred repos; bump toward 500k-1M to tighten it.
 
 Run:  uv run python analysis/count_filtered.py
 """
 
 import os
+from collections import Counter
 
 from datasets import load_dataset
 
@@ -28,15 +26,22 @@ ds = load_dataset("JetBrains-Research/commit-chronicle", split="train", streamin
 
 passed = 0
 scanned = 0
+langs = Counter()
 for record in ds:
     scanned += 1
-    if build_row(record) is not None:
+    row = build_row(record)
+    if row is not None:
         passed += 1
+        langs[row["language"]] += 1
     if scanned >= SCAN:
         break
 
 rate = passed / scanned if scanned else 0.0
 print(f"passed {passed:,} of {scanned:,} scanned = {rate * 100:.3f}%")
-print(f"projected over {TRAIN_SIZE:,} train commits  =  ~{int(rate * TRAIN_SIZE):,} rows")
+print(f"projected over {TRAIN_SIZE:,} train commits  =  ~{int(rate * TRAIN_SIZE):,} rows\n")
+print("kept rows by language:")
+for lang, n in langs.most_common():
+    share = 100 * n / passed if passed else 0.0
+    print(f"  {lang:14} {n:6,}  ({share:4.1f}%)")
 
 os._exit(0)

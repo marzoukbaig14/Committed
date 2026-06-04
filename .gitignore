@@ -9,8 +9,9 @@ __pycache__/
 # Secrets and local environment
 .env
 
-# Data scratchpad
-data/
+# Data scratchpad (root-level only; src/committed/data/ is source code, not ignored)
+/data/
 
 # OS / editor cruft
 .DS_Store
+*.log
