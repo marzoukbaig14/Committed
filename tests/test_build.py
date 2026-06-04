@@ -1,14 +1,11 @@
 """
-test_build.py — Tests for apply_cap_and_floor, make_split, and the type×lang check.
+test_build.py — Tests for apply_cap_and_floor and make_split (type-stratified split).
 
 Pure-logic tests: no network, no tokenizer, no file I/O.
 Run: uv run pytest tests/test_build.py -v
 """
 
-import pytest
-
 from committed.data.build import (
-    _can_stratify_type_x_lang,
     apply_cap_and_floor,
     make_split,
 )
@@ -90,45 +87,7 @@ class TestApplyCapAndFloor:
 
 
 # ---------------------------------------------------------------------------
-# _can_stratify_type_x_lang
-# ---------------------------------------------------------------------------
-
-class TestCanStratifyTypeXLang:
-    def test_all_cells_large_enough(self):
-        rows = (
-            _rows("Python", "feat", 10)
-            + _rows("Python", "fix", 10)
-            + _rows("Go", "feat", 10)
-            + _rows("Go", "fix", 10)
-        )
-        assert _can_stratify_type_x_lang(rows) is True
-
-    def test_one_cell_too_small(self):
-        rows = (
-            _rows("Python", "feat", 10)
-            + _rows("Python", "fix", 10)
-            + _rows("Go", "feat", 10)
-            + _rows("Go", "fix", 2)   # only 2 rows — below the 3-row minimum
-        )
-        assert _can_stratify_type_x_lang(rows) is False
-
-    def test_cell_at_boundary(self):
-        rows = (
-            _rows("Python", "feat", 3)
-            + _rows("Python", "fix", 3)
-        )
-        assert _can_stratify_type_x_lang(rows) is True
-
-    def test_cell_one_below_boundary(self):
-        rows = (
-            _rows("Python", "feat", 2)
-            + _rows("Python", "fix", 10)
-        )
-        assert _can_stratify_type_x_lang(rows) is False
-
-
-# ---------------------------------------------------------------------------
-# make_split
+# make_split  (type-stratified)
 # ---------------------------------------------------------------------------
 
 class TestMakeSplit:
@@ -154,21 +113,15 @@ class TestMakeSplit:
         assert not train_diffs & eval_diffs
         assert not val_diffs & eval_diffs
 
-    def test_uses_type_x_lang_when_cells_large(self, capsys):
-        rows = (
-            _rows("Python", "feat", 50) + _rows("Python", "fix", 50)
-            + _rows("Go", "feat", 50) + _rows("Go", "fix", 50)
-        )
-        make_split(rows)
-        assert "type × language" in capsys.readouterr().out
-
-    def test_falls_back_to_type_only_when_cell_too_small(self, capsys):
-        rows = (
-            _rows("Python", "feat", 50) + _rows("Python", "fix", 50)
-            + _rows("Go", "feat", 50) + _rows("Go", "fix", 2)
-        )
-        make_split(rows)
-        assert "fallback" in capsys.readouterr().out
+    def test_stratifies_by_type(self):
+        # A skewed type mix must be preserved in every split: a type-stratified
+        # split keeps the same ~90% feat / 10% fix ratio in train, val, and eval,
+        # instead of a split missing the rare type by chance.
+        rows = _rows("Python", "feat", 900) + _rows("Python", "fix", 100)
+        train, val, eval_ = make_split(rows)
+        for split in (train, val, eval_):
+            feat = sum(1 for r in split if r["message"].startswith("feat"))
+            assert abs(feat / len(split) - 0.9) < 0.05
 
     def test_deterministic_with_same_seed(self):
         rows = _rows("Python", n=200) + _rows("Go", n=200)
