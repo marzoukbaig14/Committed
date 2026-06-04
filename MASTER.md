@@ -192,7 +192,7 @@ Hugging Face Hub is the source of truth for all artifacts. Training environments
 7. scope casing left unchanged (scopes are identifiers; lowercasing would distort them)
 8. description casing left unchanged (blind lowercasing mangles acronyms; accepted v1 limitation)
 
-**Output (target revised per ADR 0023):** a `username/committed-train` Hub dataset, now spans all CommitChronicle languages (ADR 0023); the earlier Python-only 20–30k raw / 15–25k usable projection (ADR 0018) was inflated by per-repo language mislabeling (ADR 0022), so the size is re-derived and confirmed by the build pass. A full-scale scan measured the relaxed CC match rate on Python single-file commits at roughly 3.1% (an earlier 1.2% estimate came from a biased contiguous sample); 15 to 25k is adequate for a narrow QLoRA fine-tune, and the exact figure finalizes after the build pass. Retains the `repo` and `license` columns for per-row provenance (see ADR 0012 and Licensing).
+**Output (target revised per ADR 0025):** a `username/committed-train` Hub dataset spanning all CommitChronicle languages (ADR 0023). The full collection pass produced a 189,330-row pool; after the per-language cap (6,000) and floor (500) defined in ADR 0025 the balanced dataset is approximately 59k rows. The earlier Python-only 20–30k raw / 15–25k usable projection (ADR 0018) was inflated by per-repo language mislabeling (ADR 0022) and is superseded by the actual pool count. Exact post-cap sizes confirmed by `uv run python src/committed/data/build.py --dry-run` before publishing. Retains the `repo` and `license` columns for per-row provenance (see ADR 0012 and Licensing).
 
 **Schema (modular for v1 and v2):**
 ```python
@@ -203,7 +203,7 @@ Hugging Face Hub is the source of truth for all artifacts. Training environments
 }
 ```
 
-**Split:** 90/5/5 train/val/eval, stratified by commit type and language, or capped per language (ADR 0023).
+**Split:** 90/5/5 train/val/eval, stratified by commit type × language (fallback: type only if any cell has fewer than 3 rows). Per-language cap: 6,000 rows (downsampled above); floor: 500 rows (dropped below). Cap and floor are reversible build-time parameters in `src/committed/data/build.py` (ADR 0025).
 
 ---
 
@@ -336,7 +336,7 @@ Honest estimate: v1 core in roughly two to three weeks; core plus the production
 
 ## Open Questions
 
-- Exact final dataset size (20 to 30k raw and 15 to 25k usable, from a measured ~3.1% relaxed CC match rate on Python single-file; finalized after the build pass — see ADR 0018)
+- Exact final dataset size (~59k after cap/floor per ADR 0025; confirmed by `build.py --dry-run` before Hub push)
 - Whether to run the LoRA rank ablation inside v1 or defer to v2 (time-dependent)
 - The v2 reasoning-trace budget (pending Northeastern compute access or an Anthropic API budget)
 - All of v3 (RAG, multi-format, IDE integration, larger models), revisited after v1 ships

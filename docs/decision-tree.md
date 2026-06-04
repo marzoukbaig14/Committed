@@ -28,6 +28,7 @@ graph TD
   n0022["0022: Identify a commit's file language by file extension, not the per-repo language column"]:::accepted
   n0023["0023: Expand the dataset scope from Python-only to all CommitChronicle languages"]:::accepted
   n0024["0024: Make the project an installable package (src-layout with a hatchling build backend)"]:::accepted
+  n0025["0025: Set per-language cap (6k), floor (500), and stratification key for dataset build"]:::accepted
   n0003 --- n0002
   n0004 --- n0002
   n0005 --- n0004
@@ -51,6 +52,8 @@ graph TD
   n0018 -. superseded by .-> n0023
   n0023 --- n0022
   n0024 --- n0010
+  n0025 --- n0023
+  n0025 --- n0022
   classDef proposed fill:#fff7e6,stroke:#d4a017;
   classDef accepted fill:#e6f4ea,stroke:#137333;
   classDef superseded fill:#f1f3f4,stroke:#9aa0a6,color:#5f6368;
