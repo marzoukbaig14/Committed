@@ -247,17 +247,19 @@ reasoning in the Gradio demo. Requires a separate ADR and compute allocation.
 
 ---
 
-## Phase Map (summary)
+## Phase Map
 
-| Phase | Status | Projected close |
-|-------|--------|----------------|
-| Setup | ✓ Done | May 29–30 |
-| Data (inspect, filter, build, publish) | ✓ Done | June 4 |
-| Training | ⬜ Next | ~June 7 |
-| Evaluation | ⬜ | ~June 10 |
-| Serving | ⬜ | ~June 13 |
-| Demo + Ship | ⬜ | ~June 15 |
-| v2 (reasoning distillation) | ⬜ Later | After v1 |
+| Phase | What happens | Status |
+|-------|--------------|--------|
+| Setup | Decision log, environment, accounts, secrets. | ✓ Done (May 29–30) |
+| Data | Load, inspect, filter, split, publish. | ✓ Done (June 1–4) |
+| Eval design | Judge prompt + rubric, eval harness, 50 human ratings. | Researching — reviewing industry practices for eval criteria and hand-grading before writing rubric. |
+| Baseline | Run base Qwen3-1.7B on the eval split; record all five metrics. | ⬜ After eval design |
+| Train v1 | QLoRA via Unsloth + SFTTrainer on HPC, iterate, push adapters, log to W&B. | ⬜ After baseline |
+| Final eval | Full eval on fine-tune vs. baseline; judge-vs-human correlation; stretch ablations if time. | ⬜ After training |
+| Serve | Merge adapter, quantize to GGUF, GBNF grammar, FastAPI endpoint, Docker, benchmarks. | ⬜ After final eval |
+| Ship | Gradio demo on Spaces, final README, model card + dataset card review. | ⬜ End of v1 (~June 15) |
+| v2 (later) | Reasoning-trace distillation; with-vs-without ablation. | ⬜ After v1 ships |
 
 _Routine code commits go through git.
 Anything that changes design, stack, scope, or infrastructure goes through the decision-log flow._
