@@ -3,7 +3,7 @@
 _Living status. Update in the same commit as the work._
 _Plan lives in ROADMAP.md; design in MASTER.md + docs/decisions/._
 
-**Phase:** Data — full pipeline committed (filter, build, push); collect_rows data pass pending
+**Phase:** Data — COMPLETE. Dataset live at `marzoukbaig14/committed-train`. Next: training.
 **Calendar:** Day 7 (June 4, 2026)
 
 ## Done
@@ -29,39 +29,42 @@ _Plan lives in ROADMAP.md; design in MASTER.md + docs/decisions/._
   (ADR 0022), single-file only, drop merge/revert. Spot-checked in
   analysis/spotcheck_filter.py; results in analysis/results/spotcheck.txt.
 - Package: installable src-layout package (ADR 0024); pyproject.toml + uv.lock updated.
-- Filter module: `src/committed/data/filter.py` committed as installed package module.
-  Implements all filter rules: CC regex + normalization (ADR 0017), token cap 2048
-  (Qwen3-1.7B), language by file extension (ADR 0022), single-file, bot/merge/revert
-  detection. `tests/test_filter.py` covers it.
-- Build pipeline: `src/committed/data/build.py` — applies per-language cap 6,000 /
-  floor 500, produces 90/5/5 train/val/eval JSONL splits stratified by commit type only
-  (ADR 0026). `tests/test_build.py` added.
-- Analysis scripts: `analysis/collect_rows.py` streams full CommitChronicle train split,
-  applies filter, writes `data/committed_raw.jsonl` incrementally (unbalanced raw pool).
-  `analysis/pool_stats.py` is a read-only inspector (percentile tables, histograms) for
-  any JSONL pool file.
-- Hub publish script: `src/committed/data/push.py` loads train/val/eval splits, auto-
-  generates composition tables (language mix, commit-type distribution), builds dataset
-  card, and pushes to `marzoukbaig14/committed-train`.
+- Filter module: `src/committed/data/filter.py` — CC regex + normalization, token cap
+  2048 (Qwen3-1.7B), language by file extension, single-file, bot/merge/revert detection.
+  49/49 tests pass (test_filter.py + test_build.py).
+- Build pipeline ran: `src/committed/data/build.py --cap 6000`
+  - Raw pool: 189,330 rows → 57,969 after cap 6,000 / floor 500 (16 languages kept).
+  - 6 languages hit cap (JavaScript, TypeScript, Java, Python, Go, Rust at 6,000 each).
+  - Remaining: Shell 4,215 · C++ 3,753 · PHP 2,708 · C 2,407 · C# 2,146 · Swift 2,129
+    · Kotlin 1,812 · Dart 1,370 · Ruby 750 · Elixir 679.
+  - Commit-type mix: fix 48.9% · feat 13.3% · chore 10.3% · test 9.0% · refactor 8.7%
+    · docs 4.3% · ci 2.3% · style 1.5% · build 1.0% · perf 0.7%.
+  - Final splits: train 52,173 / val 2,898 / eval 2,898 (90/5/5, stratified by type).
+- Dataset pushed to Hub: `marzoukbaig14/committed-train` — train + validation + test
+  splits with auto-generated dataset card (composition tables, provenance, limitations).
+- Analysis scripts: `analysis/collect_rows.py` (streamed CommitChronicle → raw pool),
+  `analysis/pool_stats.py` (read-only pool inspector).
 
 ## In progress
-- Running `analysis/collect_rows.py` to stream CommitChronicle → `data/committed_raw.jsonl`
-  (unbalanced raw pool). Pipeline code is complete and committed; data pass not yet executed.
+- Nothing active. Data phase complete.
 
 ## Next
-- Run `analysis/collect_rows.py` → `data/committed_raw.jsonl` (raw pool).
-- Inspect pool with `analysis/pool_stats.py`; confirm size and distributions.
-- Run `src/committed/data/build.py` → `data/train.jsonl`, `val.jsonl`, `eval.jsonl`.
-- Push to Hub via `src/committed/data/push.py` → `marzoukbaig14/committed-train`.
+- Write QLoRA training config (model: Qwen3-1.7B, library: Unsloth + TRL SFTTrainer,
+  compute: HPC cluster per ADR 0019).
+- First training run; push checkpoints to Hub.
+- Evaluate against base-model baseline.
 
-## Key data findings (feed the filter)
+## Key data findings (feed the filter + training)
+- Raw pool: 189,330 rows from ~85-90% of CommitChronicle train split (streaming pass,
+  not exhaustive). Balanced dataset: 57,969 rows across 16 languages.
+- Final training set: 52,173 rows. Commit types heavily skewed toward `fix` (48.9%);
+  a trivial always-predict-`fix` baseline scores ~49% prefix-accuracy — read results
+  against that floor.
 - Cap is in Qwen3-1.7B tokens. Python single-file diffs: med 165, p90 601, p95 906,
-  p99 2834. Cap candidate band ~600-900. Messages tiny (p99 38).
-- Scope expanded to all CommitChronicle languages (ADR 0023); earlier Python-only
-  20–30k raw / 15–25k usable projection (ADR 0018) was inflated by per-repo language
-  mislabeling (ADR 0022). Size re-derived after build pass.
-- ADR 0012: filter MUST keep `repo` + `license` columns; cite CommitChronicle + paper
-  (arXiv 2308.07655) in the dataset card; carry the sensitive-data note forward.
+  p99 2834. Token cap set at 2048 (over-cap diffs dropped, not truncated).
+  Messages tiny (p99 38 chars).
+- ADR 0012: `repo` + `license` columns kept in every row; CommitChronicle paper cited
+  in dataset card (arXiv 2308.07655); sensitive-data caveat carried forward.
 
 ## Quirks
 - W&B web UI blocked on school wifi (DNS/filter); training is cloud-to-cloud and fine;
@@ -71,3 +74,5 @@ _Plan lives in ROADMAP.md; design in MASTER.md + docs/decisions/._
 - "PyTorch not found" from transformers is expected in the CPU Codespace (tokenizer-only).
 - Org disables connectors/integrations (no Project GitHub sync) and blocks W&B UI;
   continuity is by pasting this file, not syncing (ADR 0014).
+- collect_rows.py scan covered ~85-90% of CommitChronicle train split (not a full pass);
+  language mix is near-complete rather than exhaustive.
