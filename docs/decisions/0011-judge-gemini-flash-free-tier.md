@@ -2,9 +2,9 @@
 id: 0011
 title: Switch the LLM-as-judge from Claude Haiku to Gemini 2.5 Flash (free tier)
 date: 2026-05-29
-status: accepted
+status: superseded
 supersedes: [0008]
-superseded_by: []
+superseded_by: [0033]
 relates_to: [0002]
 tags: [eval]
 ---
