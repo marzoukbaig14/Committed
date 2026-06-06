@@ -14,7 +14,7 @@ graph TD
   n0008["0008: Use claude-haiku-4-5 as the LLM-as-judge"]:::superseded
   n0009["0009: Constrain decoding to a Conventional Commits grammar (GBNF)"]:::accepted
   n0010["0010: Run uv sync in the devcontainer postCreateCommand"]:::accepted
-  n0011["0011: Switch the LLM-as-judge from Claude Haiku to Gemini 2.5 Flash (free tier)"]:::superseded
+  n0011["0011: Switch the LLM-as-judge from Claude Haiku to Gemini 2.5 Flash (free tier)"]:::accepted
   n0012["0012: Redistribute filtered CommitChronicle derivative under source license terms"]:::accepted
   n0013["0013: Adopt STATUS.md, three-lane doc tracking, and GitHub-synced Project knowledge"]:::superseded
   n0014["0014: Abandon Project GitHub sync (org-blocked); manual STATUS.md continuity"]:::accepted
@@ -36,7 +36,8 @@ graph TD
   n0030["0030: Judge reasoning protocol — diff-first, reason-then-label, structured output"]:::accepted
   n0031["0031: Per-axis anchor definitions for all four judge axes"]:::accepted
   n0032["0032: Composite scoring — faithfulness gate then lexicographic priority, no weights"]:::accepted
-  n0033["0033: Switch the LLM-as-judge to a paid Claude model (Sonnet 4.6)"]:::accepted
+  n0033["0033: Switch the LLM-as-judge to a paid Claude model (Sonnet 4.6)"]:::superseded
+  n0034["0034: Make judge harness backend-swappable; Gemini default, Claude optional upgrade"]:::accepted
   n0003 --- n0002
   n0004 --- n0002
   n0005 --- n0004
@@ -79,6 +80,10 @@ graph TD
   n0033 --- n0027
   n0033 --- n0028
   n0033 --- n0030
+  n0033 -. superseded by .-> n0034
+  n0034 --- n0011
+  n0034 --- n0028
+  n0034 --- n0030
   classDef proposed fill:#fff7e6,stroke:#d4a017;
   classDef accepted fill:#e6f4ea,stroke:#137333;
   classDef superseded fill:#f1f3f4,stroke:#9aa0a6,color:#5f6368;

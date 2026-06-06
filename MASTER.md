@@ -8,7 +8,7 @@ This document is the single source of truth for the design of Committed. Read it
 
 ## Thesis
 
-Committed is a small language model, fine-tuned to generate Conventional Commits messages from code diffs, that **runs locally so your code never leaves your machine.** Everything shipped — the model, dataset, serving stack, and demo — is built and deployed on free infrastructure. The v1 core is reproducible on free infrastructure (a free Colab T4 fits the 1.7B QLoRA on this dataset); an institutional HPC cluster is used only to accelerate training and run the stretch ablations (ADR 0019), and a paid Claude judge is used only for eval validation, with a free-tier Gemini fallback so the eval stays reproducible on free infrastructure (ADR 0033).
+Committed is a small language model, fine-tuned to generate Conventional Commits messages from code diffs, that **runs locally so your code never leaves your machine.** It is built and deployed end to end on free infrastructure. The v1 core is reproducible on free infrastructure (a free Colab T4 fits the 1.7B QLoRA on this dataset); an institutional HPC cluster is used only to accelerate training and run the stretch ablations (ADR 0019).
 
 The positioning is **private, local, and distilled.** A model small enough to run on a laptop or in a free CPU container means zero per-call cost at scale, no network latency, offline capability, and most importantly no proprietary diff ever sent to a third-party API. The deeper technique on display is distillation: taking a frontier model's ability to write good commit messages and compressing it into a roughly one-to-two billion parameter model that anyone can run.
 
@@ -107,7 +107,7 @@ v1 is split into a hard **core**, a strongly recommended **production layer**, a
 ### Evaluation
 - `evaluate`, `sacrebleu`, `rouge-score`
 - `scikit-learn` (prefix-classification accuracy, confusion matrix)
-- LLM-as-judge via the `anthropic` SDK, model `claude-sonnet-4-6` (`ANTHROPIC_API_KEY`), with prompt caching on the fixed rubric and structured output via forced tool-use; a per-run USD ceiling and output-token cap bound cost (ADR 0033). Free-tier Gemini 2.5 Flash (`google-genai`) is retained as the documented reproducible fallback (`judge_gemini.py`); the judge backend is swappable. Opus 4.8 (`claude-opus-4-8`) is an option for the one-time human-validation run
+- LLM-as-judge via the `google-genai` SDK, model `gemini-2.5-flash` (free tier; ADR 0011). The judge harness is backend-swappable (ADR 0034): a Claude Sonnet 4.6 backend (`anthropic` SDK, prompt caching, forced tool-use, cost guardrails) is available as an optional upgrade once API credits are secured; `anthropic` is an optional dependency, not installed by default
 - Hand-rolled eval harness. The README notes ecosystem awareness of `lm-eval-harness`, `lighteval`, and `inspect` without adopting them.
 
 ### Tracking and registry
@@ -244,7 +244,7 @@ Multi-metric, with the human-validated LLM-as-judge as the headline.
 1. **BLEU (sacrebleu):** automatic, noted as unreliable for short text but reported for completeness.
 2. **ROUGE-L:** automatic, complementary.
 3. **Prefix-classification accuracy:** categorical and deterministic; did the model pick the right `feat` / `fix` / `refactor` / etc.?
-4. **LLM-as-judge (`claude-sonnet-4-6`, paid; free-tier `gemini-2.5-flash` fallback — ADR 0033)** on 500 to 1000 examples: analytic per-axis rubric with four orthogonal axes (ADRs 0027–0033):
+4. **LLM-as-judge (`gemini-2.5-flash`, free tier — ADR 0011; Claude Sonnet 4.6 optional upgrade — ADR 0034)** on 500 to 1000 examples: analytic per-axis rubric with four orthogonal axes (ADRs 0027–0034):
    - `type_correctness` (binary) — is the CC type defensible for this diff? Scored on plausibility, not exact-match.
    - `faithfulness` (binary) — are all claims in the message supported by the diff? Hard gate: a fail disqualifies the message regardless of other axes.
    - `completeness` (3-level: fail/partial/pass) — does the message cover the primary and all material changes?

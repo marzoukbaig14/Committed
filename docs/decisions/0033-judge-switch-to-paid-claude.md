@@ -2,9 +2,9 @@
 id: 0033
 title: Switch the LLM-as-judge to a paid Claude model (Sonnet 4.6)
 date: 2026-06-06
-status: accepted
+status: superseded
 supersedes: [0011]
-superseded_by: []
+superseded_by: [0034]
 relates_to: [0019, 0027, 0028, 0030]
 tags: [eval, judge]
 ---
