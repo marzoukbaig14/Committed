@@ -203,7 +203,7 @@ Hugging Face Hub is the source of truth for all artifacts. Training environments
 }
 ```
 
-**Split:** 90/5/5 train/val/eval, stratified by commit type × language (fallback: type only if any cell has fewer than 3 rows). Per-language cap: 6,000 rows (downsampled above); floor: 500 rows (dropped below). Cap and floor are reversible build-time parameters in `src/committed/data/build.py` (ADR 0025).
+**Split:** 90/5/5 train/val/eval, stratified by commit type only (ADR 0026; the earlier type × language grid was removed because the per-language cap makes all language volumes comparable before the split step, so the two-dimensional grid universally produced thin cells and was dead code). Per-language cap: 6,000 rows (downsampled above); floor: 500 rows (dropped below). Cap and floor are reversible build-time parameters in `src/committed/data/build.py` (ADR 0025).
 
 ---
 
@@ -244,7 +244,7 @@ Multi-metric, with the human-validated LLM-as-judge as the headline.
 1. **BLEU (sacrebleu):** automatic, noted as unreliable for short text but reported for completeness.
 2. **ROUGE-L:** automatic, complementary.
 3. **Prefix-classification accuracy:** categorical and deterministic; did the model pick the right `feat` / `fix` / `refactor` / etc.?
-4. **LLM-as-judge (`gemini-2.5-flash`, free tier)** on 500 to 1000 examples: rubric scoring on type-correctness, specificity, scope-correctness, and conciseness.
+4. **LLM-as-judge (`gemini-2.5-flash`, free tier)** on 500 to 1000 examples: analytic per-axis rubric — four dimensions scored separately (type-correctness, specificity, scope-correctness, conciseness) and combined into a composite (ADR 0027). Type-correctness is scored on plausibility (is the chosen type defensible for this diff?), not exact-match, because real commits have genuine type ambiguity; exact-match would penalise valid alternatives and duplicate the deterministic prefix-accuracy metric.
 5. **50 human-rated examples:** used to validate the judge; report the correlation between judge scores and human ratings.
 
 **The README must report:** all five metrics, sample outputs (good, bad, weird) with commentary, and a failure-mode analysis from the human-rated set.

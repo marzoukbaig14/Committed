@@ -30,6 +30,7 @@ graph TD
   n0024["0024: Make the project an installable package (src-layout with a hatchling build backend)"]:::accepted
   n0025["0025: Set per-language cap (6k), floor (500), and stratification key for dataset build"]:::superseded
   n0026["0026: Simplify split stratification key to commit type only"]:::accepted
+  n0027["0027: Adopt analytic per-axis LLM rubric with plausibility-based type-correctness"]:::accepted
   n0003 --- n0002
   n0004 --- n0002
   n0005 --- n0004
@@ -56,6 +57,7 @@ graph TD
   n0025 --- n0023
   n0025 --- n0022
   n0025 -. superseded by .-> n0026
+  n0027 --- n0011
   classDef proposed fill:#fff7e6,stroke:#d4a017;
   classDef accepted fill:#e6f4ea,stroke:#137333;
   classDef superseded fill:#f1f3f4,stroke:#9aa0a6,color:#5f6368;
