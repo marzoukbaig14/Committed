@@ -244,7 +244,12 @@ Multi-metric, with the human-validated LLM-as-judge as the headline.
 1. **BLEU (sacrebleu):** automatic, noted as unreliable for short text but reported for completeness.
 2. **ROUGE-L:** automatic, complementary.
 3. **Prefix-classification accuracy:** categorical and deterministic; did the model pick the right `feat` / `fix` / `refactor` / etc.?
-4. **LLM-as-judge (`gemini-2.5-flash`, free tier)** on 500 to 1000 examples: analytic per-axis rubric — four dimensions scored separately (type-correctness, specificity, scope-correctness, conciseness) and combined into a composite (ADR 0027). Type-correctness is scored on plausibility (is the chosen type defensible for this diff?), not exact-match, because real commits have genuine type ambiguity; exact-match would penalise valid alternatives and duplicate the deterministic prefix-accuracy metric.
+4. **LLM-as-judge (`gemini-2.5-flash`, free tier)** on 500 to 1000 examples: analytic per-axis rubric with four orthogonal axes (ADRs 0027–0032):
+   - `type_correctness` (binary) — is the CC type defensible for this diff? Scored on plausibility, not exact-match.
+   - `faithfulness` (binary) — are all claims in the message supported by the diff? Hard gate: a fail disqualifies the message regardless of other axes.
+   - `completeness` (3-level: fail/partial/pass) — does the message cover the primary and all material changes?
+   - `specificity` (binary) — is the description concrete rather than generic?
+   **Primary metric:** conjunctive pass-rate (message passes iff all four axes pass). Per-axis vector always reported alongside. Graded score `[1–3]` available for checkpoint ranking (faithful messages only). No weighted average — correctness cannot be bought back by quality (ADR 0032). Judge uses diff-first, reason-then-label, structured-output protocol (ADR 0030). Anchors in `docs/eval/judge_rubric.md` (ADR 0031).
 5. **50 human-rated examples:** used to validate the judge; report the correlation between judge scores and human ratings.
 
 **The README must report:** all five metrics, sample outputs (good, bad, weird) with commentary, and a failure-mode analysis from the human-rated set.
