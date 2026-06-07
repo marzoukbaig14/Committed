@@ -19,7 +19,7 @@ assumed — so the generation step must emit ids that match the reference ids. R
 from the Hub are keyed by row index (stable for a fixed dataset version); a local --refs jsonl may
 carry explicit ids.
 
-COMPOSITE (ADR E). Implemented HERE, not in the judge:
+COMPOSITE (ADR 0032). Implemented HERE, not in the judge:
   - per-axis pass rates (the vector — always reported alongside any headline).
   - conjunctive pass-rate (primary): a message passes iff ALL FOUR axes pass.
   - graded headline (optional, for A/B and checkpoint ranking): 0 if faithfulness fails, else
@@ -282,6 +282,8 @@ def main() -> None:
     ap.add_argument("--human-ratings", help="Optional jsonl of human axis labels for validation.")
     ap.add_argument("--type-gate", action="store_true", help="Also zero the graded score on type fail.")
     ap.add_argument("--limit", type=int, default=None, help="Max NEW examples to judge this run.")
+    ap.add_argument("--rpm", type=int, default=None, 
+                    help="Judge requests/minute. Raise above the free-tier default (10) on paid tier.")
     ap.add_argument("--ceiling", type=float, default=None, help="USD ceiling (Claude backend only).")
     args = ap.parse_args()
 
@@ -306,13 +308,17 @@ def main() -> None:
     else:
         from committed.eval import judge_gemini as backend
     judge_records_kwargs = {"limit": args.limit}
+    if args.backend == "gemini" and args.rpm is not None:
+        judge_records_kwargs["rpm"] = args.rpm
     if args.backend == "claude" and args.ceiling is not None:
         judge_records_kwargs["ceiling_usd"] = args.ceiling
     records = ({"id": i, "diff": refs[i]["diff"], "message": cands[i]} for i in ids)
     backend.judge_records(records, args.judge_log, **judge_records_kwargs)
 
-    # 5. aggregate the judge log.
-    judge_labels = load_judge_labels(Path(args.judge_log))
+    # 5. aggregate the judge log (restricted to THIS run's aligned ids, so a reused/resumable
+    #    log can't leak stale judgments into the numbers).
+    all_labels = load_judge_labels(Path(args.judge_log))
+    judge_labels = {i: all_labels[i] for i in ids if i in all_labels}
     ref_types = {i: refs[i]["type"] for i in ids}
     composite = aggregate_composite(judge_labels, ref_types, type_gate=args.type_gate)
 

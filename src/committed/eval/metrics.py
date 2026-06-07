@@ -13,7 +13,7 @@ Metrics here (all on candidate-vs-gold pairs):
     always-predict-`fix` floor (~49% on this dataset) so the headline number is read honestly.
 
 The one real choice in here is `parse_type` — how the type prefix is extracted from a message.
-It mirrors the ADR 0017 filter regex (same type codebook, same `doc`->`docs` normalization) so
+It follows the ADR 0017 filter regex (same type codebook, same `doc`->`docs` normalization) so
 "the type" means the same thing in eval as it did at data-build time. If the filter regex changes,
 change this with it.
 
