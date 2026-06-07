@@ -32,12 +32,13 @@ graph TD
   n0026["0026: Simplify split stratification key to commit type only"]:::accepted
   n0027["0027: Adopt analytic per-axis LLM rubric with plausibility-based type-correctness"]:::accepted
   n0028["0028: Finalize judge axis set to four orthogonal axes"]:::accepted
-  n0029["0029: Per-axis scoring scales mixed by judgment shape"]:::accepted
+  n0029["0029: Per-axis scoring scales mixed by judgment shape"]:::superseded
   n0030["0030: Judge reasoning protocol — diff-first, reason-then-label, structured output"]:::accepted
-  n0031["0031: Per-axis anchor definitions for all four judge axes"]:::accepted
+  n0031["0031: Per-axis anchor definitions for all four judge axes"]:::superseded
   n0032["0032: Composite scoring — faithfulness gate then lexicographic priority, no weights"]:::accepted
   n0033["0033: Switch the LLM-as-judge to a paid Claude model (Sonnet 4.6)"]:::superseded
   n0034["0034: Make judge harness backend-swappable; Gemini default, Claude optional upgrade"]:::accepted
+  n0035["0035: Finalize judge rubric — all axes binary, faithfulness decomposed into atomic per-claim checks"]:::accepted
   n0003 --- n0002
   n0004 --- n0002
   n0005 --- n0004
@@ -84,6 +85,12 @@ graph TD
   n0034 --- n0011
   n0034 --- n0028
   n0034 --- n0030
+  n0029 -. superseded by .-> n0035
+  n0031 -. superseded by .-> n0035
+  n0035 --- n0028
+  n0035 --- n0030
+  n0035 --- n0032
+  n0035 --- n0034
   classDef proposed fill:#fff7e6,stroke:#d4a017;
   classDef accepted fill:#e6f4ea,stroke:#137333;
   classDef superseded fill:#f1f3f4,stroke:#9aa0a6,color:#5f6368;
