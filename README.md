@@ -54,7 +54,7 @@ Most commit-message tools (aicommits, opencommit, GitHub Copilot suggestions) se
 - sacrebleu (BLEU)
 - rouge-score (ROUGE-L)
 - scikit-learn (prefix-classification accuracy, confusion matrix)
-- Gemini 2.5 Flash (free tier) as LLM-as-judge
+- Gemini 2.5 Flash (free tier) as LLM-as-judge; Claude Sonnet 4.6 available as optional upgrade backend
 - 50 hand-rated examples for judge validation
 
 **Tracking and registry:**
@@ -198,10 +198,10 @@ Five metrics, chosen to cover different failure modes:
 | BLEU (sacrebleu) | N-gram overlap with reference | Low for short text; reported for completeness |
 | ROUGE-L | Longest-common-subsequence overlap | Complementary to BLEU; also limited alone |
 | Prefix-classification accuracy | Did the model emit the correct type (feat, fix, refactor, etc.)? | High; deterministic and meaningful |
-| LLM-as-judge (Gemini 2.5 Flash free tier, 500-1000 examples) | Rubric: type-correctness, specificity, scope-correctness, conciseness | Headline metric |
-| Human ratings (50 examples) | Same rubric, rated by a human | Used to validate the judge; judge-vs-human correlation is reported |
+| LLM-as-judge (Gemini 2.5 Flash free tier, 500-1000 examples) | Four orthogonal axes: type-correctness, faithfulness, completeness, specificity | Headline metric |
+| Human ratings (50 examples) | Same axes, rated by a human | Used to validate the judge; judge-vs-human correlation is reported |
 
-The judge-vs-human correlation is the key number. It gives the judge score an honest confidence bound rather than reporting it as ground truth.
+The judge-vs-human correlation is the key number. It gives the judge score an honest confidence bound rather than reporting it as ground truth. The judge applies an analytic per-axis rubric: faithfulness is a hard gate (an unfaithful message fails regardless of other axes), and the headline is the conjunctive pass-rate — the fraction of outputs that clear all four axes.
 
 ---
 

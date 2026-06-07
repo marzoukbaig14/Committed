@@ -30,6 +30,14 @@ graph TD
   n0024["0024: Make the project an installable package (src-layout with a hatchling build backend)"]:::accepted
   n0025["0025: Set per-language cap (6k), floor (500), and stratification key for dataset build"]:::superseded
   n0026["0026: Simplify split stratification key to commit type only"]:::accepted
+  n0027["0027: Adopt analytic per-axis LLM rubric with plausibility-based type-correctness"]:::accepted
+  n0028["0028: Finalize judge axis set to four orthogonal axes"]:::accepted
+  n0029["0029: Per-axis scoring scales mixed by judgment shape"]:::accepted
+  n0030["0030: Judge reasoning protocol — diff-first, reason-then-label, structured output"]:::accepted
+  n0031["0031: Per-axis anchor definitions for all four judge axes"]:::accepted
+  n0032["0032: Composite scoring — faithfulness gate then lexicographic priority, no weights"]:::accepted
+  n0033["0033: Switch the LLM-as-judge to a paid Claude model (Sonnet 4.6)"]:::superseded
+  n0034["0034: Make judge harness backend-swappable; Gemini default, Claude optional upgrade"]:::accepted
   n0003 --- n0002
   n0004 --- n0002
   n0005 --- n0004
@@ -56,6 +64,26 @@ graph TD
   n0025 --- n0023
   n0025 --- n0022
   n0025 -. superseded by .-> n0026
+  n0027 --- n0011
+  n0027 -. superseded by .-> n0028
+  n0029 --- n0028
+  n0030 --- n0028
+  n0030 --- n0029
+  n0031 --- n0028
+  n0031 --- n0029
+  n0031 --- n0030
+  n0032 --- n0028
+  n0032 --- n0029
+  n0032 --- n0031
+  n0011 -. superseded by .-> n0033
+  n0033 --- n0019
+  n0033 --- n0027
+  n0033 --- n0028
+  n0033 --- n0030
+  n0033 -. superseded by .-> n0034
+  n0034 --- n0011
+  n0034 --- n0028
+  n0034 --- n0030
   classDef proposed fill:#fff7e6,stroke:#d4a017;
   classDef accepted fill:#e6f4ea,stroke:#137333;
   classDef superseded fill:#f1f3f4,stroke:#9aa0a6,color:#5f6368;

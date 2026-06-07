@@ -107,7 +107,7 @@ v1 is split into a hard **core**, a strongly recommended **production layer**, a
 ### Evaluation
 - `evaluate`, `sacrebleu`, `rouge-score`
 - `scikit-learn` (prefix-classification accuracy, confusion matrix)
-- LLM-as-judge via the `google-genai` SDK, model `gemini-2.5-flash` on the free tier (pin a specific Flash model id for reproducible eval; the harness throttles and retries to respect free-tier rate limits)
+- LLM-as-judge via the `google-genai` SDK, model `gemini-2.5-flash` (free tier; ADR 0011). The judge harness is backend-swappable (ADR 0034): a Claude Sonnet 4.6 backend (`anthropic` SDK, prompt caching, forced tool-use, cost guardrails) is available as an optional upgrade once API credits are secured; `anthropic` is an optional dependency, not installed by default
 - Hand-rolled eval harness. The README notes ecosystem awareness of `lm-eval-harness`, `lighteval`, and `inspect` without adopting them.
 
 ### Tracking and registry
@@ -203,7 +203,7 @@ Hugging Face Hub is the source of truth for all artifacts. Training environments
 }
 ```
 
-**Split:** 90/5/5 train/val/eval, stratified by commit type × language (fallback: type only if any cell has fewer than 3 rows). Per-language cap: 6,000 rows (downsampled above); floor: 500 rows (dropped below). Cap and floor are reversible build-time parameters in `src/committed/data/build.py` (ADR 0025).
+**Split:** 90/5/5 train/val/eval, stratified by commit type only (ADR 0026; the earlier type × language grid was removed because the per-language cap makes all language volumes comparable before the split step, so the two-dimensional grid universally produced thin cells and was dead code). Per-language cap: 6,000 rows (downsampled above); floor: 500 rows (dropped below). Cap and floor are reversible build-time parameters in `src/committed/data/build.py` (ADR 0025).
 
 ---
 
@@ -244,7 +244,12 @@ Multi-metric, with the human-validated LLM-as-judge as the headline.
 1. **BLEU (sacrebleu):** automatic, noted as unreliable for short text but reported for completeness.
 2. **ROUGE-L:** automatic, complementary.
 3. **Prefix-classification accuracy:** categorical and deterministic; did the model pick the right `feat` / `fix` / `refactor` / etc.?
-4. **LLM-as-judge (`gemini-2.5-flash`, free tier)** on 500 to 1000 examples: rubric scoring on type-correctness, specificity, scope-correctness, and conciseness.
+4. **LLM-as-judge (`gemini-2.5-flash`, free tier — ADR 0011; Claude Sonnet 4.6 optional upgrade — ADR 0034)** on 500 to 1000 examples: analytic per-axis rubric with four orthogonal axes (ADRs 0027–0034):
+   - `type_correctness` (binary) — is the CC type defensible for this diff? Scored on plausibility, not exact-match.
+   - `faithfulness` (binary) — are all claims in the message supported by the diff? Hard gate: a fail disqualifies the message regardless of other axes.
+   - `completeness` (3-level: fail/partial/pass) — does the message cover the primary and all material changes?
+   - `specificity` (binary) — is the description concrete rather than generic?
+   **Primary metric:** conjunctive pass-rate (message passes iff all four axes pass). Per-axis vector always reported alongside. Graded score `[1–3]` available for checkpoint ranking (faithful messages only). No weighted average — correctness cannot be bought back by quality (ADR 0032). Judge uses diff-first, reason-then-label, structured-output protocol (ADR 0030). Anchors in `docs/eval/judge_rubric.md` (ADR 0031).
 5. **50 human-rated examples:** used to validate the judge; report the correlation between judge scores and human ratings.
 
 **The README must report:** all five metrics, sample outputs (good, bad, weird) with commentary, and a failure-mode analysis from the human-rated set.
