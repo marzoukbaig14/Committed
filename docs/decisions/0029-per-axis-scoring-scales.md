@@ -2,9 +2,9 @@
 id: 0029
 title: Per-axis scoring scales mixed by judgment shape
 date: 2026-06-06
-status: accepted
+status: superseded
 supersedes: []
-superseded_by: []
+superseded_by: [0035]
 relates_to: [0028]
 tags: [eval, judge]
 ---

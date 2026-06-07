@@ -244,12 +244,12 @@ Multi-metric, with the human-validated LLM-as-judge as the headline.
 1. **BLEU (sacrebleu):** automatic, noted as unreliable for short text but reported for completeness.
 2. **ROUGE-L:** automatic, complementary.
 3. **Prefix-classification accuracy:** categorical and deterministic; did the model pick the right `feat` / `fix` / `refactor` / etc.?
-4. **LLM-as-judge (`gemini-2.5-flash`, free tier — ADR 0011; Claude Sonnet 4.6 optional upgrade — ADR 0034)** on 500 to 1000 examples: analytic per-axis rubric with four orthogonal axes (ADRs 0027–0034):
-   - `type_correctness` (binary) — is the CC type defensible for this diff? Scored on plausibility, not exact-match.
-   - `faithfulness` (binary) — are all claims in the message supported by the diff? Hard gate: a fail disqualifies the message regardless of other axes.
-   - `completeness` (3-level: fail/partial/pass) — does the message cover the primary and all material changes?
-   - `specificity` (binary) — is the description concrete rather than generic?
-   **Primary metric:** conjunctive pass-rate (message passes iff all four axes pass). Per-axis vector always reported alongside. Graded score `[1–3]` available for checkpoint ranking (faithful messages only). No weighted average — correctness cannot be bought back by quality (ADR 0032). Judge uses diff-first, reason-then-label, structured-output protocol (ADR 0030). Anchors in `docs/eval/judge_rubric.md` (ADR 0031).
+4. **LLM-as-judge (`gemini-2.5-flash`, free tier — ADR 0011; Claude Sonnet 4.6 optional upgrade — ADR 0034)** on 500 to 1000 examples: analytic per-axis rubric with four orthogonal axes, all binary `pass|fail` (ADRs 0027–0035):
+   - `type_correctness` — passes unless the type is a misrepresentation of the diff (ADR 0036): (1) wrong category — the type names an activity the diff does not perform, or (2) suppressed consequence — the correct type carries a downstream expectation (e.g. semver signal) that the chosen type masks. A type a reviewer would merely prefer, but that is defensible, passes. Scored on plausibility, not exact-match.
+   - `faithfulness` — are all atomic claims supported by the diff? Operationalized as decomposed per-claim precision: what-changed claims must be supported; rationale claims pass unless contradicted. Hard gate: a fail disqualifies the message regardless of other axes.
+   - `completeness` — does the message cover the primary and all material changes? Supporting detail and refactor plumbing are not materially distinct; vagueness is charged to specificity, not completeness.
+   - `specificity` — is the description concrete rather than generic?
+   **Primary metric:** conjunctive pass-rate (all four axes pass). Per-axis vector always reported. Graded score `1 + completeness{0,1} + specificity{0,1}` (integer 1–3, faithful messages only) for checkpoint ranking. Self-consistency via majority-vote over 3 samples intended for faithfulness. Stability number (Krippendorff's α or re-judge agreement) reported alongside judge-vs-human agreement. Anchors in `docs/eval/judge_rubric.md` (ADR 0035).
 5. **50 human-rated examples:** used to validate the judge; report the correlation between judge scores and human ratings.
 
 **The README must report:** all five metrics, sample outputs (good, bad, weird) with commentary, and a failure-mode analysis from the human-rated set.

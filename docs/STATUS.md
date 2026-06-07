@@ -3,14 +3,14 @@
 _Living status. Update in the same commit as the work._
 _Plan lives in ROADMAP.md; design in MASTER.md + docs/decisions/._
 
-**Phase:** Data — COMPLETE. Dataset live at `marzoukbaig14/committed-train`. Next: training.
-**Calendar:** Day 7 (June 4, 2026)
+**Phase:** Eval design decisions locked (ADRs 0027–0035); judge harness implementation pending. Training not yet started.
+**Calendar:** Day 9 (June 7, 2026)
 
 ## Done
 - Setup: devcontainer + uv lockfile; CPU deps; 3 secrets injected; 15 smoke tests pass.
 - Data inspection: CommitChronicle loaded/inspected; token distribution measured;
   exploration scripts in analysis/.
-- Decision log: 26 ADRs total.
+- Decision log: 36 ADRs total.
   - 0008 superseded by 0011 (judge: Haiku → Gemini Flash); 0013 superseded by 0014
     (Project sync abandoned, org-blocked; manual STATUS continuity).
   - 0012 = license redistribution; 0015 = Claude Code as decision-log agent;
@@ -24,6 +24,17 @@ _Plan lives in ROADMAP.md; design in MASTER.md + docs/decisions/._
   - 0025 = dataset build parameters: per-language cap 6,000, floor 500, stratification
     by type × language (superseded by 0026); 0026 = stratification key simplified to
     commit-type only (type × language cells universally thin after per-language cap).
+  - Eval design (0027–0036): 0027 = analytic per-axis rubric architecture; 0028 = four
+    orthogonal axes (type_correctness, faithfulness, completeness, specificity); 0029 =
+    per-axis scales (superseded by 0035); 0030 = judge reasoning protocol (diff-first,
+    reason-then-label, structured output, no persona); 0031 = per-axis anchors (superseded
+    by 0035); 0032 = gate-then-grade composite (faithfulness hard gate, conjunctive
+    pass-rate headline, graded 1–3 for ranking); 0033 = stale record superseded by 0034;
+    0034 = judge harness backend-swappable (Gemini 2.5 Flash default, Claude Sonnet 4.6
+    optional upgrade); 0035 = rubric finalization: all axes binary, faithfulness
+    decomposed into atomic per-claim precision (supersedes 0029 + 0031); 0036 =
+    type_correctness bar tightened — only misrepresentation fails (wrong category or
+    suppressed semver consequence); a merely-preferred alternative passes.
 - Filter logic: CC regex + normalization (ADR 0017), subject-line length ceiling
   (ADR 0020), bot detection by message pattern (ADR 0021), language by file extension
   (ADR 0022), single-file only, drop merge/revert. Spot-checked in
@@ -46,13 +57,16 @@ _Plan lives in ROADMAP.md; design in MASTER.md + docs/decisions/._
   `analysis/pool_stats.py` (read-only pool inspector).
 
 ## In progress
-- Nothing active. Data phase complete.
+- Eval harness implementation: `judge_prompt.py` and `docs/eval/judge_rubric.md` not yet
+  synced to final rubric (ADR 0035). Decisions are locked; prompt authoring is owed.
 
 ## Next
+- Write `judge_prompt.py` + sync `docs/eval/judge_rubric.md` to ADR 0035 rubric (core
+  work: anchors, decomposed faithfulness prompt, type-bar wording).
 - Write QLoRA training config (model: Qwen3-1.7B, library: Unsloth + TRL SFTTrainer,
   compute: HPC cluster per ADR 0019).
 - First training run; push checkpoints to Hub.
-- Evaluate against base-model baseline.
+- Run eval harness on base-model baseline + fine-tuned checkpoint.
 
 ## Key data findings (feed the filter + training)
 - Raw pool: 189,330 rows from ~85-90% of CommitChronicle train split (streaming pass,

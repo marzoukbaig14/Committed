@@ -2,9 +2,9 @@
 id: 0031
 title: Per-axis anchor definitions for all four judge axes
 date: 2026-06-06
-status: accepted
+status: superseded
 supersedes: []
-superseded_by: []
+superseded_by: [0035]
 relates_to: [0028, 0029, 0030]
 tags: [eval, judge]
 ---
