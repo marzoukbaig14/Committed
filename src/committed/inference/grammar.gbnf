@@ -1,0 +1,14 @@
+# Conventional Commits, matching Committed's normalized target format.
+# Shape: type(scope)?: description    -- no breaking-change "!", no body.
+root        ::= type scope? ": " description
+
+# Exact type codebook from the filter. No "doc" alias, no "revert"
+# (the filter already normalized/excluded those).
+type        ::= "feat" | "fix" | "refactor" | "docs" | "test" | "chore" | "perf" | "style" | "build" | "ci"
+
+# Optional scope; parentheses required if present; casing preserved.
+scope       ::= "(" [a-zA-Z0-9_./-]+ ")"
+
+# One line: no leading/trailing whitespace and no trailing period.
+# Periods mid-description (e.g. v2.0) are still fine.
+description ::= [^ \t\n.] ([^\n]* [^ \t\n.])?
