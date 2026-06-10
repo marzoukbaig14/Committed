@@ -70,7 +70,7 @@ for t in sorted(by_type):
 selected.sort()
 os.makedirs("data", exist_ok=True)
 with open("data/strata_ids.txt", "w") as f:
-    f.write("\n".join(map(str, selected)) + "\n")
+    json.dump(selected, f)
 with open("data/strata_manifest.json", "w") as f:
     json.dump(manifest, f, indent=2)
 
