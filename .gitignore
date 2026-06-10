@@ -21,3 +21,4 @@ judge*.jsonl
 judge_check*.jsonl
 judgments*.txt
 models/
+analysis/results/*.jsonl
