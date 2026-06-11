@@ -26,6 +26,10 @@ COMPOSITE (ADR 0032). Implemented HERE, not in the judge:
     1 + completeness({fail:0, pass:1}) + specificity({fail:0, pass:1}). Type is
     NOT in the graded number by default (it gates the conjunctive metric and shows in the vector);
     `--type-gate` additionally zeroes the graded score when type fails, if you want that.
+
+DEPLOYMENT REWEIGHTING (ADR 0037). The strata sample is equal-allocation, so its headline is
+diagnostic only; the reported headline reweights per-type metrics to the true test-split type
+distribution. See compute_deployment().
 """
 
 from __future__ import annotations
@@ -34,7 +38,7 @@ import argparse
 import json
 import os
 import sys
-from collections import defaultdict
+from collections import Counter, defaultdict
 from pathlib import Path
 
 from committed.eval import metrics
@@ -121,7 +125,7 @@ def load_judge_labels(judge_log: Path) -> dict[str, dict]:
 
 
 # --------------------------------------------------------------------------------------------
-# Composite (gate-then-grade, ADR E)
+# Composite (gate-then-grade, ADR 0032)
 # --------------------------------------------------------------------------------------------
 
 def passes_conjunctive(labels: dict) -> bool:
@@ -194,6 +198,42 @@ def aggregate_composite(
     }
 
 
+def compute_deployment(det: dict, composite: dict, type_weights: dict[str, float]) -> dict:
+    """Reweight per-type metrics (measured on the equal-allocation strata sample) to the true
+    deployment type distribution — this is the headline.
+
+    The strata sample takes ~50 rows per type so every type is measured reliably, but that makes
+    the SAMPLE-level headline misleading for deployment: equal allocation squashes `fix` from its
+    real ~49% down to ~11%, so the sample always-`fix` floor reads ~11% and collides with a
+    feat-collapsed model's ~11% sample accuracy ("model ties the floor" — false). Reweighting each
+    per-type number by its real frequency recovers the deployment estimate (~13% prefix vs ~49%
+    floor). Weights are computed in main() from the full reference split; this only recombines.
+    """
+    def reweight(per_type_metric: dict[str, float]) -> float:
+        # Restrict to types we actually measured and renormalize, so the estimate covers exactly
+        # those types (defensive: a type in refs but absent from the sample is skipped, not zeroed).
+        keys = [t for t in per_type_metric if t in type_weights]
+        z = sum(type_weights[t] for t in keys)
+        if z == 0:
+            return float("nan")
+        return sum(type_weights[t] * per_type_metric[t] for t in keys) / z
+
+    prefix_pt = {t: v["accuracy"] for t, v in det["prefix"]["per_type"].items()}
+    conj_pt = {t: v["conjunctive_pass_rate"] for t, v in composite.get("per_type", {}).items()}
+    grad_pt = {t: v["graded_mean"] for t, v in composite.get("per_type", {}).items()}
+
+    return {
+        "note": ("Headline. Per-type metrics measured on the equal-allocation strata sample, "
+                 "reweighted to the full test-split type distribution. The sample-level numbers "
+                 "in 'deterministic'/'composite' are diagnostic, not the deployment story."),
+        "type_weights": dict(sorted(type_weights.items(), key=lambda kv: -kv[1])),
+        "prefix_accuracy": reweight(prefix_pt),
+        "always_fix_floor": type_weights.get("fix", 0.0),  # true fix fraction over the full split
+        "conjunctive_pass_rate": reweight(conj_pt),
+        "graded_mean": reweight(grad_pt),
+    }
+
+
 # --------------------------------------------------------------------------------------------
 # Judge-vs-human validation (the headline trust number)
 # --------------------------------------------------------------------------------------------
@@ -234,15 +274,22 @@ def validate_against_human(
 def write_markdown(report: dict, path: Path) -> None:
     det = report["deterministic"]
     comp = report["composite"]
+    dep = report.get("deployment") or {}
     lines = [
         "# Committed — eval report",
         "",
         f"- Examples judged: **{comp.get('n', 0)}**  |  candidate model: `{report.get('model','?')}`",
         "",
-        "## Deterministic",
+        "## Deployment estimate (headline — reweighted to true test distribution)",
+        f"- Prefix-type accuracy: **{dep.get('prefix_accuracy', float('nan')):.3f}**  "
+        f"(always-`fix` floor: **{dep.get('always_fix_floor', float('nan')):.3f}**)",
+        f"- Conjunctive pass-rate: **{dep.get('conjunctive_pass_rate', float('nan')):.3f}**  |  "
+        f"graded mean (0–3): {dep.get('graded_mean', float('nan')):.3f}",
+        "",
+        "## Deterministic (sample, equal-allocation — diagnostic)",
         f"- BLEU: {det['bleu']:.2f}  (short-text caveat — not a headline)",
         f"- ROUGE-L (F): {det['rouge_l']:.3f}",
-        f"- Prefix-type accuracy: {det['prefix']['accuracy']:.3f}  "
+        f"- Prefix-type accuracy (sample): {det['prefix']['accuracy']:.3f}  "
         f"(always-`fix` floor: {det['prefix']['always_fix_floor']:.3f})",
         "",
         "## LLM judge — composite (gate-then-grade)",
@@ -328,9 +375,17 @@ def main() -> None:
         human = _load_human(Path(args.human_ratings))
         validation = validate_against_human(judge_labels, human)
 
+    # 6b. deployment reweighting (ADR 0037): weights from the FULL reference split (real-world
+    #     type freqs); per-type accuracy from the scored sample. parse_type already populated
+    #     refs[i]["type"], so the full-split distribution is available without re-parsing.
+    deploy_counts = Counter(refs[i]["type"] for i in refs if refs[i]["type"])
+    deploy_total = sum(deploy_counts.values()) or 1
+    type_weights = {t: c / deploy_total for t, c in deploy_counts.items()}
+    deployment = compute_deployment(det, composite, type_weights)
+
     # 7. report.
     report = {"model": args.backend, "deterministic": det, "composite": composite,
-              "validation": validation}
+              "deployment": deployment, "validation": validation}
     report_stem = Path(args.report)
     report_stem.with_suffix(".json").write_text(json.dumps(report, indent=2))
     write_markdown(report, report_stem.with_suffix(".md"))
