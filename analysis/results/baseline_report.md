@@ -20,3 +20,9 @@
 - faithfulness: fail=0.57, pass=0.43
 - completeness: fail=0.48, pass=0.52
 - specificity: fail=0.19, pass=0.81
+
+## Judge-vs-human validation (n=50)
+- type_correctness: raw_agreement=0.8, cohen_kappa=0.519
+- faithfulness: raw_agreement=0.68, cohen_kappa=0.384
+- completeness: raw_agreement=0.7, cohen_kappa=0.439
+- specificity: raw_agreement=0.86, cohen_kappa=0.194
