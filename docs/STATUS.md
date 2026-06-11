@@ -10,7 +10,7 @@ _Plan lives in ROADMAP.md; design in MASTER.md + docs/decisions/._
 - Setup: devcontainer + uv lockfile; CPU deps; 3 secrets injected; 15 smoke tests pass.
 - Data inspection: CommitChronicle loaded/inspected; token distribution measured;
   exploration scripts in analysis/.
-- Decision log: 36 ADRs total.
+- Decision log: 37 ADRs total.
   - 0008 superseded by 0011 (judge: Haiku → Gemini Flash); 0013 superseded by 0014
     (Project sync abandoned, org-blocked; manual STATUS continuity).
   - 0012 = license redistribution; 0015 = Claude Code as decision-log agent;
@@ -34,7 +34,10 @@ _Plan lives in ROADMAP.md; design in MASTER.md + docs/decisions/._
     optional upgrade); 0035 = rubric finalization: all axes binary, faithfulness
     decomposed into atomic per-claim precision (supersedes 0029 + 0031); 0036 =
     type_correctness bar tightened — only misrepresentation fails (wrong category or
-    suppressed semver consequence); a merely-preferred alternative passes.
+    suppressed semver consequence); a merely-preferred alternative passes; 0037 =
+    deployment-reweighted headline metrics — per-type metrics from the equal-allocation
+    strata sample reweighted to the true test-split type distribution (~49% fix); sample
+    numbers retained as diagnostics.
 - Filter logic: CC regex + normalization (ADR 0017), subject-line length ceiling
   (ADR 0020), bot detection by message pattern (ADR 0021), language by file extension
   (ADR 0022), single-file only, drop merge/revert. Spot-checked in

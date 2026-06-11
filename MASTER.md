@@ -250,6 +250,7 @@ Multi-metric, with the human-validated LLM-as-judge as the headline.
    - `completeness` — does the message cover the primary and all material changes? Supporting detail and refactor plumbing are not materially distinct; vagueness is charged to specificity, not completeness.
    - `specificity` — is the description concrete rather than generic?
    **Primary metric:** conjunctive pass-rate (all four axes pass). Per-axis vector always reported. Graded score `1 + completeness{0,1} + specificity{0,1}` (integer 1–3, faithful messages only) for checkpoint ranking. Self-consistency via majority-vote over 3 samples intended for faithfulness. Stability number (Krippendorff's α or re-judge agreement) reported alongside judge-vs-human agreement. Anchors in `docs/eval/judge_rubric.md` (ADR 0035).
+   **Headline reweighting (ADR 0037):** the judge set is an equal-allocation strata sample (~442 rows); the real test split is ~49% `fix`. Sample-level headline numbers are reported as diagnostics only. The primary headline reweights per-type metrics to the true test-split type distribution so the reported numbers reflect deployment behavior.
 5. **50 human-rated examples:** used to validate the judge; report the correlation between judge scores and human ratings.
 
 **The README must report:** all five metrics, sample outputs (good, bad, weird) with commentary, and a failure-mode analysis from the human-rated set.
