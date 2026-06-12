@@ -15,8 +15,9 @@ set -euo pipefail
 cd "$SLURM_SUBMIT_DIR"
 mkdir -p logs
 
-: "${HF_TOKEN:?export HF_TOKEN before sbatch}"
-: "${WANDB_API_KEY:?export WANDB_API_KEY before sbatch}"
+: "${HF_TOKEN:?export HF_TOKEN before sbatch}"   # needed: pushes adapter checkpoints to the Hub
+export WANDB_PROJECT=committed                    # project name (yours to choose)
+export WANDB_MODE=offline                         # log locally to ./wandb/; sync later with a key
 
 # 1) Install the GPU training stack; skip the serving-only llama-cpp-python.
 uv sync --group train --no-install-package llama-cpp-python
