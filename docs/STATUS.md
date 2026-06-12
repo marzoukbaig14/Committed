@@ -3,93 +3,87 @@
 _Living status. Update in the same commit as the work._
 _Plan lives in ROADMAP.md; design in MASTER.md + docs/decisions/._
 
-**Phase:** Eval design decisions locked (ADRs 0027–0035); judge harness implementation pending. Training not yet started.
-**Calendar:** Day 9 (June 7, 2026)
+**Phase:** Eval complete — baseline measured, judge validated against 50 genuine human ratings.
+Infra migrated off Codespaces to local + CI. Training config is the next core task; first QLoRA
+run pending.
+**Calendar:** ~June 12, 2026 (eval + infra work landed in the June 11 session)
 
 ## Done
 - Setup: devcontainer + uv lockfile; CPU deps; 3 secrets injected; 15 smoke tests pass.
-- Data inspection: CommitChronicle loaded/inspected; token distribution measured;
-  exploration scripts in analysis/.
-- Decision log: 37 ADRs total.
-  - 0008 superseded by 0011 (judge: Haiku → Gemini Flash); 0013 superseded by 0014
-    (Project sync abandoned, org-blocked; manual STATUS continuity).
-  - 0012 = license redistribution; 0015 = Claude Code as decision-log agent;
-    0016 = id-echo confirmation protocol.
-  - 0017 = relax CC regex + normalization spec; 0018 = revised size target
-    (superseded by 0023); 0019 = HPC cluster as primary training compute.
-  - 0020 = subject-line ceiling, no floor; 0021 = detect bots by message pattern
-    (author field anonymized); 0022 = language by file extension not per-repo column;
-    0023 = expand scope Python-only → all CommitChronicle languages; 0024 = installable
-    package, src-layout, hatchling build backend. MASTER.md propagated for all.
-  - 0025 = dataset build parameters: per-language cap 6,000, floor 500, stratification
-    by type × language (superseded by 0026); 0026 = stratification key simplified to
-    commit-type only (type × language cells universally thin after per-language cap).
-  - Eval design (0027–0036): 0027 = analytic per-axis rubric architecture; 0028 = four
-    orthogonal axes (type_correctness, faithfulness, completeness, specificity); 0029 =
-    per-axis scales (superseded by 0035); 0030 = judge reasoning protocol (diff-first,
-    reason-then-label, structured output, no persona); 0031 = per-axis anchors (superseded
-    by 0035); 0032 = gate-then-grade composite (faithfulness hard gate, conjunctive
-    pass-rate headline, graded 1–3 for ranking); 0033 = stale record superseded by 0034;
-    0034 = judge harness backend-swappable (Gemini 2.5 Flash default, Claude Sonnet 4.6
-    optional upgrade); 0035 = rubric finalization: all axes binary, faithfulness
-    decomposed into atomic per-claim precision (supersedes 0029 + 0031); 0036 =
-    type_correctness bar tightened — only misrepresentation fails (wrong category or
-    suppressed semver consequence); a merely-preferred alternative passes; 0037 =
-    deployment-reweighted headline metrics — per-type metrics from the equal-allocation
-    strata sample reweighted to the true test-split type distribution (~49% fix); sample
-    numbers retained as diagnostics.
-- Filter logic: CC regex + normalization (ADR 0017), subject-line length ceiling
-  (ADR 0020), bot detection by message pattern (ADR 0021), language by file extension
-  (ADR 0022), single-file only, drop merge/revert. Spot-checked in
-  analysis/spotcheck_filter.py; results in analysis/results/spotcheck.txt.
-- Package: installable src-layout package (ADR 0024); pyproject.toml + uv.lock updated.
-- Filter module: `src/committed/data/filter.py` — CC regex + normalization, token cap
-  2048 (Qwen3-1.7B), language by file extension, single-file, bot/merge/revert detection.
-  49/49 tests pass (test_filter.py + test_build.py).
-- Build pipeline ran: `src/committed/data/build.py --cap 6000`
-  - Raw pool: 189,330 rows → 57,969 after cap 6,000 / floor 500 (16 languages kept).
-  - 6 languages hit cap (JavaScript, TypeScript, Java, Python, Go, Rust at 6,000 each).
-  - Remaining: Shell 4,215 · C++ 3,753 · PHP 2,708 · C 2,407 · C# 2,146 · Swift 2,129
-    · Kotlin 1,812 · Dart 1,370 · Ruby 750 · Elixir 679.
-  - Commit-type mix: fix 48.9% · feat 13.3% · chore 10.3% · test 9.0% · refactor 8.7%
-    · docs 4.3% · ci 2.3% · style 1.5% · build 1.0% · perf 0.7%.
-  - Final splits: train 52,173 / val 2,898 / eval 2,898 (90/5/5, stratified by type).
-- Dataset pushed to Hub: `marzoukbaig14/committed-train` — train + validation + test
-  splits with auto-generated dataset card (composition tables, provenance, limitations).
-- Analysis scripts: `analysis/collect_rows.py` (streamed CommitChronicle → raw pool),
-  `analysis/pool_stats.py` (read-only pool inspector).
+- Data inspection: CommitChronicle loaded/inspected; token distribution measured; exploration
+  scripts in analysis/.
+- Dataset published to Hub: `marzoukbaig14/committed-train` — train 52,173 / val 2,898 / test 2,898,
+  16 languages; auto-generated dataset card (composition, provenance, limitations).
+- Filter + build pipeline: CC regex + normalization (ADR 0017), subject-line ceiling (0020), bot
+  detection by message pattern (0021), language by file extension (0022), single-file only, drop
+  merge/revert, token cap 2048 (Qwen3-1.7B tokens). 49/49 tests pass. Build: raw pool 189,330 →
+  57,969 balanced (cap 6,000 / floor 500, 16 languages) → 90/5/5 splits stratified by commit type.
+- Decision log: ADRs **0001–0037** logged (see DECISION_LOG.md). Eval-design set 0027–0036;
+  0037 = deployment-reweighted headline metrics. **This session also logged records for: GGUF
+  quant pin, GBNF grammar, zero-shot prompt/diff format, the dev-surface shift (Codespaces→local +
+  CI), and the ruff lint-scope change — confirm their assigned ids via `ls docs/decisions/` and
+  update this line.**
+- **Eval harness implemented + run.** `docs/eval/judge_rubric.md` synced to ADR 0035;
+  `judge_prompt.py`, `metrics.py` (BLEU, ROUGE-L, prefix-type accuracy), `judge_gemini.py`
+  (Gemini 2.5 Flash + free-tier throttle + 429 backoff), `run_eval.py` (deterministic + composite
+  gate-then-grade + deployment reweighting + judge-vs-human validation). `human_rate.py`
+  (build/check/ingest for the blind human-rating worksheet).
+- **Baseline measured (zero-shot Qwen3-1.7B).** 442-row equal-allocation strata sample, judged
+  (`analysis/results/baseline_strata442.jsonl` + `baseline_judge_log.jsonl`, ~$0.83). Report
+  committed (`analysis/results/baseline_report.json/.md`).
+  - Headline (deployment-reweighted to true ~49% fix split): prefix-type accuracy **0.131** vs
+    always-`fix` floor **0.489** — ~3.7× worse than trivial. Conjunctive pass-rate 0.181; graded
+    mean 1.207.
+  - **Feat-collapse confirmed:** ~95% of diffs predicted `feat`.
+  - Judge per-axis (sample): type 0.33, faithfulness 0.43, completeness 0.52, specificity 0.81.
+  - Deterministic (diagnostic only): BLEU 2.17, ROUGE-L F 0.156 (short-text caveats).
+- **Judge validated against 50 genuine human ratings** (`analysis/human_ratings_50.jsonl`,
+  hand-rated blind by Zook; an earlier Fable-5-generated set was discarded as invalid — LLM-vs-LLM
+  is not human validation):
+  - type raw 0.72 / κ 0.377 · faithfulness raw 0.68 / κ 0.384 · completeness raw 0.76 / κ 0.543 ·
+    specificity raw 0.84 / κ 0.254.
+  - Read: fair–moderate proxy; strongest on completeness; judge is stricter than the human on the
+    faithfulness gate; specificity κ is prevalence-deflated (report raw agreement); n=50 → wide CIs.
+- **Infra migrated off Codespaces** (NU Enterprise org Codespaces budget block). Now local Windows
+  + VS Code + uv `.venv` (no GPU / no C++ compiler locally; `llama-cpp-python` skipped via
+  `uv sync --no-install-package llama-cpp-python` — it's a serving dep, builds fine on Linux/CI).
+  Devcontainer retained in repo. CI added (`.github/workflows/ci.yml`): `uv sync --locked` + ruff
+  (scoped to package; `analysis/` excluded) + offline unit tests — green. `build.py` lambda→def.
 
 ## In progress
-- Eval harness implementation: `judge_prompt.py` and `docs/eval/judge_rubric.md` not yet
-  synced to final rubric (ADR 0035). Decisions are locked; prompt authoring is owed.
+- Training config (`configs/…yaml`) — about to start. Core work (Zook authors values): LoRA rank +
+  alpha, learning rate, sequence length (from the token distribution), batch size + grad-accum,
+  epochs.
 
 ## Next
-- Write `judge_prompt.py` + sync `docs/eval/judge_rubric.md` to ADR 0035 rubric (core
-  work: anchors, decomposed faithfulness prompt, type-bar wording).
-- Write QLoRA training config (model: Qwen3-1.7B, library: Unsloth + TRL SFTTrainer,
-  compute: HPC cluster per ADR 0019).
-- First training run; push checkpoints to Hub.
-- Run eval harness on base-model baseline + fine-tuned checkpoint.
+- Scaffold `src/committed/train/train.py` (Unsloth + TRL `SFTTrainer`) + a SLURM submit script.
+- On Explorer HPC: `uv sync --group train`, confirm GPU visible + minimal import check, fire the
+  first QLoRA run, push adapter checkpoints to the Hub (`marzoukbaig14/committed-qwen3-1.7b-lora`),
+  W&B run attached.
+- Re-run the eval harness on the fine-tuned candidates → before/after comparison (the thesis).
+- Decide: move serving deps (`llama-cpp-python`, likely gradio/fastapi) into an optional `serve`
+  group so dev/eval/training never compile llama.cpp (proposal only → then ADR + `pyproject` edit).
 
 ## Key data findings (feed the filter + training)
-- Raw pool: 189,330 rows from ~85-90% of CommitChronicle train split (streaming pass,
-  not exhaustive). Balanced dataset: 57,969 rows across 16 languages.
-- Final training set: 52,173 rows. Commit types heavily skewed toward `fix` (48.9%);
-  a trivial always-predict-`fix` baseline scores ~49% prefix-accuracy — read results
-  against that floor.
-- Cap is in Qwen3-1.7B tokens. Python single-file diffs: med 165, p90 601, p95 906,
-  p99 2834. Token cap set at 2048 (over-cap diffs dropped, not truncated).
-  Messages tiny (p99 38 chars).
-- ADR 0012: `repo` + `license` columns kept in every row; CommitChronicle paper cited
-  in dataset card (arXiv 2308.07655); sensitive-data caveat carried forward.
+- Final training set: 52,173 rows. Commit types heavily skewed to `fix` (48.9%); a trivial
+  always-predict-`fix` baseline scores ~49% prefix-accuracy — read all results against that floor.
+- Token cap 2048 (Qwen3-1.7B tokens). Python single-file diffs: med 165, p90 601, p95 906,
+  p99 2834. Over-cap diffs dropped, not truncated. Messages tiny (p99 38 chars). Use this for the
+  training sequence length, but confirm against the all-language committed dataset.
+- Language mix (after cap/floor): 6 hit the 6,000 cap (JavaScript, TypeScript, Java, Python, Go,
+  Rust); then Shell 4,215 · C++ 3,753 · PHP 2,708 · C 2,407 · C# 2,146 · Swift 2,129 · Kotlin 1,812
+  · Dart 1,370 · Ruby 750 · Elixir 679.
+- ADR 0012: `repo` + `license` columns kept per row; CommitChronicle paper cited (arXiv 2308.07655);
+  sensitive-data caveat carried forward.
 
 ## Quirks
-- W&B web UI blocked on school wifi (DNS/filter); training is cloud-to-cloud and fine;
-  view via hotspot (maybe it was ethernet thing).
-- Streaming + interpreter shutdown can throw a cosmetic exit crash; guard exploration
-  scripts with os._exit(0).
-- "PyTorch not found" from transformers is expected in the CPU Codespace (tokenizer-only).
-- Org disables connectors/integrations (no Project GitHub sync) and blocks W&B UI;
-  continuity is by pasting this file, not syncing (ADR 0014).
-- collect_rows.py scan covered ~85-90% of CommitChronicle train split (not a full pass);
-  language mix is near-complete rather than exhaustive.
+- Dev is now **local on Windows** (uv `.venv`); training is on HPC; the laptop is CPU-only.
+  `llama-cpp-python` needs a C++ compiler Windows lacks → skipped locally; builds fine on Linux/CI.
+- Codespaces may return in ~3 days via the GitHub Student Pack (personal-account hours); the block
+  was the NU Enterprise org budget. CI is green and independent of where dev happens.
+- W&B web UI blocked on school wifi (DNS/filter); API calls (training) are fine; view via hotspot.
+- Streaming + interpreter shutdown can throw a cosmetic exit crash; guard exploration scripts with
+  `os._exit(0)`.
+- "PyTorch not found" from transformers is expected in a CPU/tokenizer-only env.
+- Org disables connectors (no Project GitHub sync) and blocks the W&B UI; continuity is by pasting
+  STATUS, not syncing (ADR 0014).
