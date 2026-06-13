@@ -2,9 +2,9 @@
 src/committed/train/train.py
 
 QLoRA fine-tune for Committed — vanilla transformers + peft + trl (no Unsloth,
-for V100/Volta compatibility). Loads Qwen3-1.7B in 4-bit, attaches a LoRA
-adapter, trains with TRL's SFTTrainer with loss masked to the target message,
-logs to W&B, pushes adapter checkpoints to the Hub.
+V100/Volta compatible). Loads Qwen3-1.7B in 4-bit, attaches a LoRA adapter,
+trains with TRL's SFTTrainer in prompt/completion format with loss masked to the
+target message (completion_only_loss), logs to W&B, pushes checkpoints to the Hub.
 
 Run (GPU node only):
     uv run --no-sync python -m committed.train.train --config configs/qwen3-1.7b-lora-r16.yaml
@@ -17,7 +17,7 @@ import yaml
 from datasets import load_dataset
 from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
 from peft import LoraConfig, get_peft_model, prepare_model_for_kbit_training
-from trl import SFTConfig, SFTTrainer, DataCollatorForCompletionOnlyLM
+from trl import SFTConfig, SFTTrainer
 
 # Same prompt builder as baseline/inference — keeps train and inference shapes identical.
 from committed.inference.prompt import build_messages
@@ -45,7 +45,7 @@ def main():
         bnb_4bit_compute_dtype=torch.float16,
     )
     model = AutoModelForCausalLM.from_pretrained(
-        m["name"], quantization_config=bnb, device_map="auto", torch_dtype=torch.float16,
+        m["name"], quantization_config=bnb, device_map={"": 0},
     )
     model = prepare_model_for_kbit_training(model, use_gradient_checkpointing=True)
 
@@ -62,31 +62,27 @@ def main():
     model = get_peft_model(model, peft_config)
     model.print_trainable_parameters()
 
-    # 3) Render system+user(diff) -> assistant(message), thinking off.
-    def to_text(example):
-        messages = build_messages(example["diff"]) + [
-            {"role": "assistant", "content": example["message"]},
-        ]
-        return {"text": tokenizer.apply_chat_template(
-            messages, tokenize=False, enable_thinking=False)}
+    # 3) Prompt/completion format. prompt = the EXACT baseline render (system+user,
+    #    /no_think, thinking off); completion = the target message. TRL tokenizes
+    #    both, masks the prompt, trains only on the completion.
+    def to_pc(example):
+        prompt = tokenizer.apply_chat_template(
+            build_messages(example["diff"]),
+            tokenize=False, add_generation_prompt=True, enable_thinking=False,
+        )
+        return {"prompt": prompt, "completion": example["message"]}
 
     raw_train = load_dataset(data["dataset"], split=data["train_split"])
-    train_ds = raw_train.map(to_text, remove_columns=raw_train.column_names)
+    train_ds = raw_train.map(to_pc, remove_columns=raw_train.column_names)
     raw_eval = load_dataset(data["dataset"], split=data["eval_split"])
-    eval_ds = raw_eval.map(to_text, remove_columns=raw_eval.column_names)
+    eval_ds = raw_eval.map(to_pc, remove_columns=raw_eval.column_names)
 
-    # 4) Loss masked to the assistant turn only — everything up to and including
-    #    this response template is ignored in the loss.
-    collator = DataCollatorForCompletionOnlyLM(
-        response_template="<|im_start|>assistant\n", tokenizer=tokenizer,
-    )
-
-    # 5) Trainer. fp16 (NOT bf16 — V100). effective batch = per_device x grad_accum.
+    # 4) Trainer. completion_only_loss masks the prompt; fp16 (NOT bf16 — V100).
     sft_config = SFTConfig(
         output_dir=io["output_dir"],
-        dataset_text_field="text",
-        max_seq_length=m["max_seq_length"],
-        packing=False,                      # must stay off — the collator needs intact turns
+        max_length=m["max_seq_length"],
+        completion_only_loss=True,
+        packing=False,
         per_device_train_batch_size=sch["per_device_train_batch_size"],
         gradient_accumulation_steps=sch["gradient_accumulation_steps"],
         num_train_epochs=sch["num_train_epochs"],
@@ -100,6 +96,7 @@ def main():
         fp16=True,
         bf16=False,
         gradient_checkpointing=True,
+        gradient_checkpointing_kwargs={"use_reentrant": False},
         logging_steps=io["logging_steps"],
         eval_strategy=io["eval_strategy"],
         eval_steps=io["eval_steps"],
@@ -118,7 +115,6 @@ def main():
         train_dataset=train_ds,
         eval_dataset=eval_ds,
         args=sft_config,
-        data_collator=collator,
     )
 
     trainer.train()
