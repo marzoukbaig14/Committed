@@ -44,8 +44,12 @@ def main():
         bnb_4bit_use_double_quant=True,
         bnb_4bit_compute_dtype=torch.float16,
     )
+    # dtype=float16 is REQUIRED: without it the non-quantized modules (and so the
+    # LoRA grads) load in Qwen3's config-default bfloat16, which the fp16 grad
+    # scaler can't unscale on a V100 -> "_amp_foreach...not implemented for BFloat16".
     model = AutoModelForCausalLM.from_pretrained(
         m["name"], quantization_config=bnb, device_map={"": 0},
+        dtype=torch.float16,
     )
     model = prepare_model_for_kbit_training(model, use_gradient_checkpointing=True)
 
