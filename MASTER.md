@@ -102,7 +102,10 @@ v1 is split into a hard **core**, a strongly recommended **production layer**, a
 - Docker for the inference service
 
 ### Demo
-- Gradio 5.x on Hugging Face Spaces, CPU Basic (free). With this stack a 1.7B model at Q4 should generate a short message in a few seconds on CPU, so paid ZeroGPU is likely unnecessary.
+Two surfaces, both v1 deliverables (ADR 0043). Neither goes live until the fine-tuned model is ready.
+
+- **Gradio on HF Spaces** (standalone): Gradio 5.x on HF Spaces CPU Basic (free). Primary demo artifact; kept private until the fine-tune is ready.
+- **Portfolio page** (`/committed` route in the personal Next.js portfolio on Vercel): the polished surface. Calls the FastAPI inference endpoint (ADR 0004) hosted on a HF Docker Space. Repo split: portfolio repo owns the frontend; this repo owns the backend and the HTTP contract (`POST /generate`, `GET /health`). The Docker Space sleeps after ~48 h idle; the frontend handles cold-start gracefully. CORS required for portfolio origins.
 
 ### Evaluation
 - `evaluate`, `sacrebleu`, `rouge-score`
