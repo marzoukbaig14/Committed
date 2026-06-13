@@ -1,20 +1,24 @@
 """
 src/committed/train/train.py
 
-QLoRA fine-tune for Committed — vanilla transformers + peft + trl (no Unsloth,
-V100/Volta compatible). Loads Qwen3-1.7B in 4-bit, attaches a LoRA adapter,
-trains with TRL's SFTTrainer in prompt/completion format with loss masked to the
-target message (completion_only_loss), logs to W&B, pushes checkpoints to the Hub.
+QLoRA fine-tune for Committed — vanilla transformers + peft + trl (no Unsloth).
+Loads Qwen3-1.7B in 4-bit, attaches a LoRA adapter, trains with TRL's SFTTrainer
+in prompt/completion format with loss masked to the target (completion_only_loss),
+logs to W&B (offline), pushes adapter checkpoints to the Hub.
 
-Mixed precision done the correct way for V100: the model loads in fp32 (master
-weights) and fp16=True runs the *compute* in fp16 via autocast. Grads stay fp32,
-so the GradScaler never sees bf16/fp16 grads (avoids the trl#4901 crash) while
-matmuls still use the V100's fp16 tensor cores. The model must NOT be loaded in
-bf16/fp16, or the scaler breaks.
+Precision: bf16 (Ampere+ GPUs like the A100). bf16 has fp32's dynamic range, so
+NO GradScaler is used — which is exactly why the fp16-scaler bf16 crash
+(huggingface/trl#4901) cannot occur here. Requires an Ampere or newer GPU.
 
-Run (GPU node only):
+Run (A100 node only):
     uv run --no-sync python -m committed.train.train --config configs/qwen3-1.7b-lora-r16.yaml
 """
+
+import os
+# Lock W&B to offline + the 'committed' project BEFORE transformers imports the
+# wandb integration, so a run can never land online in the LineGuard team again.
+os.environ["WANDB_PROJECT"] = "committed"
+os.environ.setdefault("WANDB_MODE", "offline")
 
 import argparse
 
@@ -42,18 +46,17 @@ def main():
         cfg["model"], cfg["lora"], cfg["data"], cfg["optim"], cfg["schedule"], cfg["io"]
     )
 
-    # 1) Tokenizer + 4-bit base. compute_dtype=fp16 so the base matmuls use the
-    #    V100's fp16 tensor cores; the model itself loads in fp32 (master weights).
+    # 1) Tokenizer + 4-bit base, bf16 compute (A100 native).
     tokenizer = AutoTokenizer.from_pretrained(m["name"])
     bnb = BitsAndBytesConfig(
         load_in_4bit=True,
         bnb_4bit_quant_type="nf4",
         bnb_4bit_use_double_quant=True,
-        bnb_4bit_compute_dtype=torch.float16,
+        bnb_4bit_compute_dtype=torch.bfloat16,
     )
     model = AutoModelForCausalLM.from_pretrained(
         m["name"], quantization_config=bnb, device_map={"": 0},
-        dtype=torch.float32,
+        dtype=torch.bfloat16,
     )
     model = prepare_model_for_kbit_training(model, use_gradient_checkpointing=True)
 
@@ -70,13 +73,6 @@ def main():
     model = get_peft_model(model, peft_config)
     model.print_trainable_parameters()
 
-    # Guarantee the trainable (and any other) params are fp32, never bf16 — fp32
-    # master weights are what make the fp16 GradScaler work. 4-bit weights are
-    # uint8-backed and untouched.
-    for _, p in model.named_parameters():
-        if p.dtype == torch.bfloat16:
-            p.data = p.data.to(torch.float32)
-
     # 3) Prompt/completion format. prompt = the EXACT baseline render (system+user,
     #    /no_think, thinking off); completion = the target message. TRL tokenizes
     #    both, masks the prompt, trains only on the completion.
@@ -92,9 +88,8 @@ def main():
     raw_eval = load_dataset(data["dataset"], split=data["eval_split"])
     eval_ds = raw_eval.map(to_pc, remove_columns=raw_eval.column_names)
 
-    # 4) Trainer. fp16=True = autocast fp16 compute on fp32 master weights (the
-    #    correct V100 mixed-precision setup). group_by_length batches similar-
-    #    length sequences to cut padding waste (huge here: p50~459, cap 2432).
+    # 4) Trainer. bf16=True -> bf16 autocast, NO GradScaler (bf16 needs no loss
+    #    scaling), so the bf16-unscale crash is impossible by construction.
     sft_config = SFTConfig(
         output_dir=io["output_dir"],
         max_length=m["max_seq_length"],
@@ -110,8 +105,8 @@ def main():
         weight_decay=opt["weight_decay"],
         max_grad_norm=opt["max_grad_norm"],
         seed=sch["seed"],
-        fp16=True,
-        bf16=False,
+        fp16=False,
+        bf16=True,
         gradient_checkpointing=True,
         gradient_checkpointing_kwargs={"use_reentrant": False},
         logging_steps=io["logging_steps"],
