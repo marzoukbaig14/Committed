@@ -37,9 +37,9 @@ This is the seam between you and the frontend agent. Agree it with the human bef
 1. **Read and confirm.** Read the contract above and the base-model-now / swap-later approach back to the human. Confirm the model path will be an environment variable or config value, never hardcoded.
 
 2. **Inference core — `src/committed/inference/`.**
-   - `prompt.py` is **the human's to author or confirm**. It must mirror the frozen zero-shot prompt from the eval harness. Do not author the prompt wording yourself. If `prompt.py` does not exist yet, stub the interface and ask him to fill it, or wire in the existing frozen prompt with his confirmation.
-   - `grammar.gbnf` — you draft it, to match the **normalized** Conventional Commits subject the model was trained on: lowercase type, optional `(scope)`, `: `, description. The normalization spec strips the breaking-change `!`, so mirror that. The precise grammar is pinned by an owed "GBNF grammar" decision record the human finalizes; draft to the normalization spec and flag it for that ADR.
-   - `generate.py` — you draft the scaffold: load the GGUF via `llama-cpp-python`, build the prompt via `prompt.py`, decode with the GBNF grammar, return the single normalized line.
+   - `prompt.py` **already exists and is the human's (ADR 0040); reuse it verbatim, do not author or reword it.** It is extracted, not rewritten: the `apply_chat_template(..., enable_thinking=False)` render is consolidated here as `build_prompt(diff, tokenizer) -> str`, pulled out of the existing baseline code, not written fresh.
+   - `grammar.gbnf` **already exists and is finalized (ADR 0039); reuse it as-is.** It encodes the normalized Conventional Commits subject (ten-type codebook, optional `(scope)`, no `!`, single line, no trailing period). It is no longer an owed ADR.
+   - `generate.py` — **do not rewrite it.** It is the baseline batch driver and holds the proven construction. Extract the load+prompt+grammar+decode core into `inference/engine.py`, leave `generate.py` as the batch driver importing it, and import `engine.py` from serving. `prompt.py` and `grammar.gbnf` are extracted from the existing code, not authored fresh. The only owed quant pin now is for the *fine-tuned* served GGUF (Q4_K_M/Q8/fp16), finalized when the adapter exists.
 
 3. **FastAPI app — `src/committed/serving/api.py`.** Wrap `generate.py`. Expose `POST /generate` and `GET /health` per the contract. Add CORS for the portfolio origins. Load the model once at startup, not per request.
 

@@ -44,6 +44,23 @@ def _format_diff(diff: str) -> str:
     return f"Diff:\n{diff}"
 
 
+def build_prompt(diff: str, tokenizer) -> str:
+    """Render the full inference prompt string for one diff.
+
+    Extracted verbatim from the baseline render so eval, serving, and the demo
+    share one construction and cannot drift. Thinking is suppressed at the
+    template level (enable_thinking=False); build_messages also carries the
+    /no_think backstop on the user turn. Pass the Qwen3 tokenizer; the result
+    feeds straight into llm.create_completion under the GBNF grammar.
+    """
+    return tokenizer.apply_chat_template(
+        build_messages(diff),
+        tokenize=False,
+        add_generation_prompt=True,
+        enable_thinking=False,
+    )
+
+
 if __name__ == "__main__":
     import json
 
