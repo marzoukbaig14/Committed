@@ -44,12 +44,8 @@ def main():
         bnb_4bit_use_double_quant=True,
         bnb_4bit_compute_dtype=torch.float16,
     )
-    # dtype=float16 is REQUIRED: without it the non-quantized modules (and so the
-    # LoRA grads) load in Qwen3's config-default bfloat16, which the fp16 grad
-    # scaler can't unscale on a V100 -> "_amp_foreach...not implemented for BFloat16".
     model = AutoModelForCausalLM.from_pretrained(
         m["name"], quantization_config=bnb, device_map={"": 0},
-        dtype=torch.float16,
     )
     model = prepare_model_for_kbit_training(model, use_gradient_checkpointing=True)
 
@@ -65,6 +61,18 @@ def main():
     )
     model = get_peft_model(model, peft_config)
     model.print_trainable_parameters()
+    for _, p in model.named_parameters():
+        if p.requires_grad:
+            p.data = p.data.to(torch.float32)
+
+    # Force the trainable LoRA params to fp32. Qwen3's config default is bf16, so
+    # the adapters are created bf16 — and on a V100 the fp16 GradScaler cannot
+    # unscale bf16 grads ("_amp_foreach...not implemented for BFloat16"). fp32
+    # adapter weights with a 4-bit base is the standard, stable QLoRA setup; the
+    # scaler unscales fp32 grads without complaint.
+    for _, p in model.named_parameters():
+        if p.requires_grad:
+            p.data = p.data.to(torch.float32)
 
     # 3) Prompt/completion format. prompt = the EXACT baseline render (system+user,
     #    /no_think, thinking off); completion = the target message. TRL tokenizes
