@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Install uv on the clean runner. (If @v5 errors, bump to the
+      # action's current major — version bumps here are harmless.)
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      # THE reproducibility proof: install exactly what the lockfile pins,
+      # on a machine with none of your local state. --locked makes the job
+      # FAIL if uv.lock is stale or can't be satisfied exactly — it refuses
+      # to "make it work" by quietly drifting off the pinned versions.
+      - name: Install from lockfile
+        run: uv sync --locked
+
+      - name: Lint
+        run: uv run ruff check .
+
+      # Offline unit tests only. smoke_test.py is left out on purpose — it
+      # authenticates to HF/W&B/Gemini, which needs live tokens this runner
+      # doesn't have. The filter/build tests are deterministic and need no
+      # network, so they're the right reproducibility signal.
+      - name: Tests
+        run: uv run pytest tests/test_filter.py tests/test_build.py -v

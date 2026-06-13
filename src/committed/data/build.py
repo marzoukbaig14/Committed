@@ -118,7 +118,8 @@ def make_split(
     language a proportional eval slice without finer stratification — which also
     avoids the thin type×language cell problem entirely.
     """
-    key_fn = lambda r: _commit_type(r["message"])
+    def key_fn(r):
+        return _commit_type(r["message"])
     print("stratification key: type")
     return _split_by_key(rows, key_fn, val_frac, eval_frac, seed)
 

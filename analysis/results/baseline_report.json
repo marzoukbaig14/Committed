@@ -148,5 +148,25 @@
     "conjunctive_pass_rate": 0.18070393374741198,
     "graded_mean": 1.2071911663216008
   },
-  "validation": null
+  "validation": {
+    "n": 50,
+    "axes": {
+      "type_correctness": {
+        "raw_agreement": 0.72,
+        "cohen_kappa": 0.37722419928825623
+      },
+      "faithfulness": {
+        "raw_agreement": 0.68,
+        "cohen_kappa": 0.3836671802773498
+      },
+      "completeness": {
+        "raw_agreement": 0.76,
+        "cohen_kappa": 0.54337899543379
+      },
+      "specificity": {
+        "raw_agreement": 0.84,
+        "cohen_kappa": 0.25373134328358216
+      }
+    }
+  }
 }

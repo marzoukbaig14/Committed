@@ -1,0 +1,12 @@
+sampled 8000 rows from marzoukbaig14/committed-train:train
+
+full (prompt+target)    p50=  459  p90=  895  p95= 1201  p99= 1877  max= 2339
+prompt only             p50=  448  p90=  882  p95= 1190  p99= 1863  max= 2321
+target only             p50=   12  p90=   17  p95=   19  p99=   26  max=   55
+
+coverage at candidate max_seq_length:
+    512: keeps  61.9% of examples
+    768: keeps  85.5% of examples
+   1024: keeps  92.6% of examples
+   1536: keeps  97.7% of examples
+   2048: keeps  99.4% of examples

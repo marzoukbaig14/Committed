@@ -44,6 +44,8 @@ graph TD
   n0038["0038: Pin baseline GGUF artifact to Qwen3-1.7B Q4_K_M"]:::accepted
   n0039["0039: Conventional Commits GBNF grammar for constrained decoding"]:::accepted
   n0040["0040: Zero-shot canonical prompt and near-raw diff format across all phases"]:::accepted
+  n0041["0041: Migrate dev surface to local-native; relocate the reproducibility guarantee to CI"]:::accepted
+  n0042["0042: Scope ruff to the package and tests; add the CI lint + test gate"]:::accepted
   n0003 --- n0002
   n0004 --- n0002
   n0005 --- n0004
@@ -108,6 +110,10 @@ graph TD
   n0039 --- n0017
   n0040 --- n0003
   n0040 --- n0039
+  n0041 --- n0007
+  n0041 --- n0010
+  n0042 --- n0024
+  n0042 --- n0041
   classDef proposed fill:#fff7e6,stroke:#d4a017;
   classDef accepted fill:#e6f4ea,stroke:#137333;
   classDef superseded fill:#f1f3f4,stroke:#9aa0a6,color:#5f6368;
