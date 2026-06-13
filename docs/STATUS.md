@@ -10,7 +10,7 @@ _Plan lives in ROADMAP.md; design in MASTER.md + docs/decisions/._
 - Setup: devcontainer + uv lockfile; CPU deps; 3 secrets injected; 15 smoke tests pass.
 - Data inspection: CommitChronicle loaded/inspected; token distribution measured;
   exploration scripts in analysis/.
-- Decision log: 37 ADRs total.
+- Decision log: 40 ADRs total.
   - 0008 superseded by 0011 (judge: Haiku → Gemini Flash); 0013 superseded by 0014
     (Project sync abandoned, org-blocked; manual STATUS continuity).
   - 0012 = license redistribution; 0015 = Claude Code as decision-log agent;
@@ -38,6 +38,12 @@ _Plan lives in ROADMAP.md; design in MASTER.md + docs/decisions/._
     deployment-reweighted headline metrics — per-type metrics from the equal-allocation
     strata sample reweighted to the true test-split type distribution (~49% fix); sample
     numbers retained as diagnostics.
+  - Baseline/inference (0038–0040): 0038 = pin baseline GGUF to ggml-org/Qwen3-1.7B-GGUF
+    Q4_K_M (matches serving quant so before/after isolates fine-tuning; models/ gitignored
+    cache); 0039 = concrete CC GBNF grammar (ten-type codebook, optional scope, no !,
+    single-line no-trailing-period; enforces format not semantics); 0040 = single canonical
+    zero-shot prompt across baseline/training/inference, near-raw Diff:\n{diff} format,
+    enable_thinking=False to stop Qwen3 thinking leak.
 - Filter logic: CC regex + normalization (ADR 0017), subject-line length ceiling
   (ADR 0020), bot detection by message pattern (ADR 0021), language by file extension
   (ADR 0022), single-file only, drop merge/revert. Spot-checked in
@@ -58,6 +64,11 @@ _Plan lives in ROADMAP.md; design in MASTER.md + docs/decisions/._
   splits with auto-generated dataset card (composition tables, provenance, limitations).
 - Analysis scripts: `analysis/collect_rows.py` (streamed CommitChronicle → raw pool),
   `analysis/pool_stats.py` (read-only pool inspector).
+- Inference + eval-harness code (on main): `src/committed/inference/prompt.py` (canonical
+  zero-shot prompt, ADR 0040), `grammar.gbnf` (CC GBNF, ADR 0039), `generate.py` (GGUF
+  baseline generation, Q4_K_M pin per ADR 0038, enable_thinking=False render),
+  `src/committed/eval/run_eval.py` (orchestrator: deterministic metrics + judge + composite
+  + deployment reweighting per ADR 0037).
 
 ## In progress
 - Eval harness implementation: `judge_prompt.py` and `docs/eval/judge_rubric.md` not yet

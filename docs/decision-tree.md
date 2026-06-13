@@ -41,6 +41,9 @@ graph TD
   n0035["0035: Finalize judge rubric — all axes binary, faithfulness decomposed into atomic per-claim checks"]:::accepted
   n0036["0036: Tighten type-correctness bar — only misrepresentation fails"]:::accepted
   n0037["0037: Deployment-reweighted headline metrics"]:::accepted
+  n0038["0038: Pin baseline GGUF artifact to Qwen3-1.7B Q4_K_M"]:::accepted
+  n0039["0039: Conventional Commits GBNF grammar for constrained decoding"]:::accepted
+  n0040["0040: Zero-shot canonical prompt and near-raw diff format across all phases"]:::accepted
   n0003 --- n0002
   n0004 --- n0002
   n0005 --- n0004
@@ -98,6 +101,13 @@ graph TD
   n0037 --- n0025
   n0037 --- n0026
   n0037 --- n0032
+  n0038 --- n0003
+  n0038 --- n0005
+  n0038 --- n0009
+  n0039 --- n0009
+  n0039 --- n0017
+  n0040 --- n0003
+  n0040 --- n0039
   classDef proposed fill:#fff7e6,stroke:#d4a017;
   classDef accepted fill:#e6f4ea,stroke:#137333;
   classDef superseded fill:#f1f3f4,stroke:#9aa0a6,color:#5f6368;

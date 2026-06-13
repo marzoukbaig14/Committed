@@ -210,6 +210,7 @@ Hugging Face Hub is the source of truth for all artifacts. Training environments
 ## Training Plan
 
 - **Method:** QLoRA (4-bit base plus a LoRA adapter) via Unsloth and TRL's SFTTrainer
+- **Prompt:** a single canonical zero-shot prompt (`src/committed/inference/prompt.py`, ADR 0040) wraps every training example and is reused verbatim at baseline and fine-tuned inference, so the before/after delta is attributable to fine-tuning and the train/inference diff format cannot drift. Diff serialized near-raw as `Diff:\n{diff}`; Qwen3 thinking suppressed via `enable_thinking=False`
 - **Hardware:** institutional HPC cluster primary (many GPUs, ~1 TB storage); Colab T4 / Kaggle as the free-tier-reproducible fallback. The v1 core fine-tune stays runnable on a free T4 (ADR 0019)
 - **Checkpoints:** push to the Hub every N steps; never rely on Colab disk alone
 - **Tracking:** every run logged to W&B with hyperparameters, eval metrics, and sample generations
@@ -228,9 +229,9 @@ Hugging Face Hub is the source of truth for all artifacts. Training environments
 
 This layer is the production-engineering signal and is part of v1.
 
-- **Merge and convert:** merge the LoRA adapter into the base, convert to GGUF, quantize. Q4_K_M is the primary serving artifact; also produce Q8 and keep an fp16 reference for the comparison.
+- **Merge and convert:** merge the LoRA adapter into the base, convert to GGUF, quantize. Q4_K_M is the primary serving artifact; also produce Q8 and keep an fp16 reference for the comparison. The baseline is pinned to the same quant — `ggml-org/Qwen3-1.7B-GGUF`, `Qwen3-1.7B-Q4_K_M.gguf` (ADR 0038), pulled into a gitignored `models/` cache — so the before/after delta isolates fine-tuning, not quantization.
 - **Inference:** `llama-cpp-python` runs the GGUF model on CPU. This is what makes free CPU-Basic serving viable; bitsandbytes 4-bit will not run on CPU.
-- **Constrained decoding:** a GBNF grammar encodes the Conventional Commits format, so every generation is valid by construction. This is cheap once we are on llama.cpp and is a strong reliability signal for a small model.
+- **Constrained decoding:** a GBNF grammar (`src/committed/inference/grammar.gbnf`, ADR 0039) encodes the Conventional Commits format — the ten-type filter codebook, optional `(scope)`, no `!`, single-line no-trailing-period description — so every generation is valid by construction. It enforces format, not semantics; semantic errors are caught by the judge. Cheap on llama.cpp and a strong reliability signal for a small model.
 - **API:** a FastAPI endpoint exposes generation, separate from the UI, so the serving path is a real service and not just a notebook.
 - **Container:** a Dockerfile packages the inference service for reproducible deployment.
 - **Benchmarks:** measure latency and throughput, and report a quality-versus-latency table across Q4 / Q8 / fp16 in the README.
