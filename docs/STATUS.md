@@ -18,11 +18,13 @@ run pending.
   detection by message pattern (0021), language by file extension (0022), single-file only, drop
   merge/revert, token cap 2048 (Qwen3-1.7B tokens). 49/49 tests pass. Build: raw pool 189,330 →
   57,969 balanced (cap 6,000 / floor 500, 16 languages) → 90/5/5 splits stratified by commit type.
-- Decision log: ADRs **0001–0037** logged (see DECISION_LOG.md). Eval-design set 0027–0036;
-  0037 = deployment-reweighted headline metrics. **This session also logged records for: GGUF
-  quant pin, GBNF grammar, zero-shot prompt/diff format, the dev-surface shift (Codespaces→local +
-  CI), and the ruff lint-scope change — confirm their assigned ids via `ls docs/decisions/` and
-  update this line.**
+- Decision log: ADRs **0001–0042** logged (see DECISION_LOG.md). Eval-design set 0027–0036;
+  0037 = deployment-reweighted headline metrics; 0038 = baseline GGUF pin (ggml-org/Qwen3-1.7B-GGUF
+  Q4_K_M, matches serving quant so before/after isolates fine-tuning); 0039 = concrete CC GBNF
+  grammar (ten-type codebook, optional scope, no !, single-line; format not semantics); 0040 =
+  single canonical zero-shot prompt across baseline/training/inference (near-raw `Diff:\n{diff}`,
+  `enable_thinking=False`); 0041 = dev surface Codespaces→local-native, reproducibility relocated
+  to CI (amends 0007); 0042 = ruff scoped to package+tests, CI lint/test gate.
 - **Eval harness implemented + run.** `docs/eval/judge_rubric.md` synced to ADR 0035;
   `judge_prompt.py`, `metrics.py` (BLEU, ROUGE-L, prefix-type accuracy), `judge_gemini.py`
   (Gemini 2.5 Flash + free-tier throttle + 429 backoff), `run_eval.py` (deterministic + composite
