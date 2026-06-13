@@ -32,7 +32,7 @@ train = [
     "bitsandbytes>=0.49.2",
     "peft>=0.19.1",
     "trl>=1.5.1",
-    "unsloth>=2024.8",
+    "torch>=2.4",
 ]
 
 [build-system]
@@ -44,3 +44,14 @@ packages = ["src/committed"]
 
 [tool.ruff]
 extend-exclude = ["analysis", "notebooks"]
+
+# Pin torch to the CUDA 12.1 wheel index. The Explorer V100 has a CUDA 12.3
+# driver; the default PyPI torch wheel targets a newer CUDA and falls back to
+# CPU / fails. cu121 is backward-compatible with a 12.3 driver.
+[[tool.uv.index]]
+name = "pytorch-cu121"
+url = "https://download.pytorch.org/whl/cu121"
+explicit = true
+
+[tool.uv.sources]
+torch = { index = "pytorch-cu121" }
