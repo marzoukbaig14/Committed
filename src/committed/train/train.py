@@ -6,9 +6,11 @@ V100/Volta compatible). Loads Qwen3-1.7B in 4-bit, attaches a LoRA adapter,
 trains with TRL's SFTTrainer in prompt/completion format with loss masked to the
 target message (completion_only_loss), logs to W&B, pushes checkpoints to the Hub.
 
-Trains in fp32 (no mixed precision): the V100 has no bf16, and this
-transformers/trl version's fp16 mixed-precision path emits bf16 grads the fp16
-scaler cannot unscale (huggingface/trl#4901). fp32 removes the scaler entirely.
+Mixed precision done the correct way for V100: the model loads in fp32 (master
+weights) and fp16=True runs the *compute* in fp16 via autocast. Grads stay fp32,
+so the GradScaler never sees bf16/fp16 grads (avoids the trl#4901 crash) while
+matmuls still use the V100's fp16 tensor cores. The model must NOT be loaded in
+bf16/fp16, or the scaler breaks.
 
 Run (GPU node only):
     uv run --no-sync python -m committed.train.train --config configs/qwen3-1.7b-lora-r16.yaml
@@ -40,18 +42,18 @@ def main():
         cfg["model"], cfg["lora"], cfg["data"], cfg["optim"], cfg["schedule"], cfg["io"]
     )
 
-    # 1) Tokenizer + 4-bit base. fp32 compute everywhere (V100 has no bf16; we
-    #    train without mixed precision, so no fp16 grad scaler is created).
+    # 1) Tokenizer + 4-bit base. compute_dtype=fp16 so the base matmuls use the
+    #    V100's fp16 tensor cores; the model itself loads in fp32 (master weights).
     tokenizer = AutoTokenizer.from_pretrained(m["name"])
     bnb = BitsAndBytesConfig(
         load_in_4bit=True,
         bnb_4bit_quant_type="nf4",
         bnb_4bit_use_double_quant=True,
-        bnb_4bit_compute_dtype=torch.float32,
+        bnb_4bit_compute_dtype=torch.float16,
     )
     model = AutoModelForCausalLM.from_pretrained(
         m["name"], quantization_config=bnb, device_map={"": 0},
-        torch_dtype=torch.float32,
+        dtype=torch.float32,
     )
     model = prepare_model_for_kbit_training(model, use_gradient_checkpointing=True)
 
@@ -68,9 +70,9 @@ def main():
     model = get_peft_model(model, peft_config)
     model.print_trainable_parameters()
 
-    # Guarantee zero bf16 anywhere — Qwen3's config default is bf16, the V100
-    # can't run bf16, and any leftover bf16 grad would crash the run. 4-bit
-    # weights are uint8-backed and untouched by this.
+    # Guarantee the trainable (and any other) params are fp32, never bf16 — fp32
+    # master weights are what make the fp16 GradScaler work. 4-bit weights are
+    # uint8-backed and untouched.
     for _, p in model.named_parameters():
         if p.dtype == torch.bfloat16:
             p.data = p.data.to(torch.float32)
@@ -90,14 +92,15 @@ def main():
     raw_eval = load_dataset(data["dataset"], split=data["eval_split"])
     eval_ds = raw_eval.map(to_pc, remove_columns=raw_eval.column_names)
 
-    # 4) Trainer. completion_only_loss masks the prompt. NO mixed precision
-    #    (fp16=False, bf16=False) -> no GradScaler -> the bf16-unscale crash
-    #    cannot occur. Slower than fp16 but bulletproof on Volta.
+    # 4) Trainer. fp16=True = autocast fp16 compute on fp32 master weights (the
+    #    correct V100 mixed-precision setup). group_by_length batches similar-
+    #    length sequences to cut padding waste (huge here: p50~459, cap 2432).
     sft_config = SFTConfig(
         output_dir=io["output_dir"],
         max_length=m["max_seq_length"],
         completion_only_loss=True,
         packing=False,
+        group_by_length=True,
         per_device_train_batch_size=sch["per_device_train_batch_size"],
         gradient_accumulation_steps=sch["gradient_accumulation_steps"],
         num_train_epochs=sch["num_train_epochs"],
@@ -108,7 +111,7 @@ def main():
         weight_decay=opt["weight_decay"],
         max_grad_norm=opt["max_grad_norm"],
         seed=sch["seed"],
-        fp16=False,
+        fp16=True,
         bf16=False,
         gradient_checkpointing=True,
         gradient_checkpointing_kwargs={"use_reentrant": False},
