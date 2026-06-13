@@ -100,7 +100,6 @@ def main():
         max_length=m["max_seq_length"],
         completion_only_loss=True,
         packing=False,
-        group_by_length=True,
         per_device_train_batch_size=sch["per_device_train_batch_size"],
         gradient_accumulation_steps=sch["gradient_accumulation_steps"],
         num_train_epochs=sch["num_train_epochs"],
