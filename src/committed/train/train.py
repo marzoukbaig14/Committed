@@ -11,9 +11,8 @@ NO GradScaler is used — which is why the fp16-scaler bf16 crash (trl#4901) can
 occur here. Requires an Ampere or newer GPU.
 
 Resume: trainer.train(resume_from_checkpoint=True) continues from the latest
-checkpoint in output_dir. transformers 5.9 otherwise blocks loading the (pickled)
-optimizer state on torch<2.6 (CVE-2025-32434); since the checkpoint is one WE
-wrote on our own cluster (not an untrusted download), we neuter that gate below.
+checkpoint in output_dir. See the monkeypatch block below for the two transformers
+5.9 / torch 2.5.1 load gates we neutralize to load our own checkpoint.
 
 Run (A100 node only):
     uv run --no-sync python -m committed.train.train --config configs/qwen3-1.7b-lora-r16.yaml
@@ -37,15 +36,18 @@ from trl import SFTConfig, SFTTrainer
 # Same prompt builder as baseline/inference — keeps train and inference shapes identical.
 from committed.inference.prompt import build_messages
 
-# --- Resume fix: neuter transformers' torch<2.6 load gate (CVE-2025-32434) ---
-# optimizer.pt / scheduler.pt are checkpoints WE wrote on our own cluster, not
-# untrusted downloads, so the gate doesn't apply. transformers 5.9 otherwise
-# refuses torch.load on torch<2.6, which blocks resume_from_checkpoint. torch.load
-# itself works fine on 2.5.1; this gate is a security policy, not a functional one.
+# --- Resume fixes for transformers 5.9 + torch 2.5.1 loading OUR OWN checkpoint ---
+# (a) optimizer.pt/scheduler.pt: transformers gates torch.load behind torch>=2.6
+#     (CVE-2025-32434). These are files WE wrote on our own cluster, not untrusted
+#     downloads, so we neuter the gate. torch.load works fine on 2.5.1.
+# (b) rng_state.pth: loaded with weights_only=True, which rejects the numpy objects
+#     inside it. RNG state only affects reproducibility of shuffle/dropout from here
+#     on — not model correctness — so we skip restoring it.
 import transformers.utils.import_utils as _iu
 import transformers.trainer as _hf_trainer
 _iu.check_torch_load_is_safe = lambda *a, **k: None
 _hf_trainer.check_torch_load_is_safe = lambda *a, **k: None
+_hf_trainer.Trainer._load_rng_state = lambda self, *a, **k: None
 
 
 def load_config(path: str) -> dict:
