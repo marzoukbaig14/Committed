@@ -129,7 +129,7 @@ def main():
         args=sft_config,
     )
 
-    trainer.train()
+    trainer.train(resume_from_checkpoint=True)
     trainer.save_model(io["output_dir"])
     if io["push_to_hub"]:
         trainer.push_to_hub()
