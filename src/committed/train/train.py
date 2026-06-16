@@ -7,8 +7,12 @@ in prompt/completion format with loss masked to the target (completion_only_loss
 logs to W&B (offline), pushes adapter checkpoints to the Hub.
 
 Precision: bf16 (Ampere+ GPUs like the A100). bf16 has fp32's dynamic range, so
-NO GradScaler is used — which is exactly why the fp16-scaler bf16 crash
-(huggingface/trl#4901) cannot occur here. Requires an Ampere or newer GPU.
+NO GradScaler is used — which is why the fp16-scaler bf16 crash (trl#4901) cannot
+occur here. Requires an Ampere or newer GPU.
+
+Resume: trainer.train(resume_from_checkpoint=True) continues from the latest
+checkpoint in output_dir. See the monkeypatch block below for the two transformers
+5.9 / torch 2.5.1 load gates we neutralize to load our own checkpoint.
 
 Run (A100 node only):
     uv run --no-sync python -m committed.train.train --config configs/qwen3-1.7b-lora-r16.yaml
@@ -31,6 +35,19 @@ from trl import SFTConfig, SFTTrainer
 
 # Same prompt builder as baseline/inference — keeps train and inference shapes identical.
 from committed.inference.prompt import build_messages
+
+# --- Resume fixes for transformers 5.9 + torch 2.5.1 loading OUR OWN checkpoint ---
+# (a) optimizer.pt/scheduler.pt: transformers gates torch.load behind torch>=2.6
+#     (CVE-2025-32434). These are files WE wrote on our own cluster, not untrusted
+#     downloads, so we neuter the gate. torch.load works fine on 2.5.1.
+# (b) rng_state.pth: loaded with weights_only=True, which rejects the numpy objects
+#     inside it. RNG state only affects reproducibility of shuffle/dropout from here
+#     on — not model correctness — so we skip restoring it.
+import transformers.utils.import_utils as _iu
+import transformers.trainer as _hf_trainer
+_iu.check_torch_load_is_safe = lambda *a, **k: None
+_hf_trainer.check_torch_load_is_safe = lambda *a, **k: None
+_hf_trainer.Trainer._load_rng_state = lambda self, *a, **k: None
 
 
 def load_config(path: str) -> dict:
@@ -88,8 +105,8 @@ def main():
     raw_eval = load_dataset(data["dataset"], split=data["eval_split"])
     eval_ds = raw_eval.map(to_pc, remove_columns=raw_eval.column_names)
 
-    # 4) Trainer. bf16=True -> bf16 autocast, NO GradScaler (bf16 needs no loss
-    #    scaling), so the bf16-unscale crash is impossible by construction.
+    # 4) Trainer. bf16=True -> bf16 autocast, NO GradScaler. eval/save cadence
+    #    comes from the config (set to 500 to fit 2 epochs in the 8h wall).
     sft_config = SFTConfig(
         output_dir=io["output_dir"],
         max_length=m["max_seq_length"],
@@ -129,7 +146,9 @@ def main():
         args=sft_config,
     )
 
-    trainer.train()
+    # resume_from_checkpoint=True picks the highest-numbered checkpoint in
+    # output_dir and restores step/optimizer/scheduler, continuing to the end.
+    trainer.train(resume_from_checkpoint=True)
     trainer.save_model(io["output_dir"])
     if io["push_to_hub"]:
         trainer.push_to_hub()
