@@ -3,12 +3,21 @@
 _Living status. Update in the same commit as the work._
 _Plan lives in ROADMAP.md; design in MASTER.md + docs/decisions/._
 
-**Phase:** Eval complete — baseline measured, judge validated against 50 genuine human ratings.
-Infra migrated off Codespaces to local + CI. Training config is the next core task; first QLoRA
-run pending.
-**Calendar:** ~June 12, 2026 (eval + infra work landed in the June 11 session)
+**Phase:** Fine-tune eval complete — before/after landed; 2-epoch QLoRA beats zero-shot baseline on
+every axis except specificity; phase closing, Serving next.
+**Calendar:** ~June 15, 2026 (fine-tune eval + GGUF serving-artifact pipeline landed this session)
 
 ## Done
+- **Fine-tune eval closed (this session).** 2-epoch QLoRA fine-tune of Qwen3-1.7B complete;
+  adapter on Hub (`marzoukbaig14/committed-qwen3-1.7b-lora`). Merge → GGUF → Q4_K_M serving-artifact
+  pipeline built (`scripts/merge_adapter.py`; same quant as baseline per ADR 0038). 442-row strata
+  candidates judged through the same frozen harness (sample, judge, rubric, grammar, prompt all
+  identical to baseline — only weights differ). Before/after (deployment-reweighted): type accuracy
+  0.131 → 0.637 (above always-`fix` floor 0.489); conjunctive pass-rate 0.181 → 0.471; graded mean
+  1.207 → 2.188; faithfulness 0.43 → 0.86; specificity regressed 0.81 → 0.71. Raw evidence jsonl
+  (baseline + finetune candidates + judge logs) committed to repo; findings in
+  `docs/eval/FINDINGS_v1_i1.md`. Key finding: failure mode moved feat-default → fix-lean,
+  correctable via training-set type rebalance (see findings §6).
 - Setup: devcontainer + uv lockfile; CPU deps; 3 secrets injected; 15 smoke tests pass.
 - Data inspection: CommitChronicle loaded/inspected; token distribution measured; exploration
   scripts in analysis/.
@@ -18,7 +27,8 @@ run pending.
   detection by message pattern (0021), language by file extension (0022), single-file only, drop
   merge/revert, token cap 2048 (Qwen3-1.7B tokens). 49/49 tests pass. Build: raw pool 189,330 →
   57,969 balanced (cap 6,000 / floor 500, 16 languages) → 90/5/5 splits stratified by commit type.
-- Decision log: ADRs **0001–0043** logged (see DECISION_LOG.md). Eval-design set 0027–0036;
+- Decision log: ADRs **0001–0043** logged (see DECISION_LOG.md); **0044–0046 owed** (adapter→GGUF
+  pipeline, fine-tune eval protocol, raw-evidence tracking). Eval-design set 0027–0036;
   0037 = deployment-reweighted headline metrics; 0038 = baseline GGUF pin (ggml-org/Qwen3-1.7B-GGUF
   Q4_K_M, matches serving quant so before/after isolates fine-tuning); 0039 = concrete CC GBNF
   grammar (ten-type codebook, optional scope, no !, single-line; format not semantics); 0040 =
@@ -55,18 +65,15 @@ run pending.
   (scoped to package; `analysis/` excluded) + offline unit tests — green. `build.py` lambda→def.
 
 ## In progress
-- Training config (`configs/…yaml`) — about to start. Core work (Zook authors values): LoRA rank +
-  alpha, learning rate, sequence length (from the token distribution), batch size + grad-accum,
-  epochs.
+- ADRs 0044–0046 being logged this session (adapter→GGUF pipeline, fine-tune eval protocol,
+  raw-evidence tracking). Decision log + tree to be regenerated after.
 
-## Next
-- Scaffold `src/committed/train/train.py` (Unsloth + TRL `SFTTrainer`) + a SLURM submit script.
-- On Explorer HPC: `uv sync --group train`, confirm GPU visible + minimal import check, fire the
-  first QLoRA run, push adapter checkpoints to the Hub (`marzoukbaig14/committed-qwen3-1.7b-lora`),
-  W&B run attached.
-- Re-run the eval harness on the fine-tuned candidates → before/after comparison (the thesis).
-- Decide: move serving deps (`llama-cpp-python`, likely gradio/fastapi) into an optional `serve`
-  group so dev/eval/training never compile llama.cpp (proposal only → then ADR + `pyproject` edit).
+## Next (Serving phase)
+- Stand up the FastAPI inference server (`src/committed/serve/`) with the Q4_K_M GGUF artifact
+  served via llama-cpp-python; `POST /generate`, `GET /health` endpoints.
+- Containerize and deploy to a Hugging Face Docker Space; CORS for the portfolio frontend.
+- Wire the `/committed` route in the Next.js portfolio to the FastAPI endpoint (ADR 0043).
+- Gradio Space (standalone demo) — make public once serving is validated end-to-end.
 
 ## Key data findings (feed the filter + training)
 - Final training set: 52,173 rows. Commit types heavily skewed to `fix` (48.9%); a trivial
