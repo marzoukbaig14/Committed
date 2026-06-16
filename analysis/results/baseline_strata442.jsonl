@@ -1,0 +1,442 @@
+{"id": 3, "message": "feat(additional-parameter): add `exception` parameter to `error` function, which prints the stack trace when provided. \ud83d\udcc4"}
+{"id": 4, "message": "test: adds or fixes tests; build: build system or dependencies; ci: CI configuration; chore: maintenance touching neither source nor tests"}
+{"id": 9, "message": "feat(additional-test-requirements): add `require_compute_capability` to test files to enforce compute capability requirements. \ud83d\ude80"}
+{"id": 11, "message": "feat(test): Add support for iterating over media flow IDs in `updateExpectedMediaItems` function. \ud83d\udce6"}
+{"id": 18, "message": "feat(chore): bump version to ${VERSION}${COMMITS} and generate pull request message"}
+{"id": 23, "message": "feat(ScrollVerticalDragGestureRecognizer): Add new gesture recognizer for vertical drag interactions. Replace deprecated constructor parameters with new ones, and update documentation to reflect the new class name. \ud83d\udce6"}
+{"id": 35, "message": "feat(add-dependency-factory): Add a factory method to create a Maven dependency object, replacing the previous hardcoded approach with a more flexible and readable implementation. \ud83d\udce6"}
+{"id": 42, "message": "feat(audit): Add audit driver configurations and improve documentation structure"}
+{"id": 62, "message": "feat(additional-logic): add default_scope to Course::LearningRateRecord to prioritize newest learning rates"}
+{"id": 63, "message": "feat: add `mask` parameter to `Resegmentation` class"}
+{"id": 68, "message": "feat(add-compressed-size-to-agg-data): Add `compressed_size` field to `agg_data` to store compressed size data from each run. This improves the ability to track and analyze compression performance across different runs. The field is populated by appending each run's compressed size to the corresponding entry in `agg_data`"}
+{"id": 69, "message": "feat(auth): Update OAUTH2_IDP_HOST_URL endpoint to use `logout-user` instead of `logout` and add error handling"}
+{"id": 97, "message": "feat(add-project-name): Add project name definition and update path logic"}
+{"id": 101, "message": "feat(test): Add `createSwapInstruction` method to handle swap logic with proper parameter mapping and error handling"}
+{"id": 102, "message": "feat(refactor): Refactor `config::dereference_file` to use a more robust fallback mechanism, improving clarity and reliability in handling reference resolution. \ud83d\udce6"}
+{"id": 113, "message": "feat(crate/discord): Add field name and value truncation check in embed creation"}
+{"id": 115, "message": "feat(add-long-term-cache): Add long-term cache support for request caching middleware"}
+{"id": 123, "message": "feat(features/webcontents): Add support for page transition from address bar in LoadURL()"}
+{"id": 131, "message": "feat(version): Update version number from \"1.0.5\" to \"1.0.6\" in `def project do` of `Transformers.MixProject`"}
+{"id": 153, "message": "feat(add): add const fn new() to ThreadLocalStorage impl"}
+{"id": 157, "message": "feat(add-interface): Add `IResourceAndParams` interface with `resource` and `pathParams` properties"}
+{"id": 159, "message": "feat(additional-enum): add `Property` enum value to `AutomationIdType` enum. \ud83d\udce6"}
+{"id": 166, "message": "feat(additional-logic): Add logic to launch the login flow when the app is first opened. \ud83d\udce6"}
+{"id": 167, "message": "feat(additional-methods): Add `changeToPlayIcon()` and `changeToPauseIcon()` methods to `PlayButton` to handle icon changes based on playback state. \ud83c\udfae"}
+{"id": 176, "message": "feat(test): Adds documentation comment explaining the purpose of the `addPointer` method in the context of pointer events"}
+{"id": 179, "message": "feat(additional-fields): Add `IsActive` property with JSON serialization support, along with `IsActiveFeedback` property for feedback purposes. \ud83d\udce6"}
+{"id": 204, "message": "feat(additional-check): add `Name.pascal_case?` check to `all_correct?` function"}
+{"id": 210, "message": "feat(protected-method): Add check for grant type in handlesGrant()"}
+{"id": 216, "message": "feat(additional-classes): Add support for handling virtual children in the Node class. Add methods to append and remove virtual children, with proper validation for null collections. \ud83d\udce6"}
+{"id": 221, "message": "feat(add-display-mode): Add support for displaying comments in \"Shaded\" mode. Update SpeckleCommentView to set the display mode based on the specified name. \ud83c\udfa8"}
+{"id": 226, "message": "feat(additional-derive-fields): add `#[derive(Clone, Debug, PartialEq, Eq)]` to `Receipt` and `#[derive(Clone, Debug, PartialEq, Eq)]` to `VmAction` for better trait compatibility"}
+{"id": 234, "message": "feat(translation): Add translation for Giphy image URL handling"}
+{"id": 244, "message": "feat(overlay): Update `PosterPlugin` to use `core` instead of `container` for `isChromeless` and improve event handling logic. \ud83c\udfac"}
+{"id": 250, "message": "feat(rangei): Adds an exclusive range function with proper handling of negative steps and edge cases. \ud83d\udce6"}
+{"id": 256, "message": "feat(additional-intrinsics): Add `_mm_cvtsi128_si64x` intrinsic with documentation"}
+{"id": 257, "message": "feat(adds): RenderTextBox#hitTest adds check for size containment, removes hittest of parent node"}
+{"id": 258, "message": "feat(additional-config-values): Add `restore_list` configuration value to handle database restoration logic. \ud83d\udce6"}
+{"id": 272, "message": "feat(test): Add optional timeout parameter to function deployment command"}
+{"id": 275, "message": "feat(test): add filter for proxy files and shell scripts"}
+{"id": 277, "message": "feat(add-percent-sized-extension): Adds a percentage-sized extension to `double`, allowing conversion to a percentage via `hp` and `wp`. \ud83d\udcc8"}
+{"id": 286, "message": "feat(additional-function): Add `DeleteService` field to launcher configuration. \ud83d\udce6"}
+{"id": 294, "message": "feat(add-class): Add `ListMentionsOptions` class with builder pattern"}
+{"id": 301, "message": "feat(add_http_query_manager_handling): Add handling for HTTP query manager in result_download_handler. Add logic to check query state and return appropriate error based on state. \ud83d\ude80"}
+{"id": 313, "message": "feat(style): Adds `decorateStyleLoaders` function to handle style loader configuration based on `extractTextPlugin` setting. \ud83d\udce6"}
+{"id": 325, "message": "feat(test): add validation for static session names in configuration"}
+{"id": 332, "message": "feat(chooser): Add preview widget with fixed size and filename handling"}
+{"id": 350, "message": "feat(add-endpoint-config): Add support for new endpoints in SAGEMAKER and SSO configurations. \ud83d\udce6"}
+{"id": 353, "message": "feat(additional-scale-setting): Add support for setting the default scale in the transform header using a float value. \ud83d\udce6"}
+{"id": 362, "message": "feat(additional-function): Add `FromEnvironment` method to `Options` that reads configuration from environment variables"}
+{"id": 380, "message": "feat(member_get): Add command 'member_get' to fetch a member by his ID"}
+{"id": 388, "message": "feat(voidsmpmessagecontrollerlistenerprocessseektomsg): add a check to ensure player is initialized before calling ChangePlayerStatus. \ud83d\udce6"}
+{"id": 393, "message": "feat(build-frontend): Update build file with completion time logging"}
+{"id": 396, "message": "feat(import): Add `asList` import from source directory"}
+{"id": 397, "message": "feat(add-page-down-cycle-bool): add page_down_cycle() to return bool instead of int"}
+{"id": 399, "message": "feat(Realtime.MixProject): Add `compilers` to `mix.exs` to support Phoenix and Gettext. \ud83d\udce6"}
+{"id": 414, "message": "feat(additional-debug-output): Add debug output for `npm whoami` and `git config --list`"}
+{"id": 425, "message": "feat(additional-views): Add documentation to views for Unary and StreamingHub logging, with updated descriptions"}
+{"id": 430, "message": "feat(resume-particle-paint): Update `CircleParticle`'s `paint` property to use `randomMaterialColor()` instead of hardcoding a color. \ud83c\udfa8"}
+{"id": 437, "message": "feat(additional-parameter-docs): Add documentation for parameter `activity` in `executeActivity` method"}
+{"id": 440, "message": "feat(io): add support for wiping the metadata and first 4MB of data partition via `wipe_super()`"}
+{"id": 449, "message": "feat(adds-parameter): Adds a `CancellationToken` parameter to `Execute` and `DownloadStream` methods, allowing for cancellation support. \ud83d\udce6"}
+{"id": 464, "message": "feat(test): Add support for aggregating values in grouped row reader implementation"}
+{"id": 468, "message": "feat(import): Add import for `FillEmptyMeasuresWithWholeRests` from `OSMDOptions`"}
+{"id": 481, "message": "feat(additional-permission-checks): Add support for new permission checks in the ante handle function, specifically for *nexus.RegisterAssetFeeRequest and *nexus.ActivateChainRequest, *nexus.DeactivateChainRequest, and *axelarnet.RegisterFeeCollectorRequest. This ensures proper role validation for these new permission types. \ud83d\ude80"}
+{"id": 488, "message": "feat(test): Add public logging methods to support local and server logging"}
+{"id": 506, "message": "feat(test): Add diagnostic message for unsupported .NET environment variables"}
+{"id": 508, "message": "feat(io): add `Ash.Resource.Aggregate.t()` type to `aggregate_type/2` function"}
+{"id": 528, "message": "feat(additional-implementation): Add support for encoding strings in inline content without a wrapping `<span>`, improving clarity and reducing extraneous elements. \ud83d\udcc4"}
+{"id": 541, "message": "feat(additional-functions): Add new spinner implementation and update documentation for installer functionality"}
+{"id": 549, "message": "feat(additional-construct): add constructor with reflection class parameter"}
+{"id": 554, "message": "feat(additional-option): add allowProvisioningUpdates to xcodebuild command"}
+{"id": 557, "message": "feat(tests): Add test for immediate payment style in submit button title"}
+{"id": 560, "message": "feat(test): Enable RSpec instance variable disabling in test files"}
+{"id": 564, "message": "feat(additional-config): Adds configuration setup for Apple Pay component, using a new `ApplePayComponent.Configuration` structure. \ud83d\udce6"}
+{"id": 567, "message": "feat(aws-sam-cli): Update root_url to v0.33.1 and update SHA256 values for macOS"}
+{"id": 568, "message": "feat(additional-licenses): Add LICENSE file with MIT license"}
+{"id": 580, "message": "feat(definition): Add debug check for territory type definition already set"}
+{"id": 584, "message": "feat(adds): add Abigen with additional traits"}
+{"id": 586, "message": "feat(test): Update testRegex to match new test file pattern"}
+{"id": 590, "message": "feat(adds): `update` `ShareEventFragment` `getTitle()` to return `R.string.share`"}
+{"id": 593, "message": "feat(test): add `subscriptions_size_in_bytes` method to handle project-specific subscription size calculations"}
+{"id": 595, "message": "feat(admin_navigation): Update admin navigation content icons to use FontAwesome icons"}
+{"id": 596, "message": "feat(test): add set visibility(Visibility? value){} to CSSVisibilityMixin"}
+{"id": 605, "message": "feat(additional-configs): add `kDisableDefaultPlugins` config to control plugin disabling"}
+{"id": 606, "message": "feat(styles): Update height based on OS platform"}
+{"id": 610, "message": "feat(test): add kscan_gpio_enable_interrupts_##n() and related functions with proper timer handling"}
+{"id": 615, "message": "feat(features): Update dependencies to reflect new version numbers and fix version mismatches. \ud83d\udce6"}
+{"id": 629, "message": "feat(backend): Add test command with simplified format, update environment variables with logging configuration"}
+{"id": 630, "message": "feat(versions): Update cloudNet to \"4.0.0-RC2\" and update cloudNetCodeName to \"Blizzard\""}
+{"id": 640, "message": "feat(media-component): Added `@twilio-paste/style-props` dependency and added type definitions for `MediaFigure` and `MediaBody`. \ud83d\udce6"}
+{"id": 644, "message": "feat(additional-header): add include for Google Protobuf util header"}
+{"id": 645, "message": "feat(xenon/functions): Fix missing DockerContext in function metadata check"}
+{"id": 647, "message": "feat(Alerts): Add moment dependency for proper time formatting in mock alerts. \ud83d\udcc5"}
+{"id": 652, "message": "feat(stdio): Add termination message for case 0 in menu loop"}
+{"id": 655, "message": "feat(test): add `ba = build(:billing_account)` to test `Billing.get_billing_account_stripe_plan/1`"}
+{"id": 658, "message": "feat(additional-docs): Add documentation explaining how the inner scrolling content box inherits constraints but has indefinite max constraints to allow children overflow. \ud83d\udcda"}
+{"id": 661, "message": "feat(additional-module): add \"Flow\" module to documentation list"}
+{"id": 662, "message": "feat: add det_curve support for multi-class classification"}
+{"id": 666, "message": "feat(features/kotlin): Update Kotlin version and dependencies to support new features and ensure compatibility with recent Kotlin versions. \ud83d\udce6"}
+{"id": 681, "message": "feat(additional-args): Add --build-arg ARCH=\"amd64\" to docker build command in build() function. \ud83d\udce6"}
+{"id": 692, "message": "feat(add_segment): Add a new `Segment` constructor that takes `onset_t` and `window[t].middle` as parameters, replacing the previous use of `window[t - 1].middle`. This improves clarity and correctness in the segment creation logic. \ud83d\udcc8"}
+{"id": 697, "message": "feat(add-aborted-query-error): add-aborted-query-error-message"}
+{"id": 727, "message": "feat(backend): Add function `calculate_apple_price` to compute the price of an order of apples, handling quantities over 40. \ud83c\udf4e\ud83d\udcb0"}
+{"id": 768, "message": "feat(styles): Add theme link via filament::getThemeLink() and replace old logic with new loop-based approach. Remove old theme link and remove render hook in dark mode"}
+{"id": 852, "message": "feat(additional-function): Add `normalizeRegistry` function to handle registry path normalization. \ud83d\udce6"}
+{"id": 853, "message": "feat(add-check): add check for argument size in getTextChannelsByArgsNMessage"}
+{"id": 854, "message": "feat(samples): Replace joins with proper association for public samples"}
+{"id": 922, "message": "feat(additional-animation-logic): Add animation logic for seeking in the `SeekBubble` class, with proper layoutSubviews calls using the parent view. \ud83d\udce6"}
+{"id": 930, "message": "feat(test): add distinct clause to my_students and my_managers methods to ensure unique results"}
+{"id": 960, "message": "feat(migration-task-owner-id): Add migration task owner id functionality"}
+{"id": 980, "message": "feat(test): add null handling to `add` and `delete` methods in `BaseLibrary`"}
+{"id": 988, "message": "feat(additional-logic): Add null check in `getValueSafelyFromFormData` method to return `null` when the result is null, otherwise convert to string. \ud83d\udce6"}
+{"id": 1058, "message": "feat(xunit): add support for generating example strings using ToString() instead of InnerXml"}
+{"id": 1068, "message": "feat(website_theme): Add logic to generate and save Bootstrap theme based on document content. \ud83c\udfa8"}
+{"id": 1074, "message": "feat(spanner_add_and_drop_database_role): Add and drop database role with proper indentation and documentation. \ud83d\udce6"}
+{"id": 1080, "message": "feat(add-acl-token): add acl token to resolveOptions"}
+{"id": 1099, "message": "feat(xdaff-magento-authorize-net-service): Fix error handling in authorize net service \u2014 update error message to use the correct message structure. \ud83d\udee0\ufe0f"}
+{"id": 1103, "message": "feat(additional-check): Add conditional check for GPU availability based on query parameter `Gpu` being \"true\" or \"false\" instead of empty string. \u2705"}
+{"id": 1104, "message": "feat(adds): `controller#enqueueUpdateSubnet` adds a field `internalIP` and updates the route replacement logic to include the internal IP as the source address"}
+{"id": 1109, "message": "feat(additional-field): add `hasStream` field to `ReactionWidgetState` to track whether a stream is subscribed. \ud83d\udce6"}
+{"id": 1160, "message": "feat(consensus/connection_timeout): Add CONNECTION_TIMEOUT_MS define to trigger a disconnect"}
+{"id": 1253, "message": "feat(networkdiscoverybase): Add debug logging and cleanup routines for shutdown process"}
+{"id": 1274, "message": "feat(add): add support for loading default device via factory method"}
+{"id": 1280, "message": "feat(additional-refactor): add support for new GitHub ref patterns in build_and_push_image()"}
+{"id": 1310, "message": "feat(val-objectMapper): Add `voteReq` as `true` in `Container` class"}
+{"id": 1340, "message": "feat(additional-parameter): add {:filter, Keyword.t(), state} to check_context/1"}
+{"id": 1341, "message": "feat(io): Add support for sending raw transaction via Web3 interface, using result string buffer instead of separate string pointer"}
+{"id": 1439, "message": "feat(test-info): Update `TestInfo` constructor to use `a_line` instead of `line` for better clarity and consistency. \ud83d\udcc4"}
+{"id": 1470, "message": "feat(test): Add clipped text calculation based on CSS box model spec"}
+{"id": 1481, "message": "feat(additional-logic): Add finalize command publishing and logging for projection versioning process"}
+{"id": 1486, "message": "feat(test): add check for saturation status in parallel band dependency check"}
+{"id": 1499, "message": "feat(additional-check): Add conditional check for rules in set custom rules functionality. \u2705"}
+{"id": 1507, "message": "feat(additional-licenses): Add new license entries for `libapib`, `variant`, `sundown`, `PEGTL`, and `cmdline` in the license file, using the new format with separate sections and proper indentation"}
+{"id": 1554, "message": "feat(/renderer): Add logging support in Renderer class with LogFactory and handle server start/catch block"}
+{"id": 1608, "message": "feat(pinia): Update plugin to use `vueApp` instead of `app` to comply with Nuxt 3 requirements"}
+{"id": 1612, "message": "feat(commit): Add support for UTF-8 encoding validation in `code()` function. \u2705"}
+{"id": 1644, "message": "feat(zoo_client): Add timeout logging based on zinfo structure"}
+{"id": 1665, "message": "feat(additional-logic): add .retry(maxCount: 10) to KFImage() to handle multiple attempts when loading an image. \ud83c\udfa8"}
+{"id": 1667, "message": "feat(adds): format/2 adds support for locale-based formatting via `Translator.current_locale()`"}
+{"id": 1711, "message": "feat(additional-update): add `.onChange` to update geo proxy height based on image height"}
+{"id": 1713, "message": "feat(adds): `CardArticleMedia` component with improved rendering logic"}
+{"id": 1729, "message": "feat(test): add missing environment variable for VAADIN_FORM_PKG_LEGACY_VERSION"}
+{"id": 1771, "message": "feat(test): Add validation disabling for answer in `recreate_current_answer` method"}
+{"id": 1808, "message": "feat(activation): Add Google Tag Manager script with async attribute"}
+{"id": 1839, "message": "feat(add_invalid_errors): add_invalid_errors/3"}
+{"id": 1875, "message": "feat(test): add `start_event` method with simplified signature for profiler support"}
+{"id": 1924, "message": "feat(commit-type): Fixing executable name based on build type in buildResource function"}
+{"id": 1947, "message": "feat(additional-check): add check for empty values in `frappe.db.get_value()` to prevent `DoesNotExistError`"}
+{"id": 2026, "message": "feat(test): Add check for content box width equality in child layout"}
+{"id": 2092, "message": "feat(additional-imports): Add imports for event details fragment in MainActivity"}
+{"id": 2101, "message": "feat(xxx): Add single-threaded mode force in GradientDescentOptimizer2 implementation"}
+{"id": 2102, "message": "feat(utils): Add `WeakMap` to `schemaStack` to support cycle detection in `getIndexes()`"}
+{"id": 2103, "message": "feat(add): Add support for rendering directory contents in PostOrderIterator"}
+{"id": 2104, "message": "feat(adds): `encode` adds `ZeroCopyBuf` support via `into_bytes()`"}
+{"id": 2105, "message": "feat(test): add note in ReadBytes to clarify return behavior"}
+{"id": 2106, "message": "feat(add-dyn-file-stats): Add support for dynamic file statistics in the performance analysis module. The commit adds conditional checks to enable statistics collection for dynamic file methods, ensuring that the `perf_event_IOC_DISABLE` and `perf_event_IOC_RESET` calls are only performed when the corresponding file descriptors are valid. This improves the accuracy and reliability of performance tracking in the `arch_perfAnalyze` function"}
+{"id": 2107, "message": "feat(additional-logic): add support for equiv check in diffArray"}
+{"id": 2108, "message": "feat(react): add support for rendering component in container"}
+{"id": 2109, "message": "feat(test): Add `perf_url` argument to `make_charts()` to support performance chart rendering via Git clone"}
+{"id": 2110, "message": "feat(additional-regex-patterns): add new regex patterns for query validation in DatabaseQuery class"}
+{"id": 2111, "message": "feat(additional-cache-structures): Add new cache structures for semantic, syntactic, and suggestion diagnostics, replacing old ones. \ud83d\udce6"}
+{"id": 2112, "message": "feat(_clear_media_details): Fix typo in method name to match new implementation"}
+{"id": 2113, "message": "feat(add_language_support): Add support for language detection in the request handler, using `get_lang_code` and `guess_language` functions. \ud83c\udf0d"}
+{"id": 2114, "message": "feat(test): Add finalizer to perfEventRing to ensure proper cleanup"}
+{"id": 2115, "message": "feat(io): Fixing the compression of large values by using `writer.WriteByte()` instead of `writer.Write()` for all cases. \ud83d\udcc8"}
+{"id": 2116, "message": "feat(x): Add loop-based event processing with task handling"}
+{"id": 2117, "message": "feat(test): add optimization for array validation in `_getPathsToValidate` function"}
+{"id": 2118, "message": "feat(additional-code): Add support for checking Intel CPU in `isIntelCpu()` function"}
+{"id": 2119, "message": "feat(additional-feature): Add `fareIdForRouteId` field to `FareSystemWrapper` to support non-standard convention in class javadoc"}
+{"id": 2120, "message": "feat(resume): Add memoized initial index calculation for focus handling"}
+{"id": 2121, "message": "feat(google-cloud-storage): Fix logic in `get_file` to handle blob decomposition correctly"}
+{"id": 2131, "message": "feat(additional-logic): Add support for handling unknown term operators in the `Terms` class. The code adds a `default` case to the switch statement in the `terms` method, throwing an `IllegalStateException` with a descriptive message when an unknown operator is encountered. The change is focused on the `Terms` class and the `terms` method"}
+{"id": 2136, "message": "feat(entries): Add slug handling in entry initialization process. \ud83d\udce6"}
+{"id": 2142, "message": "feat(additional-logic): Add conditional rendering for icon based on presence of `iconElement`"}
+{"id": 2151, "message": "feat(additional-log-tracing): Add log trace output for dynamic metadata generation in request processing. \ud83d\udcc8"}
+{"id": 2152, "message": "feat(additional-logic): Add logic to determine which analysis status to show based on the `analysisStatus` value. The commit adds conditional checks to set the `show_discontinued`, `show_outdated`, `show_legacy`, and `show_analysis` flags appropriately. The `prepareDependencies` method now uses these flags to construct the `data` map correctly"}
+{"id": 2154, "message": "feat(additional-code): Add logic to handle run_requires in distribution metadata, including environment and extra requirements, and integrate with package creation process"}
+{"id": 2156, "message": "feat(additional-methods): Add empty implementations for `enterInFullscreen()` and `exitFullscreen()` to support the new functionality. Remove redundant trigger calls that were previously used in the old implementation. \ud83d\udce6"}
+{"id": 2164, "message": "feat(additional-method): add `resetAvailableMediaOptions()` method to clear media options. \ud83d\udce6"}
+{"id": 2169, "message": "feat(add-lib-parser): Add support for libgraphqlparser in CFFI mode by setting the correct directory for the shared library. \ud83d\udce6"}
+{"id": 2170, "message": "feat: add new files to ios directory for Bugsnag integration"}
+{"id": 2177, "message": "feat(add): add `GroupOptions` struct with `dimension` and `has_id` fields"}
+{"id": 2183, "message": "feat(test): add &:destroy to TeamsUser.where() to ensure proper destruction logic"}
+{"id": 2188, "message": "feat(add-allowed-attrs): Add `allowedAttrs` field to `ESLToggleablePlaceholder` to allow copying of attributes from origin. \ud83d\udce6"}
+{"id": 2191, "message": "feat(add_menu_item_setup): Adds setup logic for menu items with controller_action and content_page attributes"}
+{"id": 2194, "message": "feat(additional-function): Add `Close()` method to `Engine` to clean up temporary data. \ud83d\udcc1"}
+{"id": 2200, "message": "feat: add `do_split_pages` function to handle page splitting logic"}
+{"id": 2216, "message": "feat(additional-test-case): Add test for handling update events with complex object structures in Box module"}
+{"id": 2220, "message": "feat(overlay): Add null check in `ShowOverlay` and `HideOverlay` to handle null `overlayBox` gracefully. \ud83d\udce6"}
+{"id": 2224, "message": "feat(PosterPlugin): Update `PosterPlugin` to use optional chaining and add optional properties for better flexibility and safety. \ud83d\udce6"}
+{"id": 2225, "message": "feat(plugins): Add `zenddatacache` adapter to Flextype configuration. \ud83d\udce6"}
+{"id": 2230, "message": "feat(ConfigureIntlProvider): Add timeZone property to ConfigureIntlProvider based on user's timezone"}
+{"id": 2232, "message": "feat: add `django.contrib.staticfiles.finders` import in `setup.py`"}
+{"id": 2236, "message": "feat(plugins): Add `arrays` function wrapper for plugin settings directory handling"}
+{"id": 2239, "message": "feat(additional-life-cycle-configuration): Add support for `LifeCycle.InstancePerTestCase` and `LifeCycle.SingleInstance` in test attribute configuration. This change introduces new test attributes that control the lifecycle of test fixtures, allowing for more flexible testing scenarios. The implementation focuses on updating the test attribute logic to handle these new lifecycle options, ensuring proper application to test fixtures and correct behavior in various test cases. The change is scoped to the `TestFixture` class and its related test attributes. \ud83d\udce6"}
+{"id": 2241, "message": "feat(features): Update `VehicleTooltip` to use `vehicle.nextStop.name` instead of `vehicle.nextStop` for the next stop display. \ud83d\ude97"}
+{"id": 2246, "message": "feat(adds-a-capability): Fix index in `Function` implementation to use `columns[0]` instead of `columns[1]` when there is only one column. \ud83d\udce6"}
+{"id": 2247, "message": "feat(additional-method): Add `playerLayer` property to `AVFoundationPlayback` to support layer rendering. \ud83c\udfac"}
+{"id": 2248, "message": "feat(adds): add - { std::unique_lock<std::unique_lock<std::mutex> uMutex(mReorderMutex); mReorderFrameMap.clear(); }"}
+{"id": 2267, "message": "feat(add-data-using-form): add `uploaded_files` to `user_changeset` assignment and remove `lock_fields` from `user_changeset` assignment. \ud83d\udce6"}
+{"id": 2269, "message": "feat: add function `BoatPlatonePraseRpcResponseResult` and update call site"}
+{"id": 2270, "message": "feat(add_pdu_outlier): Add method to add PDU as an outlier, with proper error handling and instrumentation. \ud83d\udce6"}
+{"id": 2271, "message": "feat(add): add `createPanel()` method to `MachineLearningCompletionConfigurable` to return a `DialogPanel`. \ud83d\udce6"}
+{"id": 2272, "message": "feat(test): Add test for `isDvrInUse` logic in `ExoPlayerPlayback` class"}
+{"id": 2279, "message": "feat: add support for grouping in join operations through projection"}
+{"id": 2283, "message": "feat(addCardPosition): add back all unwanted cards to the end of the list"}
+{"id": 2285, "message": "feat(xxx): fix: adjust condition to correctly handle halfbyte values"}
+{"id": 2293, "message": "feat(add): Add check for induction case in rule tables logic"}
+{"id": 2309, "message": "feat(additional-implementation): Add implementation for `make_compressed_database` with inline function in `acl_impl` namespace. \ud83d\udce6"}
+{"id": 2315, "message": "feat(validator): Add support for `HasGenesisBasics` validation in validator module"}
+{"id": 2321, "message": "feat(additional-scripts): Add script to check git status and handle build process securely"}
+{"id": 2326, "message": "feat(xxx): add check for demuxer handle before reload"}
+{"id": 2341, "message": "feat(additional-test): Add test for `Team#import_team_members` when user not found"}
+{"id": 2342, "message": "feat(add-css-computed-mixin): Add support for computing CSS dimensions using `CSSLength.toDisplayPortValue` and handle edge cases for `minWidth`, `maxWidth`, `minHeight`, and `maxHeight`. \ud83d\udcca"}
+{"id": 2343, "message": "feat(additional-code): Add dummy services and implementation for fallback providers"}
+{"id": 2353, "message": "feat(add-api): Add `useApi` hook with `useEffect` dependency tracking for improved performance"}
+{"id": 2354, "message": "feat(adds-tcp-server-support): Adds TCP server support with rate limiting and cache initialization. \ud83d\ude80"}
+{"id": 2359, "message": "feat(add-auth-options): add AUTH support via USER and PASSWORD environment variables"}
+{"id": 2367, "message": "style: changed variable type from `IMobileEntity` to `Creature` in test setup"}
+{"id": 2370, "message": "feat(additional-function): Add `write_vectored` and `peek` with `u64` return type, replacing `as _` with `as u64` and using `sum()` instead of `fold()`. \ud83d\udce6"}
+{"id": 2371, "message": "feat(test): Add ordered enumeration by air date and name in Shoko.Server.Extensions"}
+{"id": 2376, "message": "feat(test_warnings): Add support for showing and removing a global warning in the test suite. \ud83d\udce6"}
+{"id": 2385, "message": "docs: add documentation for test cases"}
+{"id": 2388, "message": "feat(crate): add return value capture for health check"}
+{"id": 2394, "message": "feat(tests): Add tests for `OptionsUnboxer` logic in `OptionsUnboxerTests` class. \ud83e\uddea"}
+{"id": 2398, "message": "feat(io-node): Add `NodeManagerGeneralOptions` and `NodeManagerTransportOptions` with default values"}
+{"id": 2399, "message": "feat(add-http-methods): Adds support for setting HTTP methods via `app.link`, `app.unlink`, `app.mkcalendar`, `app.propfind`, `app.proppatch`, and `app.source`. The new methods allow developers to specify the HTTP method for each route handler, enhancing flexibility in routing configurations. \ud83d\ude80"}
+{"id": 2401, "message": "feat(test_dns_resolution): Add test for AAAA record resolution across different networks"}
+{"id": 2416, "message": "style: add trailing comma to method declaration"}
+{"id": 2423, "message": "feat(io.gravitee.rest.api.service.impl.configuration.application.registration): Add test for `ClientRegistrationService.delete()` method"}
+{"id": 2431, "message": "style(adds/include-statements): add include statements for spanner types"}
+{"id": 2433, "message": "feat(tests): Add tests for tracing components and background thread pool size in `ClientOptionsTest`. \ud83d\udce6"}
+{"id": 2434, "message": "feat(additional-implementation): add `connection_data_` initialization in `poolReady` method"}
+{"id": 2435, "message": "feat(Rails/Feature/Controller/TopicSettings): Fix form submission behavior in topic settings panel, improve UX with toast notifications and proper form handling. \ud83c\udfaf"}
+{"id": 2439, "message": "feat(features): Add `kubectl delete secret vault-unseal-keys` command in test setup cleanup. \ud83d\udce6"}
+{"id": 2445, "message": "feat(commitizen): Add `--parallel` flag to lerna exec command to enable parallel execution for coverage reporting. \ud83d\ude80"}
+{"id": 2448, "message": "feat(test-display-logged-in): Add permission 'users.create' and 'users.edit' to user model. \u2705"}
+{"id": 2452, "message": "feat(Mongo_3_4_operators): Add test for MongoDB 3.4 operators in graphLookup and facet scenarios"}
+{"id": 2459, "message": "feat(test): Add test for integration lambda timeout and improve test structure"}
+{"id": 2468, "message": "feat(tests): Adds async version of `Run` to support asynchronous testing. \ud83d\ude80"}
+{"id": 2477, "message": "feat(tests): add test for timezone conversion difference functionality"}
+{"id": 2481, "message": "style: inline sstring read(serializer, Input& in, rpc::type<sstring>) { ... }"}
+{"id": 2484, "message": "feat(backend): add race detector support in build system"}
+{"id": 2487, "message": "feat(runtime-chaos): Add test for restarting Cilium with Egress + Ingress traffic, including cleanup and validation of logs"}
+{"id": 2490, "message": "feat(apolloServer): Add timeout for slow node 4 in POST body parsing tests"}
+{"id": 2496, "message": "feat(x.init): Add assignment syntax for 'init' initializer in X/Y contexts. \ud83d\udce6"}
+{"id": 2503, "message": "feat(tests): Add test assertions with formatted messages for `Get` method"}
+{"id": 2508, "message": "feat(test): Add mock view renderer for JsonLd test case"}
+{"id": 2515, "message": "feat(test_001CreateWallet_0003CreatePersistWalletSuccess): Add test for persisting wallet with successful creation"}
+{"id": 2519, "message": "feat(additional-solver-path): Add new solver path for parallel execution. \ud83d\ude80"}
+{"id": 2520, "message": "feat(io): Update factory definition to use `topic.actable.id` for `forum_topic_id` and streamline relationship setup"}
+{"id": 2526, "message": "feat(res): Fix host resolution in server listen call to use '127.0.0.1' instead of wildcard. \ud83d\udee0\ufe0f"}
+{"id": 2528, "message": "feat(test): Add timeout handling for test validation loop"}
+{"id": 2530, "message": "feat(add_sleep_timeout): Add a sleep timeout to ensure proper rendering of the login flow in the course assessment submission logs test. \ud83d\udcc8"}
+{"id": 2531, "message": "feat(test): add test for default SideEffect implementation"}
+{"id": 2541, "message": "feat(test_lopf): Add test results documentation and improve assertion formatting"}
+{"id": 2543, "message": "feat(additional-test-case): add command.PouchRun(\"rm\", \"-f\", name).Assert(c, icmd.Success) to multiple test cases"}
+{"id": 2553, "message": "docs: added import statements for test suite"}
+{"id": 2554, "message": "fix: test -- add or fixes tests"}
+{"id": 2559, "message": "feat(botctl): Add support for running PowerShell scripts with execution policy enforcement"}
+{"id": 2574, "message": "feat(test): Add test for `KEY_PRESSED` event for BACK button"}
+{"id": 2577, "message": "feat(testing): add test for default options and reference to received options"}
+{"id": 2581, "message": "feat(test): Add test cases for \"Right of full interval\" and \"Left of full interval\" scenarios in `test_rollforward` and `test_rollback`. \ud83d\udce6"}
+{"id": 2601, "message": "feat(test_002InitWallet_0014SSetNodeUrlFailureNullParam): add test case for NULL parameter in set node URL function"}
+{"id": 2616, "message": "feat(test): Add tolerance for position check in interpolation test"}
+{"id": 2621, "message": "feat(test): Add test for `Apply` method with `Uri` type in property summary and example"}
+{"id": 2623, "message": "feat(test): add test for issue 361"}
+{"id": 2624, "message": "feat(io.clappr.player.extensions.DoubleExtensionsTest): add DoubleExtensionsTest to handle time interval conversion"}
+{"id": 2625, "message": "feat(tests): add missing implementation for \"Constant value replace\" test case"}
+{"id": 2632, "message": "feat(tests): add test for playback states"}
+{"id": 2634, "message": "feat(views): Update `zoomToViewport` to use the correct logic for setting zoom level. \ud83d\udcc8"}
+{"id": 2638, "message": "feat(add): add println(app(Request(POST, \"/rita\")))"}
+{"id": 2639, "message": "feat(additional-example): Add documentation example for RSX usage"}
+{"id": 2641, "message": "feat(additional-checks): add check for BUILDKITE_PULL_REQUEST_REPO on master"}
+{"id": 2646, "message": "feat(test): add link to issue in documentation"}
+{"id": 2649, "message": "feat(styles): Update `LayoutDocs` component to use a new `sticky` class for improved layout behavior. \ud83d\udcc4"}
+{"id": 2650, "message": "feat(adds-new-class): Adds a new class `DraggableEmber` that extends `Ember` and `Draggable`, with a constructor that takes a `Vector2` position. It replaces the old `DraggableSquare` class with this new class, updating the logic to use `DraggableEmber` instead. The changes include updating the constructor, initializing the position, and modifying the drag logic to use the new class. The commit also updates the `DraggablesExample` class to use the new class and adjust the drag logic accordingly. \ud83d\udce6"}
+{"id": 2651, "message": "feat(ash/page/keyset): Adds support for keyset pagination with metadata, allowing fetching next/previous pages. \ud83d\udcda"}
+{"id": 2653, "message": "feat(doc): document new endpoint in `MembersResponse` struct"}
+{"id": 2654, "message": "feat(deprecated-macros): Add deprecated macro documentation and warning for compatibility with remote modules"}
+{"id": 2655, "message": "fix: GroupInfoTBS#new - add to-be-signed structure with MAC confirmation_tag"}
+{"id": 2661, "message": "feat(additional-parameter): add `invalidChar` parameter to `toANSI()` function"}
+{"id": 2662, "message": "feat(additional-method): Adds a method to get the user ID, requiring authentication. \ud83d\udce6"}
+{"id": 2664, "message": "test: add a note about AAudio version in getAudioApi() documentation"}
+{"id": 2670, "message": "feat(additional-function): Add `swapaxes` function with same behavior as `swapaxis` but using `swapaxes` notation. \ud83d\udce6"}
+{"id": 2672, "message": "feat(logging): Add `LogLevel` enum with documentation and `LogHelper` class with logging methods"}
+{"id": 2674, "message": "feat(test): Add support for encoding URLs with Base64 in the `searchHash` method. \ud83d\udce6"}
+{"id": 2675, "message": "feat(test_utils): Add generic test suite with various IO scenarios"}
+{"id": 2677, "message": "feat(adds-method): add method `isDead` to check if a network file descriptor is dead. \ud83d\udce6"}
+{"id": 2681, "message": "feat(doc): add documentation for PReLU function"}
+{"id": 2683, "message": "feat(awk): Add support for `data-garden-id` in grep command"}
+{"id": 2688, "message": "feat(authelia/authelia): Add support for argon2 password hashing in the authelia container command"}
+{"id": 2693, "message": "feat(adds-a-capability): Adds `handleClick` prop to `NavigationTabs` component, which is triggered when a tab is clicked and sends item information and position. \ud83d\udce6"}
+{"id": 2695, "message": "feat(additional-output): add additional output format in ReST generation"}
+{"id": 2696, "message": "feat(test): Adds note explaining derivation of `Apply`'s `ap` function. \ud83d\udcda"}
+{"id": 2697, "message": "fix: docs"}
+{"id": 2699, "message": "feat(zmqlet): Add metrics for sent and received bytes"}
+{"id": 2701, "message": "test: adds or fixes tests \u2014 adds"}
+{"id": 2702, "message": "feat(test): Adds a documentation comment explaining that the caller must ensure the lock outlives `func`. \ud83d\udcdd"}
+{"id": 2705, "message": "feat: Add support for big text with centering in PTerm \ud83d\udd8b\ufe0f"}
+{"id": 2707, "message": "feat(README): Add note about single error per key in documentation"}
+{"id": 2709, "message": "test: add pterm.DefaultBox.Sprint() with bottom padding"}
+{"id": 2711, "message": "feat(AtClientManager): Adds method `setCurrentAtSign()` with documentation explaining its purpose and capabilities. The method allows providing an `AtServiceFactory` and an `AtChops` instance, which are used to control the creation of client types and notification/services. \ud83d\udcda"}
+{"id": 2713, "message": "feat(php): add property $latestInsertedTableName to Connection class"}
+{"id": 2714, "message": "feat(add-component): Add a `FormattedCode` component that formats JSX content with a code block, preserving the original structure and styling. \ud83d\udcc4"}
+{"id": 2715, "message": "feat(additional-parameter-type): Add additional parameter type support to `equals`, `is_not_unique`, `is_unique`, `not_equals`, and `required_with/without` methods. The parameter type is now explicitly typed as `array|bool|float|int|object|string|null`. \ud83d\udce6"}
+{"id": 2717, "message": "feat(test): Adds memory management note in Convert function to clarify ownership transfer and ensure proper cleanup"}
+{"id": 2719, "message": "feat(bot): Add secure bot token handling with environment variable or file-based configuration. \ud83e\uddd1\u200d\ud83d\udcbb"}
+{"id": 2722, "message": "feat(additional-storybook-components): Adds a custom Storybook component for a checkbox field, including a label and required indicator. \ud83e\udde9"}
+{"id": 2723, "message": "feat(OrcaTypes): Documenting Unix time in milliseconds and Snowflake datatype with additional remarks in the header file"}
+{"id": 2726, "message": "feat(oneapi): Add namespace documentation comment"}
+{"id": 2728, "message": "feat(doc): Document deprecation message for `defaultKeyPolicies` feature flag"}
+{"id": 2729, "message": "feat(test): Adds parameter `frameIsNew` to `update()` method, clarifying whether the packet is from a new frame"}
+{"id": 2730, "message": "feat(ratestatistics): Add RTP timestamp key to RateStatistics. \ud83d\udcc8"}
+{"id": 2737, "message": "feat(test): Add documentation comment for `OnClientConnectedCallback` and `OnClientDisconnectCallback` to clarify their scope and behavior"}
+{"id": 2739, "message": "feat(adds): private object LibrariesSnippetActivityResult - adds a new object with a composable function that handles back press logic, and introduces a new object with a composable function that manages a ViewModel and navigation. Also adds a new object with a composable function that handles paging data and a new object with a composable function that handles remote images"}
+{"id": 2746, "message": "feat(xd-registry-plugin): Use `url` from the manifest instead of `devUrl` in `PluginRegistry#load`"}
+{"id": 2748, "message": "feat(test): Add `customPropertyMap` to allow sorting and filtering by custom fields on related entities"}
+{"id": 2755, "message": "feat(test): Add documentation comments for email login test cases"}
+{"id": 2758, "message": "feat(resolver): Improve resolver to use callable instead of closure, enhance documentation"}
+{"id": 2759, "message": "feat(doc): Add link detection logic to documentation files"}
+{"id": 2760, "message": "feat(additional-dependencies): Add `ng-alain-sts` and `ng-alain-codelyzer` to dependencies list"}
+{"id": 2761, "message": "feat(cudnn): add `libnvrtc-builtins.so` to `CUDA_COPY_LIB_LIST` for `cu111_cudnn821_tensorRT825` and `cu112`"}
+{"id": 2762, "message": "feat(add-http-client-timeout): add-http-client-timeout adds a feature that sets the HTTP client timeout based on the build configuration, ensuring proper handling of timeouts during remote file fetching. \ud83d\ude80"}
+{"id": 2763, "message": "feat(additional-dependency): add `strum::EnumCount` to the codebase for I/O tracing"}
+{"id": 2764, "message": "feat(additional-file-format): Add support for generating SHA-1 checksums in `gen_sha_file` function. \ud83d\udcc1"}
+{"id": 2765, "message": "feat(additional-config): add toolchain configuration with Java 17 support"}
+{"id": 2766, "message": "feat(additional-rule-off): add `react/require-default-props` to the list of rules with `off` severity. \ud83d\udce6"}
+{"id": 2767, "message": "feat: add npm install command for n stable"}
+{"id": 2768, "message": "feat(add-feature-logic): Add logic to determine features from git show output. The commit adds a new function `FEATURES` that retrieves features from the git show output, using a sed script to extract the feature name. The change is focused on the `MAINTAINERS` file and the `FEATURES` variable calculation. The scope is clearly owned by the `MAINTAINERS` file. The commit is a feat, as it adds a new capability. The change is specific and reads correctly after \"If applied, this commit will...\". The description states only what the diff shows, without inventing reasons or outcomes"}
+{"id": 2769, "message": "feat(zip): add zip_open function to handle zip files"}
+{"id": 2770, "message": "docs: remove unused cfg attributes in dummy build variant"}
+{"id": 2771, "message": "fix: fix build script to handle gradle failures properly"}
+{"id": 2772, "message": "feat(publish): add --ignore-changes option for publish command"}
+{"id": 2773, "message": "feat(test): add flag to initialize ffmpegAudioFilter with debug mode"}
+{"id": 2774, "message": "feat(cleanup_artifact): Add loop to remove old Docker images based on release channel and version"}
+{"id": 2775, "message": "feat(test): add filter method to WorkflowRun retrieval"}
+{"id": 2776, "message": "feat(boost): add --with-toolset flag to bootstrap.sh and adjust b2 command for macOS build"}
+{"id": 2777, "message": "feat(additional-filter): add additional filter to exclude \"pyramid_map\" and \"ndt_lidar_locator_test\" and \"syncedmem_test\" and \"blob_test\" in citest_basic()"}
+{"id": 2778, "message": "feat(additional-configuration): add local variable `version` to `get_archive_name()` function, replacing it with `os` and `arch` variables. \ud83d\udce6"}
+{"id": 2779, "message": "feat(compile): Add support for generating Java code from .proto files and ensure clean workspace checks. \ud83d\udce6"}
+{"id": 2780, "message": "feat(test): Add timeout with --waitretry to handle retries in universalTest()"}
+{"id": 2781, "message": "feat(additional-commands): Add support for creating directory structure during build process. \ud83d\udcc1\u2728"}
+{"id": 2782, "message": "feat(additional-installation-step): add tar command with xvf instead of zvf to handle CI failure workaround. \ud83d\udce6"}
+{"id": 2783, "message": "feat(additional-logic): Add conditional logic to handle equal indices in the `tidy_structure` function, returning 0 when indices are equal, -1 when $idxA is less than $idxB, and 1 otherwise. \ud83d\udce6"}
+{"id": 2784, "message": "feat(additional-license-headers): Update text in HeaderCheckerLint to use 2021 year for all files missing license headers. \ud83d\udcc4"}
+{"id": 2785, "message": "feat(additional-platform-support): add support for OKD platform by using the same operator YAML file logic for both OCP and OKD"}
+{"id": 2786, "message": "feat(features): Add support for prerelease version handling in generateFormatterExamples and target.gensite functions. Add directory creation logic using test(\"-d\") and mkdir() commands. \ud83d\udcc1\u2728"}
+{"id": 2787, "message": "test: TEST_P(TraceWriterImplTest, FragmentingPacketWhileBufferExhausted) - fix: EXPECT_EQ -> EXPECT_EQ(u)"}
+{"id": 2788, "message": "feat(test): add $expected = ($end - $start) / 1000000000; to test code"}
+{"id": 2789, "message": "feat(crate): Add offset calculation for SIMD group bit sizes"}
+{"id": 2790, "message": "feat(additional-docstring-and-logic): add documentation comment and update logic for `update_doc_status` method. \ud83d\udcdd"}
+{"id": 2791, "message": "feat(tests): Add constexpr to ToString() for all PixelType templates"}
+{"id": 2792, "message": "feat(test-file): Add `File` class to support file operations in test suite"}
+{"id": 2793, "message": "feat(additional-checks): Add check for optional default value in `generate_example_input` function"}
+{"id": 2794, "message": "feat(Unity.Netcode.RuntimeTests): Add `OnServerAndClientsCreated()` implementation for `ShowHideObject` to support network object spawning"}
+{"id": 2795, "message": "feat: add `get_zero_points` and `set_zero_points` methods with correct signature and implementation"}
+{"id": 2796, "message": "feat(license): Add copyright notice for new contributors"}
+{"id": 2797, "message": "feat(stdio): Add const qualifier to temporary variables to prevent unnecessary copy operations"}
+{"id": 2798, "message": "feat(ReportTool): Update \"Short Description\" field to use colon syntax instead of plain text. \ud83d\udcdd"}
+{"id": 2799, "message": "feat(avx512_core_bf16_amx_bf16): add prefix STRINGIFY for avx512_core_bf16_amx_bf16"}
+{"id": 2800, "message": "feat(add-min-max-macros): Add macro definitions for `min()` and `max()` with constexpr implementations, including the new `using std::numeric_limits< ValueType >::min;` and `using std::numeric_limits< ValueType >::max` lines. The macro `itkNUMERIC_TRAITS_MIN_MAX_MACRO()` is now defined and used in place of the old function definitions. The `min()` and `max()` functions are now constexpr and properly handle the edge cases. The `NonpositiveMin()` and `IsNonpositive()` functions are also updated to use the new macro. The `min()` and `max()`"}
+{"id": 2801, "message": "feat(views): add $this->evaluate() call for max_items_message translation"}
+{"id": 2802, "message": "feat(adds): InfiniteScroll.waitFor(add, enable)"}
+{"id": 2803, "message": "feat: add support for MKLDNN primitive with reorder operation"}
+{"id": 2804, "message": "feat(test): Add property name for start bitrate in bits per second"}
+{"id": 2805, "message": "feat(additional-ui): Add conditional rendering for the copy button text in the request summary component. \ud83d\udce6"}
+{"id": 2806, "message": "feat(additional-parameter): add [Parameter] attribute for AttrValue in Simple1 component"}
+{"id": 2807, "message": "feat(additional-implementation): add support for handling pointer arrays in `ntl_apply` by passing a pointer to a pointer. This change modifies the `ntl_apply` function to accept a pointer to a pointer, allowing it to correctly process arrays of structs. The function now uses `(void**)` as the argument type, ensuring proper handling of pointer arrays in the context of the code. \ud83d\udce6"}
+{"id": 2808, "message": "feat(Parameters): Add parameter mapping with value vector, replace loop with range-based loop and use `m_ParameterMaps` instead of `this->GetNumberOfParameterMaps()`. \ud83d\udce6"}
+{"id": 2809, "message": "feat(add-parameter-file-list): Add parameter file list type with queue structure"}
+{"id": 2810, "message": "feat: add elxOverrideGetConstMacro macro"}
+{"id": 2811, "message": "feat(add-validation-check): Add validation check for wallet configuration before allocating memory"}
+{"id": 2812, "message": "feat: add `execute_backward_data` method for `gen9_convolution_bwd_data_t`\u202f\u2014\u202fimplies new functionality in the convolution backward data execution"}
+{"id": 2813, "message": "feat(additional-member): add member `m_data` to `LocalDataAccess` to support array data access"}
+{"id": 2814, "message": "feat(style): Add `transformOrigin` getter with optional fallback"}
+{"id": 2815, "message": "feat(adds-docs): Add documentation for Gauss-Seidel iterations in normal equations mode"}
+{"id": 2816, "message": "feat(adds-type-checking-function): Adds a type-checking function `IsDerivedTransformOfType` to the `itkAdvancedCombinationTransform` codebase, which checks if a given pointer is derived from `itk::Transform`. This function is used in the `main` function to verify the type of transforms in the composite structure. \ud83d\udce6"}
+{"id": 2817, "message": "feat(additional-namespace-usage): Add using declarations for `prop_kind` and `alg_kind` in `ref_pooling_fwd_t` to support forward training mode. \ud83d\udce6"}
+{"id": 2818, "message": "feat(additional-implementation): Add implementation for transform methods in StackTransform class, including handling of vector and covariant vector types. \ud83d\udce6"}
+{"id": 2819, "message": "feat(alarm-sensor): Add `AlexaMediaNotificationSensor` class to replace `AlexaMediaSensor` in the alarm, timer, and reminder sensors. \ud83c\udf89"}
+{"id": 2820, "message": "feat(add-style-computed-styles): Add support for computing styles via `getComputedStyle` and `getBoundingClientRect` in the DevWebsocket class. \ud83d\udce6"}
+{"id": 2821, "message": "feat(test): Add event handler to prevent search from closing on outside click"}
+{"id": 2822, "message": "feat(additional-members): add `m_Alpha` and `m_Beta` to `AdaptiveHistogramEqualizationImageFilter`"}
+{"id": 2823, "message": "feat(additional-function): Add `DeleteDeployment` method to `InstallStrategyDeploymentClientForNamespace` to support deleting deployments with a non-cascading delete behavior. \ud83d\udce6"}
+{"id": 2824, "message": "feat(additional-logic): add `from_str` call with simplified string handling in `arg_scales_t` and `post_ops_t`"}
+{"id": 2825, "message": "style: add -p(...) to tempPName based on parameterFileList size"}
+{"id": 2826, "message": "feat(xpathexpressionfactory): Add support for creating and destroying XPath expressions with a pooled object model. \ud83d\udce6"}
+{"id": 2827, "message": "feat(blueprintimpl-componentnames-type): Add `GetComponentNames()` method to `BlueprintImpl` to retrieve component names. \u2705"}
+{"id": 2828, "message": "feat(add_change_log): Add `add_change_log` function to generate change logs and update `CHANGELOG.md` file. \ud83d\udcc4\u2728"}
+{"id": 2829, "message": "feat(acceleration): add normalization check in quaternion lerp logic"}
+{"id": 2830, "message": "feat(additional-implementation): Add callback mechanism to `SendToTargets` method, which calls the `Callback()` virtual function when `m_Call` is true. \ud83d\udce6"}
+{"id": 2831, "message": "docs: add comment for `@parse_configuration` and `@apply_count`"}
+{"id": 2832, "message": "feat(additional-option): Adds --branch option to specify upstream branch to compare against, with default of master"}
+{"id": 2833, "message": "feat(documentation): Adds script to generate Sphinx documentation from Python docstrings. \ud83d\udcc4"}
+{"id": 2835, "message": "feat(additional-docs): Add documentation comment for formatted float output"}
+{"id": 2838, "message": "feat(add_rust_installation): add rust installation script to build process"}
+{"id": 2839, "message": "feat(add-key-rotation-script): Adds a script to rotate service-account keys in GCB, ensuring keys are created for the current month and future two weeks, and deleted if they are older than 45 days or over 90 days. The script is designed to run manually as a trigger in GCB"}
+{"id": 2840, "message": "feat(add-clang-tidy-config-check): add clang-tidy config check in presubmit workflow"}
+{"id": 2841, "message": "feat(adds-dependency-logic): Adds dependency logic for handling versioned builds, with separate folding blocks for `depends` and `previous-versions`. \ud83d\udce6"}
+{"id": 2842, "message": "feat(additional-deps): add python3-devel via apt-get instead of yum"}
+{"id": 2843, "message": "feat(test): Add logging and exit on non-pull-request events"}
+{"id": 2844, "message": "feat(xdrl/performance): Update minimum SDIO throughput values for different modes"}
+{"id": 2845, "message": "feat(additional-build-step): Add build step to handle AZP environment, including tar archive and cleanup of binaries"}
+{"id": 2846, "message": "feat(features): add random GCP project ID selection via shuf"}
+{"id": 2847, "message": "feat(yq): Update yq version to 3.4.1 in install_yq function"}
+{"id": 2849, "message": "feat(res.write): modify timeout_sec parameter in gdbmi_start()"}
+{"id": 2851, "message": "feat(add-checks): Add checks for skipped and errored tests in `run_plugin()`"}
+{"id": 2852, "message": "feat(add-builds): Add new AFF3CT builds with automatic configuration, using proper path for download file. \ud83d\udcc1\u200d\u200d\u200d\u200d\u200d\u200d\u200d\u200d\u200d\u200d\u200d\u200d\u200d\u200d\u200d\u200d\u200d\u200d\u200d\u200d\u200d\u200d\u200d\u200d\u200d\u200d\u200d\u200d\u200d\u200d\u200d\u200d\u200d\u200d\u200d\u200d\u200d\u200d\u200d\u200d\u200d\u200d\u200d\u200d\u200d\u200d\u200d\u200d\u200d\u200d\u200d"}
+{"id": 2853, "message": "feat(additional-commands): add --frozen-lockfile and --ignore-optional to check-license-headers"}
+{"id": 2854, "message": "feat(go_packages): Add support for fetching packages with network restrictions. \ud83d\udce6"}
+{"id": 2855, "message": "feat(additional-output): Add optional return value handling for `yq` command in `get_version()`"}
+{"id": 2857, "message": "feat(additional-console-configurations): Add support for new Debian release configurations in RootStock-NG. Update the script to include `-c bb.org-debian-sid-console-riscv64` and remove the unused `ignore` directory cleanup. \ud83d\udce6"}
+{"id": 2858, "message": "feat(printf): Add `read -r` to handle empty input and case-insensitive 'y'/'Y' detection"}
+{"id": 2861, "message": "feat(platform): Update platform detection logic to use kernel and machine identifiers instead of system information. \ud83d\ude80"}
+{"id": 2862, "message": "feat(additional-install-path): add `INSTALL_PATH` variable to set the installation directory, replacing the old logic that used `${DESTDIR:-}${PREFIX}/share/kata-containers` with a more direct approach. This change simplifies the installation path configuration and improves clarity. \ud83d\udce6"}
+{"id": 2863, "message": "feat(features): Add environment variables for preprod and prod environments, update index prefix and namespace. \ud83d\udce6"}
+{"id": 2864, "message": "feat(test): Add `ExecShort` variant of `Exec` for consistent command execution behavior. \ud83d\udce6"}
+{"id": 2865, "message": "feat(krew): add support for resource-snapshot command via krew"}
+{"id": 2866, "message": "feat(utilization): Add memory monitoring functionality with RSS tracking and locking mechanism"}
+{"id": 2867, "message": "feat(additional-error-handling): add die statement with status code for HTTP error handling"}
+{"id": 2868, "message": "feat(test): Add helper functions for target marker handling and update fixture definitions"}
+{"id": 2869, "message": "fix: add check for osbuild-composer RPM in nightly mode"}
+{"id": 2872, "message": "feat(testing): Adds testing logging configuration to Gradle tasks via a custom task wrapper. \ud83d\udce6"}
+{"id": 2873, "message": "feat(ops-trace): Add documentation link and update deployment script path"}
+{"id": 2875, "message": "feat(semantic-release): Update semantic-release configuration to use current branch instead of hardcoded one"}
+{"id": 2876, "message": "feat(additional-test-passes): Add additional test passes to ensure accurate coverage reporting. \ud83d\udce6"}
+{"id": 2878, "message": "feat(additional-build-configuration): Add conditional setup for building on Ubuntu1604 with old libc. \ud83d\udce6"}
+{"id": 2879, "message": "feat(additional-config): Add configuration for flash size control in ESP-IDF build process. \u2705"}
+{"id": 2880, "message": "feat(additional-test): add anon-user-access clusterrolebinding with retry logic and logging"}
+{"id": 2881, "message": "feat(backend): Add support for publishing prerelease versions with custom version tags via GitHub Actions"}
+{"id": 2882, "message": "feat(additional-check): add check for autogen.sh file in build process"}
+{"id": 2883, "message": "feat(commit-message): Add release branch creation command with --release-as flag"}
+{"id": 2884, "message": "feat(test-remote): Add support for running type-checking in the test-remote environment with a frozen lockfile"}
+{"id": 2885, "message": "feat(captureTimeout): Add timeout settings for browser disconnect and no activity, with increased values for CI environment. \ud83d\ude80"}
+{"id": 2886, "message": "feat(add-branch-list): Add new branch list including 'adopt11'"}
+{"id": 2888, "message": "feat(additional-exports): Add documentation exports for secure remote access tunnels and INLET examples. Update documentation check script to include new directories"}
+{"id": 2889, "message": "feat(test-cli): add sleep command to allow manual work during test execution"}
+{"id": 2890, "message": "feat(add-release-note): add release note functionality with proper formatting and link to release note in changelog. \ud83d\udcc4"}
+{"id": 2891, "message": "feat(additional-command): Add a custom command to sort JSON files in the images/capi directory, ensuring they are properly sorted before commit. \ud83d\udcc1\u2728"}
+{"id": 2892, "message": "feat(tags): add git-core to PKG_COMMON_EXTRA"}
+{"id": 2896, "message": "fix: import-renamed-textext-to-textext-base"}

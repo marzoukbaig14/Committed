@@ -22,3 +22,18 @@ judge_check*.jsonl
 judgments*.txt
 models/
 analysis/results/*.jsonl
+
+# Cloned upstream tool + root-level GGUF build artifacts (regenerable)
+llama.cpp/
+/*.gguf
+
+# One-off analysis helper scripts (scratch, not deliverables)
+scripts/scan_examples.py
+scripts/build_examples_table.py
+analysis/browse_examples.py
+
+# Eval evidence — track candidates + judge verdicts (the before/after proof)
+!analysis/results/baseline_strata442.jsonl
+!analysis/results/baseline_judge_log.jsonl
+!analysis/results/finetune_strata442.jsonl
+!analysis/results/finetune_judge_log.jsonl
