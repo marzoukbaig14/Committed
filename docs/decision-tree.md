@@ -47,6 +47,9 @@ graph TD
   n0041["0041: Migrate dev surface to local-native; relocate the reproducibility guarantee to CI"]:::accepted
   n0042["0042: Scope ruff to the package and tests; add the CI lint + test gate"]:::accepted
   n0043["0043: Add portfolio-integrated web demo served by the FastAPI endpoint"]:::accepted
+  n0044["0044: Adapter-merge → GGUF → Q4_K_M serving-artifact pipeline"]:::accepted
+  n0045["0045: Fine-tune eval protocol: hold everything constant but the weights"]:::accepted
+  n0046["0046: Track raw eval evidence in the repo"]:::accepted
   n0003 --- n0002
   n0004 --- n0002
   n0005 --- n0004
@@ -117,6 +120,15 @@ graph TD
   n0042 --- n0041
   n0043 --- n0004
   n0043 --- n0005
+  n0044 --- n0038
+  n0045 --- n0034
+  n0045 --- n0011
+  n0045 --- n0035
+  n0045 --- n0036
+  n0045 --- n0039
+  n0045 --- n0040
+  n0045 --- n0037
+  n0046 --- n0045
   classDef proposed fill:#fff7e6,stroke:#d4a017;
   classDef accepted fill:#e6f4ea,stroke:#137333;
   classDef superseded fill:#f1f3f4,stroke:#9aa0a6,color:#5f6368;
