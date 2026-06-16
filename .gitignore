@@ -12,6 +12,9 @@ __pycache__/
 # Data scratchpad (root-level only; src/committed/data/ is source code, not ignored)
 /data/
 
+# Throwaway experiment scratch (e.g. Prompt-A specificity probe)
+experiments/
+
 # OS / editor cruft
 .DS_Store
 *.log

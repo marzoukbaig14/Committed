@@ -153,3 +153,48 @@ model's `fix`-bias misfires (3b) — plus a clear win and a degenerate-gold exam
 commentary to be added.
 
 > TODO (Zook): final pass on wording throughout; populate §7 with curated examples + verdicts.
+
+# For findings_v1_i1 §6 — prompt-lever probe result (drop in when you do your wording pass)
+
+> NOTE: directional probe, NOT an official measured result. The messages that differed
+> from baseline were self-judged by Claude (agent-as-judge) against the diff with the same
+> rubric — NOT the validated Gemini judge. Cite as directional only; do not place these
+> numbers beside the committed Gemini eval numbers. If a hard number is ever needed,
+> re-judge the differing messages through Gemini (~$0.20).
+
+## The finding (paraphrase into your own voice)
+
+We tested whether prompt wording could lift specificity/verbosity before committing to a
+retrain. Three variants on the frozen prompt's description guidance:
+- **A** — specificity line rewritten to mirror the judge's specificity bar
+- **B** — "name BOTH the symbol AND what changed about it"
+- **C** — maximal: "be verbose and explanatory, full sentences, longer is better"
+
+Each changed a large share of output WORDING (A: 54/100, B: 55/100, C: 64/100 messages
+differed from baseline) but moved every quality axis by ≤0.04 — within sampling noise at
+temperature 0.2 (two runs of the same prompt differ by about that much). Prompt C churned
+the most output yet bought the least quality gain.
+
+Read: the fine-tuned model follows its training distribution over prompt instructions.
+Prompt wording reshuffles surface phrasing without changing output quality or verbosity.
+This confirms specificity/verbosity is a TRAINING-DATA property to address in i2 — relax the
+subject-only normalization (ADR 0017) so training targets carry more detail — NOT a
+prompt-tunable one.
+
+## The bigger framing (worth a sentence in §4 or the intro)
+
+The aggressive v1 normalization (subject-line only, strip emoji/gitmoji, English CC types
+only, tight length ceiling) successfully eliminated the early problems — rambling, emoji,
+non-English messages — but trained the model toward terseness as a side effect. The
+under-specific output is the downstream cost of the cleanup that fixed the noise. i2 threads
+the needle: relax normalization to recover informative detail without reintroducing the noise.
+
+## Demo implication (settled by this probe)
+
+Since the prompt doesn't change output meaningfully, the demo ships on the frozen evaluated
+config — demo behavior matches the committed eval numbers exactly, no divergence to label.
+
+## Experiment artifacts
+experiments/promptA/ holds the probe scripts + outputs (prompt_a/b/c, the generated jsonls,
+the comparison). Gitignored scratch — keep as the experiment record or delete. The harness is
+reusable: point it at a new prompt_*.py for future probes in minutes.
