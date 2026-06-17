@@ -1,7 +1,5 @@
-# Dependencies for the standalone Gradio Space (Gradio SDK, no Dockerfile).
-# Direct deps so the Space needs no access to the GitHub repo. See README_SPACE.md
-# for how to make `committed.inference.engine` importable on the Space.
 gradio
 llama-cpp-python
 transformers
 huggingface_hub
+committed @ git+https://github.com/marzoukbaig14/Committed.git
