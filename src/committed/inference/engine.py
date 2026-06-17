@@ -1,6 +1,5 @@
 """
 engine.py — the shared inference core for Committed.
-
 One place owns the load + prompt + grammar + decode construction proven at
 baseline (ADRs 0038/0039/0040): the batch eval driver (generate.py), the FastAPI
 service (serving/api.py), and the Gradio demo (app/gradio_app.py) all call it, so
@@ -13,7 +12,6 @@ The model path is never hardcoded. Resolution order:
   2. COMMITTED_MODEL_REPO + COMMITTED_MODEL_FILE — pulled from the Hugging Face
      Hub (public repo, no token needed), defaulting to the pinned baseline GGUF.
 """
-
 from __future__ import annotations
 
 import os
@@ -28,6 +26,7 @@ from committed.inference.prompt import build_prompt
 DEFAULT_MODEL_REPO = "ggml-org/Qwen3-1.7B-GGUF"
 DEFAULT_MODEL_FILE = "Qwen3-1.7B-Q4_K_M.gguf"
 DEFAULT_TOKENIZER = "Qwen/Qwen3-1.7B"
+
 GRAMMAR_PATH = Path(__file__).parent / "grammar.gbnf"
 N_CTX = 4096
 
@@ -65,6 +64,12 @@ class CommitGenerator:
         tokenizer_name: str | None = None,
         n_ctx: int = N_CTX,
         grammar_path: str | Path = GRAMMAR_PATH,
+        # CPU thread counts. Leave as None for the default (used by eval, so eval
+        # behavior is unchanged). Serving on a known core count (e.g. a 2-vCPU
+        # Space) should set these so llama.cpp does NOT oversubscribe to the
+        # container host's core count, which is what makes prefill crawl.
+        n_threads: int | None = None,        # threads for token generation (decode)
+        n_threads_batch: int | None = None,  # threads for prompt processing (prefill)
         **decode_kwargs,
     ) -> None:
         model_path = model_path or resolve_model_path()
@@ -75,6 +80,8 @@ class CommitGenerator:
             model_path=model_path,
             n_ctx=n_ctx,
             seed=self.decode_kwargs["seed"],
+            n_threads=n_threads,
+            n_threads_batch=n_threads_batch,
             verbose=False,
         )
         self.tokenizer = AutoTokenizer.from_pretrained(tokenizer_name)
