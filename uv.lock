@@ -532,6 +532,7 @@ dependencies = [
 dev = [
     { name = "matplotlib" },
     { name = "pytest" },
+    { name = "pyyaml" },
     { name = "ruff" },
 ]
 eval = [
@@ -568,6 +569,7 @@ requires-dist = [
 dev = [
     { name = "matplotlib", specifier = ">=3.10.9" },
     { name = "pytest", specifier = ">=9.0.3" },
+    { name = "pyyaml", specifier = ">=6.0.3" },
     { name = "ruff", specifier = ">=0.15.15" },
 ]
 eval = [

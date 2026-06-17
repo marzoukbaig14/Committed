@@ -21,6 +21,7 @@ dev = [
     "matplotlib>=3.10.9",
     "pytest>=9.0.3",
     "ruff>=0.15.15",
+    "pyyaml>=6.0.3",
 ]
 # Eval harness only (judge + metrics). Install with: uv sync --group eval
 eval = [
