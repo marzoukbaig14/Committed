@@ -4,21 +4,16 @@ version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.11"
+# Required = the serving/demo path only (engine.py, serving/api.py, app.py).
+# This is what `pip install committed @ git+...` pulls on the Space, so it stays
+# small and the Space build is fast. Eval- and train-only deps live in the
+# optional groups below and are never installed by a plain package install.
 dependencies = [
-    "datasets>=4.8.5",
-    "evaluate>=0.4.6",
     "fastapi>=0.136.3",
-    "google-genai>=2.7.0",
     "gradio>=6.15.2",
     "llama-cpp-python>=0.3.23",
-    "pandas>=3.0.3",
-    "pyyaml>=6.0.3",
-    "rouge-score>=0.1.2",
-    "sacrebleu>=2.6.0",
-    "scikit-learn>=1.8.0",
     "transformers>=5.9.0",
     "uvicorn>=0.48.0",
-    "wandb>=0.27.0",
 ]
 
 [dependency-groups]
@@ -27,12 +22,28 @@ dev = [
     "pytest>=9.0.3",
     "ruff>=0.15.15",
 ]
+# Eval harness only (judge + metrics). Install with: uv sync --group eval
+eval = [
+    "datasets>=4.8.5",
+    "evaluate>=0.4.6",
+    "google-genai>=2.7.0",
+    "pandas>=3.0.3",
+    "pyyaml>=6.0.3",
+    "rouge-score>=0.1.2",
+    "sacrebleu>=2.6.0",
+    "scikit-learn>=1.8.0",
+    "wandb>=0.27.0",
+]
+# GPU training stack. Install with: uv sync --group train
+# pyyaml: train.py reads the YAML config. wandb: run tracking during training.
 train = [
     "accelerate>=1.13.0",
     "bitsandbytes>=0.49.2",
     "peft>=0.19.1",
     "trl>=1.5.1",
     "torch>=2.4",
+    "pyyaml>=6.0.3",
+    "wandb>=0.27.0",
 ]
 
 [build-system]
