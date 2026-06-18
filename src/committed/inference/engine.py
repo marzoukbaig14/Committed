@@ -23,8 +23,8 @@ from transformers import AutoTokenizer
 from committed.inference.prompt import build_prompt
 
 # Pinned baseline artifact (ADR 0038); the fine-tuned GGUF overrides via env var.
-DEFAULT_MODEL_REPO = "ggml-org/Qwen3-1.7B-GGUF"
-DEFAULT_MODEL_FILE = "Qwen3-1.7B-Q4_K_M.gguf"
+DEFAULT_MODEL_REPO = "marzoukbaig14/committed-gguf"  # fine-tuned serving artifact of record (ADR 0048); baseline override via COMMITTED_MODEL_REPO
+DEFAULT_MODEL_FILE = "committed-finetuned-Q4_K_M.gguf"  # ADR 0044 merged-adapter Q4_K_M (ADR 0048)
 DEFAULT_TOKENIZER = "Qwen/Qwen3-1.7B"
 
 GRAMMAR_PATH = Path(__file__).parent / "grammar.gbnf"

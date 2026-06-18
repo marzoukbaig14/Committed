@@ -40,3 +40,4 @@ analysis/browse_examples.py
 !analysis/results/baseline_judge_log.jsonl
 !analysis/results/finetune_strata442.jsonl
 !analysis/results/finetune_judge_log.jsonl
+.claude/
