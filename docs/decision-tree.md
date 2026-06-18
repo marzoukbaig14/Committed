@@ -51,6 +51,7 @@ graph TD
   n0045["0045: Fine-tune eval protocol: hold everything constant but the weights"]:::accepted
   n0046["0046: Track raw eval evidence in the repo"]:::accepted
   n0047["0047: Split dependencies into a serve-minimal required set with eval/train/dev groups"]:::accepted
+  n0048["0048: Pin the fine-tuned GGUF as the serving artifact of record; default the serving layer to it"]:::accepted
   n0003 --- n0002
   n0004 --- n0002
   n0005 --- n0004
