@@ -11,10 +11,19 @@ requires-python = ">=3.11"
 dependencies = [
     "fastapi>=0.136.3",
     "gradio>=6.15.2",
+    # huggingface-hub: arrives transitively via transformers, but engine.py and
+    # cli.py import hf_hub_download / try_to_load_from_cache directly, so pin it
+    # explicitly rather than leaning on a transitive dep.
+    "huggingface-hub>=0.28.0",
     "llama-cpp-python==0.3.30",
     "transformers>=5.9.0",
     "uvicorn>=0.48.0",
 ]
+
+[project.scripts]
+# Console entry point: `committed` becomes a real command after install, mapping
+# to cli.main(). This is the headline local path — `git diff | committed`.
+committed = "committed.cli:main"
 #
 [dependency-groups]
 dev = [
