@@ -20,7 +20,19 @@ import os
 import sys
 from pathlib import Path
 
-from committed.inference.engine import (
+# Quiet transformers' benign "PyTorch was not found" notice on import — we use
+# only its tokenizer, never torch models, so the warning is noise that would
+# otherwise clutter the CLI's stderr. Must be set before the engine import below
+# (which imports transformers). setdefault: respect a user's explicit override.
+os.environ.setdefault("TRANSFORMERS_VERBOSITY", "error")
+# On Windows without Developer Mode the HF cache can't use symlinks and prints a
+# multi-line warning on every download. Caching still works; quiet the notice
+# (HF's own recommended switch) so first-run stderr isn't alarming.
+os.environ.setdefault("HF_HUB_DISABLE_SYMLINKS_WARNING", "1")
+
+# noqa: E402 — this import must follow the env-var set above (transformers reads
+# the verbosity at import time), so it can't sit with the other top-of-file imports.
+from committed.inference.engine import (  # noqa: E402
     DEFAULT_MODEL_FILE,
     DEFAULT_MODEL_REPO,
     NOT_A_DIFF_MESSAGE,

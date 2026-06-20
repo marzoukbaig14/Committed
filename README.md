@@ -6,6 +6,48 @@ A fine-tuned 1.7B language model that writes Conventional Commits messages from 
 
 ---
 
+## Quickstart
+
+Generate a commit message from a real diff, locally, CPU-only. Requires Python 3.11+. No GPU, no API key, nothing leaves your machine.
+
+### CLI (recommended)
+
+Install the package and the prebuilt CPU build of `llama-cpp-python` (the extra index serves a ready-made wheel, so there's no C++ compile step):
+
+```
+pip install "committed @ git+https://github.com/marzoukbaig14/Committed.git" --extra-index-url https://abetlen.github.io/llama-cpp-python/whl/cpu
+```
+
+Then pipe a diff straight in:
+
+```
+git diff | committed
+```
+
+Example:
+
+```
+$ git diff | committed
+fix: increase default timeout to 60s
+```
+
+You can also pass a diff file instead of using stdin:
+
+```
+committed path/to/change.diff
+```
+
+Notes:
+- **First run downloads the model** (~1 GB, the fine-tuned GGUF) from the Hugging Face Hub and caches it; later runs reuse the cache and start in seconds. The download is a public artifact — no token needed.
+- The model loads fresh each run (~18 s cold the first time, a few seconds once cached). Progress goes to stderr; only the commit message is written to stdout, so `git diff | committed` composes cleanly in scripts and pipes.
+- Bring your own GGUF with `--model-path path/to/model.gguf`; cap length with `--max-tokens N`. See `committed --help`.
+
+### Docker
+
+A CPU-only Docker image (`docker run --rm -i … < some.diff`) is planned as a zero-setup alternative and will be documented here once published.
+
+---
+
 ## What this is
 
 Committed is a QLoRA fine-tune of Qwen3-1.7B trained on a filtered subset of CommitChronicle, a dataset of roughly 10.7 million real GitHub commits. The filtered training set targets 30-50k high-quality Python commits that follow the Conventional Commits specification exactly.
