@@ -11,11 +11,11 @@ requires-python = ">=3.11"
 dependencies = [
     "fastapi>=0.136.3",
     "gradio>=6.15.2",
-    "llama-cpp-python>=0.3.30",
+    "llama-cpp-python==0.3.30",
     "transformers>=5.9.0",
     "uvicorn>=0.48.0",
 ]
-
+#
 [dependency-groups]
 dev = [
     "matplotlib>=3.10.9",
