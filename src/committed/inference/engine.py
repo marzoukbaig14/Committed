@@ -54,6 +54,16 @@ class NotADiffError(ValueError):
     """
 
 
+# Single source of the user-facing guidance shown when input fails the diff
+# check. Kept here (not inline in generate) so every caller surfaces identical
+# wording: generate() raises it, and the CLI fast-rejects with it BEFORE loading
+# the ~1 GB model, so piping gibberish fails in <1s instead of after a cold load.
+NOT_A_DIFF_MESSAGE = (
+    "That doesn't look like a code diff. Paste the output of `git diff` "
+    "— lines with +/- changes, @@ hunks, or a `diff --git` header."
+)
+
+
 def looks_like_diff(text: str) -> bool:
     """Loose check: is this plausibly a code diff? Catches garbage like 'asdf'
     without demanding a perfectly-formed patch. (Moved here from app/app.py so
@@ -128,10 +138,7 @@ class CommitGenerator:
         passes the check, so the eval path is unaffected.
         """
         if not looks_like_diff(diff):
-            raise NotADiffError(
-                "That doesn't look like a code diff. Paste the output of `git diff` "
-                "— lines with +/- changes, @@ hunks, or a `diff --git` header."
-            )
+            raise NotADiffError(NOT_A_DIFF_MESSAGE)
         prompt = build_prompt(diff, self.tokenizer)
         out = self.llm.create_completion(prompt, grammar=self.grammar, **self.decode_kwargs)
         message = out["choices"][0]["text"].strip()
