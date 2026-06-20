@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import gradio as gr
 
-from committed.inference.engine import CommitGenerator
+from committed.inference.engine import CommitGenerator, NotADiffError
 
 # Free HF "CPU basic" Space = 2 vCPUs. Tell llama.cpp to use exactly those, so it
 # doesn't spawn threads for the host's full core count and thrash. Speed only;
@@ -19,31 +19,16 @@ def _get_generator() -> CommitGenerator:
     return _generator
 
 
-def _looks_like_diff(text: str) -> bool:
-    """Loose check: is this plausibly a code diff? Catches garbage like 'asdf'
-    without demanding a perfectly-formed patch."""
-    t = text.strip()
-    if not t:
-        return False
-    if "diff --git" in t or "@@ " in t:
-        return True
-    if "--- " in t and "+++ " in t:
-        return True
-    change_lines = sum(
-        1
-        for line in t.splitlines()
-        if line[:1] in "+-" and not line.startswith(("+++", "---"))
-    )
-    return change_lines >= 2
-
-
 def commit_message(diff: str) -> str:
+    # The "looks like a diff" guard now lives in the engine (NotADiffError), so
+    # this demo and the FastAPI service reject garbage identically — there is no
+    # second copy of the heuristic here to drift out of sync.
     if not diff.strip():
         return "Paste a diff to get a commit message."
-    if not _looks_like_diff(diff):
-        return ("That doesn't look like a code diff. Paste the output of `git diff` "
-                "— lines with +/- changes, @@ hunks, or a `diff --git` header.")
-    return _get_generator().generate(diff)
+    try:
+        return _get_generator().generate(diff)
+    except NotADiffError as e:
+        return str(e)
 
 
 # Warm up at container start so the first real click doesn't pay the model load.

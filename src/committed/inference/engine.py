@@ -2,7 +2,7 @@
 engine.py — the shared inference core for Committed.
 One place owns the load + prompt + grammar + decode construction proven at
 baseline (ADRs 0038/0039/0040): the batch eval driver (generate.py), the FastAPI
-service (serving/api.py), and the Gradio demo (app/gradio_app.py) all call it, so
+service (serving/api.py), and the Gradio demo (app/app.py) all call it, so
 eval-time and serve-time inference are byte-for-byte the same and cannot drift.
 That parity is what protects the train/inference match.
 
@@ -10,7 +10,7 @@ The model path is never hardcoded. Resolution order:
   1. COMMITTED_MODEL_PATH — an explicit local .gguf. Set this to swap in the
      fine-tuned model later; that is the one-line swap the serving plan calls for.
   2. COMMITTED_MODEL_REPO + COMMITTED_MODEL_FILE — pulled from the Hugging Face
-     Hub (public repo, no token needed), defaulting to the pinned baseline GGUF.
+     Hub (public repo, no token needed), defaulting to the fine-tuned GGUF (ADR 0048).
 """
 from __future__ import annotations
 
@@ -22,7 +22,10 @@ from transformers import AutoTokenizer
 
 from committed.inference.prompt import build_prompt
 
-# Pinned baseline artifact (ADR 0038); the fine-tuned GGUF overrides via env var.
+# Serving artifact of record (ADR 0048): the fine-tuned GGUF is the default, so a
+# deploy with no model env vars set serves the right model. Baseline (ADR 0038)
+# is still reachable by overriding COMMITTED_MODEL_REPO / _FILE; the eval path
+# always sets the model explicitly, so this default never touches eval.
 DEFAULT_MODEL_REPO = "marzoukbaig14/committed-gguf"  # fine-tuned serving artifact of record (ADR 0048); baseline override via COMMITTED_MODEL_REPO
 DEFAULT_MODEL_FILE = "committed-finetuned-Q4_K_M.gguf"  # ADR 0044 merged-adapter Q4_K_M (ADR 0048)
 DEFAULT_TOKENIZER = "Qwen/Qwen3-1.7B"
@@ -40,9 +43,39 @@ DECODE_DEFAULTS: dict = {
 }
 
 
+class NotADiffError(ValueError):
+    """Raised when the input doesn't plausibly look like a code diff.
+
+    Defined in the engine so every caller shares one guard: the FastAPI service
+    turns it into a 400, the Gradio demo renders its message, and the eval path
+    (which only ever feeds real git-diff output) never trips it. Previously this
+    check lived only in the Gradio wrapper, so the FastAPI /generate path — the
+    one the portfolio calls — had no guard and let garbage through.
+    """
+
+
+def looks_like_diff(text: str) -> bool:
+    """Loose check: is this plausibly a code diff? Catches garbage like 'asdf'
+    without demanding a perfectly-formed patch. (Moved here from app/app.py so
+    all entry points enforce it, not just Gradio.)"""
+    t = text.strip()
+    if not t:
+        return False
+    if "diff --git" in t or "@@ " in t:
+        return True
+    if "--- " in t and "+++ " in t:
+        return True
+    change_lines = sum(
+        1
+        for line in t.splitlines()
+        if line[:1] in "+-" and not line.startswith(("+++", "---"))
+    )
+    return change_lines >= 2
+
+
 def resolve_model_path() -> str:
     """Locate the GGUF without hardcoding it: an explicit local path wins, else
-    pull (repo, file) from the Hub. The baseline repo is public, so no token needed."""
+    pull (repo, file) from the Hub. The repo is public, so no token needed."""
     explicit = os.environ.get("COMMITTED_MODEL_PATH")
     if explicit:
         return explicit
@@ -88,7 +121,17 @@ class CommitGenerator:
         self.grammar = LlamaGrammar.from_string(Path(grammar_path).read_text())
 
     def generate(self, diff: str) -> str:
-        """Render the frozen prompt, decode under the CC grammar, normalize one line."""
+        """Render the frozen prompt, decode under the CC grammar, normalize one line.
+
+        Guards non-diff input first (NotADiffError) so every caller — FastAPI,
+        Gradio, eval — rejects garbage identically. Real git-diff output always
+        passes the check, so the eval path is unaffected.
+        """
+        if not looks_like_diff(diff):
+            raise NotADiffError(
+                "That doesn't look like a code diff. Paste the output of `git diff` "
+                "— lines with +/- changes, @@ hunks, or a `diff --git` header."
+            )
         prompt = build_prompt(diff, self.tokenizer)
         out = self.llm.create_completion(prompt, grammar=self.grammar, **self.decode_kwargs)
         message = out["choices"][0]["text"].strip()

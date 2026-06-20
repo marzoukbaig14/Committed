@@ -21,7 +21,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
-from committed.inference.engine import CommitGenerator
+from committed.inference.engine import CommitGenerator, NotADiffError
 
 # process-wide model handle; populated at startup, read per request.
 _state: dict = {}
@@ -66,4 +66,10 @@ def health() -> dict:
 def generate(req: GenerateRequest) -> dict:
     if not req.diff.strip():
         raise HTTPException(status_code=400, detail="empty diff")
-    return {"message": _state["generator"].generate(req.diff)}
+    try:
+        return {"message": _state["generator"].generate(req.diff)}
+    except NotADiffError as e:
+        # Non-diff input is a client error: 400, with the engine's explanatory
+        # message. The portfolio's api.js throws on non-2xx and renders its error
+        # state, so this shows the user the "doesn't look like a diff" guidance.
+        raise HTTPException(status_code=400, detail=str(e))
