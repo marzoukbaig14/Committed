@@ -38,7 +38,10 @@ class GenerateResponse(BaseModel):
 @asynccontextmanager
 async def lifespan(_app: FastAPI):
     # one model instance for the process; path resolved from the environment.
-    _state["generator"] = CommitGenerator()
+    # Free HF "CPU basic" Space = 2 vCPUs. Pin llama.cpp to exactly those (matching
+    # the Gradio path) so it doesn't spawn threads for the host's full core count
+    # and thrash, which made warm generation crawl. Speed only; output is unchanged.
+    _state["generator"] = CommitGenerator(n_threads=2, n_threads_batch=2)
     yield
     _state.clear()
 
