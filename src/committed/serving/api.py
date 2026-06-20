@@ -5,7 +5,7 @@ Wraps the shared CommitGenerator behind the HTTP contract the frontend depends o
 (ADR 0043):
 
     POST /generate  {"diff": "..."}  -> {"message": "<one CC line>"}
-    GET  /health                     -> {"status": "ok"}  (200 once the model is loaded)
+    GET  /health                     -> {"status": "ok", "model_loaded": <bool>}  (200 once the model is loaded)
 
 The model is loaded once at startup (lifespan), never per request. CORS allows the
 portfolio's origins: exact prod/custom domains via COMMITTED_CORS_ORIGINS (comma
@@ -37,11 +37,17 @@ class GenerateResponse(BaseModel):
 
 @asynccontextmanager
 async def lifespan(_app: FastAPI):
+    # False until the model is fully constructed, so a /health hit mid-startup
+    # reports the truth (not yet loaded) rather than a stale or absent flag.
+    _state["model_loaded"] = False
     # one model instance for the process; path resolved from the environment.
     # Free HF "CPU basic" Space = 2 vCPUs. Pin llama.cpp to exactly those (matching
     # the Gradio path) so it doesn't spawn threads for the host's full core count
     # and thrash, which made warm generation crawl. Speed only; output is unchanged.
+    # CommitGenerator.__init__ loads the GGUF into memory eagerly (engine.py), so
+    # once construction returns the weights are resident — flip the flag true.
     _state["generator"] = CommitGenerator(n_threads=2, n_threads_batch=2)
+    _state["model_loaded"] = True
     yield
     _state.clear()
 
@@ -62,7 +68,9 @@ app.add_middleware(
 def health() -> dict:
     if "generator" not in _state:
         raise HTTPException(status_code=503, detail="model not loaded")
-    return {"status": "ok"}
+    # model_loaded is the real in-memory warm/cold signal: the frontend reads it
+    # instead of guessing from latency (a slow-but-warm call != a true cold start).
+    return {"status": "ok", "model_loaded": bool(_state.get("model_loaded", False))}
 
 
 @app.post("/generate", response_model=GenerateResponse)
