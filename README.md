@@ -2,7 +2,7 @@
 
 A fine-tuned 1.7B language model that writes Conventional Commits messages from code diffs. Runs locally via llama.cpp. Your code never leaves your machine.
 
-**[Live demo]([PORTFOLIO_COMMITTED_URL](https://my-portfolio-ten-rosy-36.vercel.app/committed))** · **[Gradio Space]([GRADIO_SPACE_URL](https://huggingface.co/spaces/marzoukbaig14/committed-demo))** · **[Model (GGUF)](https://huggingface.co/marzoukbaig14/committed-gguf)** · **[LoRA adapter](https://huggingface.co/marzoukbaig14/committed-qwen3-1.7b-lora)** · **[Dataset](https://huggingface.co/datasets/marzoukbaig14/committed-train)**
+**[Live demo](https://my-portfolio-ten-rosy-36.vercel.app/committed)** · **[Gradio Space](https://huggingface.co/spaces/marzoukbaig14/committed-demo)** · **[Model (GGUF)](https://huggingface.co/marzoukbaig14/committed-gguf)** · **[LoRA adapter](https://huggingface.co/marzoukbaig14/committed-qwen3-1.7b-lora)** · **[Dataset](https://huggingface.co/datasets/marzoukbaig14/committed-train)**
 
 ---
 
