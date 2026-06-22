@@ -10,7 +10,7 @@ Place this file at the repo root. Claude Code reads a root `CLAUDE.md` as projec
 
 ## Who you are working with
 
-The human is in learning mode. They have a strong CS and applied-ML background but limited hands-on experience with end-to-end production tooling and infrastructure. They want to understand the stack, not just have it work. They defer to you on unfamiliar tools, but they want a brief explanation before you make a pick, and they want to do the conceptually important parts themselves.
+The human is in learning mode. They have CS and applied-ML background but limited hands-on experience with end-to-end production tooling and infrastructure. They want to understand the stack, not just have it work. They defer to you on unfamiliar tools, but they want a brief explanation before you make a pick, and they want to do the conceptually important parts themselves.
 
 Calibrate to that. Explain at almost every step. Assume less prior knowledge of devops and deployment plumbing than of ML concepts.
 
