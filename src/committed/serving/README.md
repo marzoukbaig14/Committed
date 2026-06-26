@@ -44,11 +44,11 @@ docker build -f src/committed/serving/Dockerfile -t committed-serve .
 docker run -p 7860:7860 -e COMMITTED_CORS_ORIGINS="https://your-portfolio.vercel.app" committed-serve
 ```
 
-A GGUF and the tokenizer are baked in at build time so the container needs no network pull for
-them. Note: the Dockerfile currently pre-warms the **baseline** base GGUF
-(`ggml-org/Qwen3-1.7B-GGUF`), while the engine's serving default is the **fine-tuned** GGUF
-(`marzoukbaig14/committed-gguf`, ADR 0048) — so the fine-tuned artifact is fetched on first
-startup until the Dockerfile pre-warm is updated to match (a code change, tracked separately).
-To deploy, the human creates a Hugging Face **Docker** Space and points it at this Dockerfile
-(set `COMMITTED_CORS_ORIGINS` in the Space variables). The free Docker Space sleeps after ~48 h
-idle; the frontend handles the cold-start wake via `/health` (ADR 0043).
+This Dockerfile is a local / reference build and is **not** the deployed surface. The live demo
+is served by the standalone `marzoukbaig14/committed-api` Hugging Face Space, which has its own
+root Dockerfile that bakes no model and pulls the fine-tuned GGUF (`marzoukbaig14/committed-gguf`,
+ADR 0048) at runtime — so production serves the correct model and there is no pre-warm mismatch
+there. This reference Dockerfile happens to pre-warm the baseline base GGUF
+(`ggml-org/Qwen3-1.7B-GGUF`): fine for a local smoke test, but not what production runs. Verify
+deploy behavior against the committed-api Space repo, not this file. The free Docker Space sleeps
+after ~48 h idle; the frontend handles the cold-start wake via `/health` (ADR 0043).
