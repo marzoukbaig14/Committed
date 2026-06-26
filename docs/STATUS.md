@@ -3,12 +3,34 @@
 _Living status. Update in the same commit as the work._
 _Plan lives in ROADMAP.md; design in MASTER.md + docs/decisions/._
 
-**Phase:** Eval complete — baseline measured, judge validated against 50 genuine human ratings.
-Infra migrated off Codespaces to local + CI. Training config is the next core task; first QLoRA
-run pending.
-**Calendar:** ~June 12, 2026 (eval + infra work landed in the June 11 session)
+**Phase:** v1 shipped — the fine-tuned Qwen3-1.7B beats the zero-shot baseline on every axis except
+specificity; merged to GGUF and served (FastAPI Docker Space + local `git diff | committed` CLI).
+Next core task is v2-i1, a Qwen3-0.6B controlled comparison (to be logged as ADR 0049).
+**Calendar:** ~June 26, 2026 (v1 complete; README finalized this session)
 
 ## Done
+- **v1 shipped (training → eval → serving → CLI).**
+  - **Training.** 2-epoch QLoRA fine-tune of Qwen3-1.7B with **vanilla transformers + PEFT + TRL
+    SFTTrainer (no Unsloth)** — Unsloth was the original plan but was dropped on the cluster (V100
+    bring-up); bf16 on A100. Adapter on Hub (`marzoukbaig14/committed-qwen3-1.7b-lora`), W&B tracked
+    (offline). Config `configs/qwen3-1.7b-lora-r16.yaml`; SLURM launcher `scripts/train.slurm`.
+  - **Merge → GGUF → Q4_K_M.** `scripts/merge_adapter.py` / `merge_convert_quantize.py` fuse the
+    adapter, convert, and quantize; fine-tuned GGUF on Hub (`marzoukbaig14/committed-gguf`,
+    `committed-finetuned-Q4_K_M.gguf`), same quant as the baseline so before/after isolates the
+    fine-tune (ADRs 0044/0038).
+  - **Fine-tune eval (before/after).** Same 442-row strata sample, judge, rubric, grammar, prompt
+    as baseline — only the weights differ (ADR 0045). Deployment-reweighted: type accuracy
+    0.131 → **0.637** (above always-`fix` floor 0.489); conjunctive pass-rate 0.181 → **0.471**;
+    graded mean 1.207 → **2.188**; faithfulness 0.43 → **0.86**; specificity regressed 0.81 → 0.71.
+    Writeup in `docs/eval/FINDINGS_v1.md`; raw evidence (candidates + judge logs) in `analysis/results/`.
+  - **Serving.** Shared inference core `engine.py` (load + prompt + GBNF + decode), reused by the
+    FastAPI service (`serving/api.py`: `POST /generate`, `GET /health`), the Gradio demo, and the
+    CLI — one path, no drift. Dockerfile + HF Docker Space; fine-tuned GGUF pinned as the serving
+    artifact of record (ADR 0048). Portfolio-integrated `/committed` demo (ADR 0043).
+  - **Local CLI.** `committed` console script: `git diff | committed` reads a diff from stdin,
+    auto-downloads the GGUF from the Hub on first run, prints one CC line to stdout.
+  - **Dependency restructure (ADR 0047).** Serve-minimal required set + `eval`/`train`/`dev`
+    optional groups; the Space build pulls only the serving deps.
 - Setup: devcontainer + uv lockfile; CPU deps; 3 secrets injected; 15 smoke tests pass.
 - Data inspection: CommitChronicle loaded/inspected; token distribution measured; exploration
   scripts in analysis/.
@@ -18,7 +40,10 @@ run pending.
   detection by message pattern (0021), language by file extension (0022), single-file only, drop
   merge/revert, token cap 2048 (Qwen3-1.7B tokens). 49/49 tests pass. Build: raw pool 189,330 →
   57,969 balanced (cap 6,000 / floor 500, 16 languages) → 90/5/5 splits stratified by commit type.
-- Decision log: ADRs **0001–0043** logged (see DECISION_LOG.md). Eval-design set 0027–0036;
+- Decision log: ADRs **0001–0048** logged (see DECISION_LOG.md); 0044 = adapter-merge→GGUF→Q4_K_M
+  pipeline; 0045 = fine-tune eval protocol (hold harness constant, only weights differ); 0046 =
+  track raw eval evidence in-repo; 0047 = serve-minimal required deps + eval/train/dev groups; 0048
+  = pin the fine-tuned GGUF as the serving artifact of record. Eval-design set 0027–0036;
   0037 = deployment-reweighted headline metrics; 0038 = baseline GGUF pin (ggml-org/Qwen3-1.7B-GGUF
   Q4_K_M, matches serving quant so before/after isolates fine-tuning); 0039 = concrete CC GBNF
   grammar (ten-type codebook, optional scope, no !, single-line; format not semantics); 0040 =
@@ -55,18 +80,21 @@ run pending.
   (scoped to package; `analysis/` excluded) + offline unit tests — green. `build.py` lambda→def.
 
 ## In progress
-- Training config (`configs/…yaml`) — about to start. Core work (Zook authors values): LoRA rank +
-  alpha, learning rate, sequence length (from the token distribution), batch size + grad-accum,
-  epochs.
+- v1 is closed; no active build work. Doc reconciliation against the repo audit
+  (`docs/audit/REPO_AUDIT.md`) is the only open item before v2 begins.
 
-## Next
-- Scaffold `src/committed/train/train.py` (Unsloth + TRL `SFTTrainer`) + a SLURM submit script.
-- On Explorer HPC: `uv sync --group train`, confirm GPU visible + minimal import check, fire the
-  first QLoRA run, push adapter checkpoints to the Hub (`marzoukbaig14/committed-qwen3-1.7b-lora`),
-  W&B run attached.
-- Re-run the eval harness on the fine-tuned candidates → before/after comparison (the thesis).
-- Decide: move serving deps (`llama-cpp-python`, likely gradio/fastapi) into an optional `serve`
-  group so dev/eval/training never compile llama.cpp (proposal only → then ADR + `pyproject` edit).
+## Next (v2-i1 — Qwen3-0.6B controlled comparison)
+- Log ADR 0049: re-run the v1 fine-tune + eval pipeline changing exactly one variable — the base
+  model (Qwen3-1.7B → Qwen3-0.6B). Hold the recipe (LoRA r16/α32, lr, seq length, epochs, batch),
+  dataset, grammar, prompt, harness, 442-row strata sample, and Gemini judge constant (extends ADR
+  0045 from "only the weights differ" to "only the base model differs").
+- Reuse `marzoukbaig14/committed-train` unchanged — Qwen3-0.6B and 1.7B share a tokenizer, so the
+  token-cap filtering is identical; the dataset is NOT rebuilt.
+- Train the 0.6B adapter on HPC; merge → GGUF → Q4_K_M; run the frozen eval harness for a clean
+  before/after against the 1.7B numbers.
+- Question the run answers: does the same fine-tune rescue feat-collapse at 0.6B, and how close to
+  the 1.7B headline (type 0.637 / conjunctive 0.471) does it land. A materially worse 0.6B under the
+  identical recipe is a valid result (capacity / recipe-transfer limit); a recipe change defers to v2-i2.
 
 ## Key data findings (feed the filter + training)
 - Final training set: 52,173 rows. Commit types heavily skewed to `fix` (48.9%); a trivial
