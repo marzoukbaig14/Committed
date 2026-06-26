@@ -152,13 +152,17 @@ expansion to all languages (ADR 0023), 26 design decisions instead of expected ~
 package scaffolding overhead. Core coding sessions (June 3, June 4) hit ~1 major
 deliverable each — consistent with original throughput estimate.
 
-**Projection basis:** complex phases (Training, Evaluation) estimated at 2–3 sessions;
-simpler wiring phases (Serving, Demo) at 1–2 sessions. Session = one focused working
-block (~2–4 hours of active output).
+**Estimation basis (retrospective):** complex phases (Training, Evaluation) were estimated at
+2–3 sessions and wiring phases (Serving, Demo) at 1–2; broadly borne out. Session = one focused
+working block (~2–4 hours of active output).
 
 ---
 
-## Remaining Phases
+## v1 Phase Detail (retrospective)
+
+All phases below shipped. This section preserves the original phase plans as a record; each
+phase now carries its actual close instead of an estimate. The at-a-glance status is the
+Velocity table above and the Phase Map below.
 
 ### Phase: Training
 
@@ -177,7 +181,8 @@ Tasks (human-owned: config values and judgment calls):
 
 Inputs: `marzoukbaig14/committed-train` (done).
 Outputs: `marzoukbaig14/committed-qwen3-1.7b-lora` adapter on Hub + W&B run URL.
-**Estimated: 2–3 sessions (~June 5–7).**
+**Actual:** completed June 12–14 (sessions 13–15). Adapter on Hub, W&B tracked (offline). Unsloth
+was dropped for vanilla `transformers` + PEFT + TRL during the V100 cluster bring-up.
 
 ---
 
@@ -199,7 +204,10 @@ Tasks (human-owned: judge rubric, human ratings):
 
 Inputs: adapter checkpoint + `eval` split (2,898 rows).
 Outputs: eval report pushed to Hub; judge-vs-human correlation documented.
-**Estimated: 2–3 sessions (~June 8–10).**
+**Actual:** eval design June 6–7 (ADRs 0027–0036; the rubric finalized as four orthogonal axes —
+type, faithfulness, completeness, specificity — not the originally-listed set), baseline June 11
+(judge validated against 50 human ratings), fine-tune before/after June 16. Deployment-reweighted
+type accuracy 0.131 → 0.637; full writeup in `docs/eval/FINDINGS_v1.md`.
 
 ---
 
@@ -217,7 +225,9 @@ Tasks:
 
 Inputs: GGUF file on Hub.
 Outputs: Docker image + GGUF artifact on Hub + benchmark numbers.
-**Estimated: 2–3 sessions (~June 11–13).**
+**Actual:** completed June 17–18 (sessions 17–18). Shared engine + FastAPI + GBNF + Gradio;
+fine-tuned GGUF (Q4_K_M) pinned as the serving artifact of record (ADR 0048). Q8_0 and the
+throughput / quantization benchmarks remain open (still unchecked in the v1 checklist).
 
 ---
 
@@ -233,24 +243,28 @@ Tasks:
 
 Inputs: serving layer done.
 Outputs: live Spaces demo; v1 declared complete.
-**Estimated: 1–2 sessions (~June 14–15).**
+**Actual:** completed June 17–22 (sessions 17–20). Gradio Space + portfolio-integrated demo
+(ADR 0043) + local `git diff | committed` CLI; README with honest results; model + dataset
+cards reviewed.
 
 ---
 
-## v1 Completion Projection
+## v1 Completion (actual)
 
-Assuming ~1 session/day with current pace:
+v1 shipped over May 29 – June 22, 2026 (README finalized June 26). Actual phase close:
 
 ```
-June 5-7   Training phase
-June 8-10  Evaluation phase
-June 11-13 Serving phase
-June 14-15 Demo + Ship
+June 6-7    Eval design
+June 8-11   Baseline + judge validation
+June 12-14  Training
+June 16     Fine-tune eval (before/after)
+June 17-18  Serving
+June 20-22  Demo + CLI + ship
 ```
 
-**v1 projected complete: ~June 15, 2026.**
-Original estimate was "2–3 weeks from May 29" → June 12–19. Projection is on the near
-end of that range because data phase is done and the remaining phases have clearer scope.
+**v1 complete: ~June 22, 2026** — inside the original "2–3 weeks from May 29" (June 12–19)
+window, about a week past the ~June 15 projection. The slip traces to the cluster training
+bring-up (Unsloth → vanilla transformers for the V100) and a larger-than-planned serving + CLI build.
 
 ---
 
