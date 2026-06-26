@@ -154,7 +154,7 @@ Tasks (human-owned: config values and judgment calls):
   (set from June 2 token distribution), batch size tuned to available GPU VRAM.
 - Set up HPC cluster environment: authenticate to HF + W&B, install `train` dep group
   (`uv sync --group train`), confirm GPU visible, run minimal import check.
-- Fire first QLoRA training run via Unsloth + TRL SFTTrainer on
+- Fire first QLoRA training run via vanilla `transformers` + PEFT + TRL `SFTTrainer` on
   `marzoukbaig14/committed-train`. Watch W&B loss curve live.
 - Push adapter checkpoints to Hub every N steps (ephemeral compute — Hub is the only
   persistent storage).
@@ -255,7 +255,7 @@ reasoning in the Gradio demo. Requires a separate ADR and compute allocation.
 | Data | Load, inspect, filter, split, publish. | ✓ Done (June 1–4) |
 | Eval design | Judge prompt + rubric, eval harness, 50 human ratings. | Researching — reviewing industry practices for eval criteria and hand-grading before writing rubric. |
 | Baseline | Run base Qwen3-1.7B on the eval split; record all five metrics. | ⬜ After eval design |
-| Train v1 | QLoRA via Unsloth + SFTTrainer on HPC, iterate, push adapters, log to W&B. | ⬜ After baseline |
+| Train v1 | QLoRA via vanilla transformers + PEFT + TRL SFTTrainer on HPC, iterate, push adapters, log to W&B. | ⬜ After baseline |
 | Final eval | Full eval on fine-tune vs. baseline; judge-vs-human correlation; stretch ablations if time. | ⬜ After training |
 | Serve | Merge adapter, quantize to GGUF, GBNF grammar, FastAPI endpoint, Docker, benchmarks. | ⬜ After final eval |
 | Ship | Gradio demo on Spaces, final README, model card + dataset card review. | ⬜ End of v1 (~June 15) |
