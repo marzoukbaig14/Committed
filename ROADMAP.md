@@ -262,13 +262,13 @@ where it needs compute, an allocation.
 |-------|--------------|--------|
 | Setup | Decision log, environment, accounts, secrets. | ✓ Done (May 29–30) |
 | Data | Load, inspect, filter, split, publish. | ✓ Done (June 1–4) |
-| Eval design | Judge prompt + rubric, eval harness, 50 human ratings. | Researching — reviewing industry practices for eval criteria and hand-grading before writing rubric. |
-| Baseline | Run base Qwen3-1.7B on the eval split; record all five metrics. | ⬜ After eval design |
-| Train v1 | QLoRA via vanilla transformers + PEFT + TRL SFTTrainer on HPC, iterate, push adapters, log to W&B. | ⬜ After baseline |
-| Final eval | Full eval on fine-tune vs. baseline; judge-vs-human correlation; stretch ablations if time. | ⬜ After training |
-| Serve | Merge adapter, quantize to GGUF, GBNF grammar, FastAPI endpoint, Docker, benchmarks. | ⬜ After final eval |
-| Ship | Gradio demo on Spaces, final README, model card + dataset card review. | ⬜ End of v1 (~June 15) |
-| v2 (later) | Reasoning-trace distillation; with-vs-without ablation. | ⬜ After v1 ships |
+| Eval design | Judge prompt + rubric, eval harness, 50 human ratings. | ✓ Done (June 6–7) — analytic four-axis rubric (ADRs 0027–0036). |
+| Baseline | Run base Qwen3-1.7B on the eval split; record all five metrics. | ✓ Done (June 8–11) — feat-collapse confirmed; judge validated against 50 human ratings. |
+| Train v1 | QLoRA via vanilla transformers + PEFT + TRL SFTTrainer on HPC, iterate, push adapters, log to W&B. | ✓ Done (June 12–14) — adapter on Hub, W&B tracked. |
+| Final eval | Full eval on fine-tune vs. baseline; judge-vs-human correlation; stretch ablations if time. | ✓ Done (June 16) — before/after landed (FINDINGS_v1). |
+| Serve | Merge adapter, quantize to GGUF, GBNF grammar, FastAPI endpoint, Docker, benchmarks. | ✓ Done (June 17–18) — fine-tuned GGUF pinned as serving artifact (ADR 0048). |
+| Ship | Gradio demo on Spaces, final README, model card + dataset card review, local CLI. | ✓ Done (June 20–22) — `git diff \| committed` install path; v1 complete. |
+| v2 (next) | v2-i1: Qwen3-0.6B controlled comparison; then multi-line commits, specificity data fix, reasoning-trace distillation, reasoning toggle. | ⬜ Next |
 
 _Routine code commits go through git.
 Anything that changes design, stack, scope, or infrastructure goes through the decision-log flow._
