@@ -2,9 +2,9 @@
 id: 0006
 title: Split dependencies into a CPU/dev group and a GPU/train group
 date: 2026-05-29
-status: accepted
+status: superseded
 supersedes: []
-superseded_by: []
+superseded_by: [0047]
 relates_to: []
 tags: [infra]
 ---
