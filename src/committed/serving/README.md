@@ -14,10 +14,11 @@ behind the HTTP contract in [`docs/serving/HTTP_CONTRACT.md`](../../../docs/serv
 
 Resolution order, all via environment variables:
 
-1. `COMMITTED_MODEL_PATH` — explicit local `.gguf`. **Set this to swap in the fine-tuned
-   model** once it exists (the one-line swap).
+1. `COMMITTED_MODEL_PATH` — explicit local `.gguf` (wins when set).
 2. `COMMITTED_MODEL_REPO` + `COMMITTED_MODEL_FILE` — pulled from the Hub (public; no token).
-   Defaults to the pinned baseline `ggml-org/Qwen3-1.7B-GGUF / Qwen3-1.7B-Q4_K_M.gguf` (ADR 0038).
+   Defaults to the fine-tuned `marzoukbaig14/committed-gguf / committed-finetuned-Q4_K_M.gguf`
+   (ADR 0048) — the serving artifact of record. The baseline `ggml-org/Qwen3-1.7B-GGUF /
+   Qwen3-1.7B-Q4_K_M.gguf` (ADR 0038) is reachable by overriding these vars.
 
 `COMMITTED_CORS_ORIGINS` is a comma-separated list of exact allowed origins (production and any
 custom domain). Vercel preview domains (`https://*.vercel.app`) are allowed by regex in `api.py`.
@@ -43,7 +44,11 @@ docker build -f src/committed/serving/Dockerfile -t committed-serve .
 docker run -p 7860:7860 -e COMMITTED_CORS_ORIGINS="https://your-portfolio.vercel.app" committed-serve
 ```
 
-The base GGUF and tokenizer are baked in at build time, so the container starts without a
-network pull. To deploy, the human creates a Hugging Face **Docker** Space and points it at this
-Dockerfile (set `COMMITTED_CORS_ORIGINS` in the Space variables). The free Docker Space sleeps
-after ~48 h idle; the frontend handles the cold-start wake via `/health` (ADR 0043).
+A GGUF and the tokenizer are baked in at build time so the container needs no network pull for
+them. Note: the Dockerfile currently pre-warms the **baseline** base GGUF
+(`ggml-org/Qwen3-1.7B-GGUF`), while the engine's serving default is the **fine-tuned** GGUF
+(`marzoukbaig14/committed-gguf`, ADR 0048) — so the fine-tuned artifact is fetched on first
+startup until the Dockerfile pre-warm is updated to match (a code change, tracked separately).
+To deploy, the human creates a Hugging Face **Docker** Space and points it at this Dockerfile
+(set `COMMITTED_CORS_ORIGINS` in the Space variables). The free Docker Space sleeps after ~48 h
+idle; the frontend handles the cold-start wake via `/health` (ADR 0043).
