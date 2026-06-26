@@ -130,8 +130,23 @@ Data phase closed. First Hub artifact live.
 | 5 | June 2 | Filter design decisions (3 ADRs) + full scan |
 | 6 | June 3 | Filter written + tested + spotchecked + package |
 | 7 | June 4 | Build pipeline + 49 tests + dataset on Hub |
+| 8 | June 6 | Eval-design ADRs 0027–0034 (analytic four-axis rubric, gate-then-grade composite, swappable judge backend) |
+| 9 | June 7 | ADRs 0035–0036 (binary rubric, decomposed faithfulness); eval harness + metrics written |
+| 10 | June 8 | Inference: zero-shot prompt, GBNF grammar, candidate generation |
+| 11 | June 10 | Stratified eval sampler + test-split profiler; frozen 442-row strata manifest |
+| 12 | June 11 | ADR 0037 (deployment-reweighted headline); baseline measured; judge validated vs. 50 human ratings; CI build-from-lockfile + ruff gate |
+| 13 | June 12 | QLoRA config + train.py + SLURM launcher; W&B offline |
+| 14 | June 13 | Training on cluster: switch Unsloth→vanilla transformers for V100; ADRs 0038–0040, 0043; precision fixes |
+| 15 | June 14 | Train tuning (eval/save cadence for 2 epochs in 8h wall; resume-from-checkpoint); fine-tune run |
+| 16 | June 16 | Fine-tune before/after on 442-row strata; ADRs 0044–0046; FINDINGS_v1 |
+| 17 | June 17 | Serving: FastAPI endpoint + shared engine + GBNF + Gradio demo; dep split serve/eval/train (ADR 0047) |
+| 18 | June 18 | ADR 0048: pin fine-tuned GGUF as serving artifact of record; serving defaults to it |
+| 19 | June 20 | Local CLI install path (`git diff \| committed`) + GGUF auto-download; serving perf/health fixes |
+| 20 | June 22 | README / MASTER polish |
+| 21 | June 26 | README evaluation + project details |
 
-**Observed rate:** 7 sessions → data phase complete (Setup through Publish).
+**Observed rate:** 7 sessions → data phase complete (Setup through Publish); 21 sessions →
+full v1 shipped (May 29 – June 22, with a June 26 README pass).
 **Slippage vs. original plan:** data took 7 sessions vs. 4 planned. Drivers: scope
 expansion to all languages (ADR 0023), 26 design decisions instead of expected ~12,
 package scaffolding overhead. Core coding sessions (June 3, June 4) hit ~1 major
