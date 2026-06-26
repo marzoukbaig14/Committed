@@ -3,9 +3,9 @@ id: 0047
 title: Split dependencies into a serve-minimal required set with eval/train/dev groups
 date: 2026-06-17
 status: accepted
-supersedes: []
+supersedes: [0006]
 superseded_by: []
-relates_to: [0005, 0006, 0024, 0043]
+relates_to: [0005, 0024, 0043]
 tags: [infra, serving, deps]
 ---
 

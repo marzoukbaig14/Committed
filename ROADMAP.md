@@ -130,20 +130,39 @@ Data phase closed. First Hub artifact live.
 | 5 | June 2 | Filter design decisions (3 ADRs) + full scan |
 | 6 | June 3 | Filter written + tested + spotchecked + package |
 | 7 | June 4 | Build pipeline + 49 tests + dataset on Hub |
+| 8 | June 6 | Eval-design ADRs 0027–0034 (analytic four-axis rubric, gate-then-grade composite, swappable judge backend) |
+| 9 | June 7 | ADRs 0035–0036 (binary rubric, decomposed faithfulness); eval harness + metrics written |
+| 10 | June 8 | Inference: zero-shot prompt, GBNF grammar, candidate generation |
+| 11 | June 10 | Stratified eval sampler + test-split profiler; frozen 442-row strata manifest |
+| 12 | June 11 | ADR 0037 (deployment-reweighted headline); baseline measured; judge validated vs. 50 human ratings; CI build-from-lockfile + ruff gate |
+| 13 | June 12 | QLoRA config + train.py + SLURM launcher; W&B offline |
+| 14 | June 13 | Training on cluster: switch Unsloth→vanilla transformers for V100; ADRs 0038–0040, 0043; precision fixes |
+| 15 | June 14 | Train tuning (eval/save cadence for 2 epochs in 8h wall; resume-from-checkpoint); fine-tune run |
+| 16 | June 16 | Fine-tune before/after on 442-row strata; ADRs 0044–0046; FINDINGS_v1 |
+| 17 | June 17 | Serving: FastAPI endpoint + shared engine + GBNF + Gradio demo; dep split serve/eval/train (ADR 0047) |
+| 18 | June 18 | ADR 0048: pin fine-tuned GGUF as serving artifact of record; serving defaults to it |
+| 19 | June 20 | Local CLI install path (`git diff \| committed`) + GGUF auto-download; serving perf/health fixes |
+| 20 | June 22 | README / MASTER polish |
+| 21 | June 26 | README evaluation + project details |
 
-**Observed rate:** 7 sessions → data phase complete (Setup through Publish).
+**Observed rate:** 7 sessions → data phase complete (Setup through Publish); 21 sessions →
+full v1 shipped (May 29 – June 22, with a June 26 README pass).
 **Slippage vs. original plan:** data took 7 sessions vs. 4 planned. Drivers: scope
 expansion to all languages (ADR 0023), 26 design decisions instead of expected ~12,
 package scaffolding overhead. Core coding sessions (June 3, June 4) hit ~1 major
 deliverable each — consistent with original throughput estimate.
 
-**Projection basis:** complex phases (Training, Evaluation) estimated at 2–3 sessions;
-simpler wiring phases (Serving, Demo) at 1–2 sessions. Session = one focused working
-block (~2–4 hours of active output).
+**Estimation basis (retrospective):** complex phases (Training, Evaluation) were estimated at
+2–3 sessions and wiring phases (Serving, Demo) at 1–2; broadly borne out. Session = one focused
+working block (~2–4 hours of active output).
 
 ---
 
-## Remaining Phases
+## v1 Phase Detail (retrospective)
+
+All phases below shipped. This section preserves the original phase plans as a record; each
+phase now carries its actual close instead of an estimate. The at-a-glance status is the
+Velocity table above and the Phase Map below.
 
 ### Phase: Training
 
@@ -154,7 +173,7 @@ Tasks (human-owned: config values and judgment calls):
   (set from June 2 token distribution), batch size tuned to available GPU VRAM.
 - Set up HPC cluster environment: authenticate to HF + W&B, install `train` dep group
   (`uv sync --group train`), confirm GPU visible, run minimal import check.
-- Fire first QLoRA training run via Unsloth + TRL SFTTrainer on
+- Fire first QLoRA training run via vanilla `transformers` + PEFT + TRL `SFTTrainer` on
   `marzoukbaig14/committed-train`. Watch W&B loss curve live.
 - Push adapter checkpoints to Hub every N steps (ephemeral compute — Hub is the only
   persistent storage).
@@ -162,7 +181,8 @@ Tasks (human-owned: config values and judgment calls):
 
 Inputs: `marzoukbaig14/committed-train` (done).
 Outputs: `marzoukbaig14/committed-qwen3-1.7b-lora` adapter on Hub + W&B run URL.
-**Estimated: 2–3 sessions (~June 5–7).**
+**Actual:** completed June 12–14 (sessions 13–15). Adapter on Hub, W&B tracked (offline). Unsloth
+was dropped for vanilla `transformers` + PEFT + TRL during the V100 cluster bring-up.
 
 ---
 
@@ -184,7 +204,10 @@ Tasks (human-owned: judge rubric, human ratings):
 
 Inputs: adapter checkpoint + `eval` split (2,898 rows).
 Outputs: eval report pushed to Hub; judge-vs-human correlation documented.
-**Estimated: 2–3 sessions (~June 8–10).**
+**Actual:** eval design June 6–7 (ADRs 0027–0036; the rubric finalized as four orthogonal axes —
+type, faithfulness, completeness, specificity — not the originally-listed set), baseline June 11
+(judge validated against 50 human ratings), fine-tune before/after June 16. Deployment-reweighted
+type accuracy 0.131 → 0.637; full writeup in `docs/eval/FINDINGS_v1.md`.
 
 ---
 
@@ -202,7 +225,9 @@ Tasks:
 
 Inputs: GGUF file on Hub.
 Outputs: Docker image + GGUF artifact on Hub + benchmark numbers.
-**Estimated: 2–3 sessions (~June 11–13).**
+**Actual:** completed June 17–18 (sessions 17–18). Shared engine + FastAPI + GBNF + Gradio;
+fine-tuned GGUF (Q4_K_M) pinned as the serving artifact of record (ADR 0048). Q8_0 and the
+throughput / quantization benchmarks remain open (still unchecked in the v1 checklist).
 
 ---
 
@@ -218,32 +243,45 @@ Tasks:
 
 Inputs: serving layer done.
 Outputs: live Spaces demo; v1 declared complete.
-**Estimated: 1–2 sessions (~June 14–15).**
+**Actual:** completed June 17–22 (sessions 17–20). Gradio Space + portfolio-integrated demo
+(ADR 0043) + local `git diff | committed` CLI; README with honest results; model + dataset
+cards reviewed.
 
 ---
 
-## v1 Completion Projection
+## v1 Completion (actual)
 
-Assuming ~1 session/day with current pace:
+v1 shipped over May 29 – June 22, 2026 (README finalized June 26). Actual phase close:
 
 ```
-June 5-7   Training phase
-June 8-10  Evaluation phase
-June 11-13 Serving phase
-June 14-15 Demo + Ship
+June 6-7    Eval design
+June 8-11   Baseline + judge validation
+June 12-14  Training
+June 16     Fine-tune eval (before/after)
+June 17-18  Serving
+June 20-22  Demo + CLI + ship
 ```
 
-**v1 projected complete: ~June 15, 2026.**
-Original estimate was "2–3 weeks from May 29" → June 12–19. Projection is on the near
-end of that range because data phase is done and the remaining phases have clearer scope.
+**v1 complete: ~June 22, 2026** — inside the original "2–3 weeks from May 29" (June 12–19)
+window, about a week past the ~June 15 projection. The slip traces to the cluster training
+bring-up (Unsloth → vanilla transformers for the V100) and a larger-than-planned serving + CLI build.
 
 ---
 
 ## v2 (after v1 ships)
 
-Reasoning-trace distillation: augment the dataset with synthetic `<think>` traces
-generated by a capable LLM; fine-tune a second time on trace + message pairs; expose
-reasoning in the Gradio demo. Requires a separate ADR and compute allocation.
+Aligned with the README/MASTER v2 list. Each item routes through a separate ADR and,
+where it needs compute, an allocation.
+
+- **Smaller-model comparison (v2-i1, first up):** can Qwen3-0.6B hit the same numbers?
+  A controlled re-run of the v1 pipeline changing only the base model.
+- **Full multi-line commits:** fine-tune for subject + body, not just the subject line.
+- **Specificity-regression data fix:** relax the subject-only normalization (ADR 0017)
+  in the next data iteration to recover concrete detail.
+- **Reasoning-trace distillation:** augment the dataset with synthetic `<think>` traces
+  generated by a capable LLM; fine-tune on trace + message pairs; with-vs-without-reasoning
+  ablation.
+- **Reasoning-display toggle** in the demo.
 
 ---
 
@@ -253,13 +291,13 @@ reasoning in the Gradio demo. Requires a separate ADR and compute allocation.
 |-------|--------------|--------|
 | Setup | Decision log, environment, accounts, secrets. | ✓ Done (May 29–30) |
 | Data | Load, inspect, filter, split, publish. | ✓ Done (June 1–4) |
-| Eval design | Judge prompt + rubric, eval harness, 50 human ratings. | Researching — reviewing industry practices for eval criteria and hand-grading before writing rubric. |
-| Baseline | Run base Qwen3-1.7B on the eval split; record all five metrics. | ⬜ After eval design |
-| Train v1 | QLoRA via Unsloth + SFTTrainer on HPC, iterate, push adapters, log to W&B. | ⬜ After baseline |
-| Final eval | Full eval on fine-tune vs. baseline; judge-vs-human correlation; stretch ablations if time. | ⬜ After training |
-| Serve | Merge adapter, quantize to GGUF, GBNF grammar, FastAPI endpoint, Docker, benchmarks. | ⬜ After final eval |
-| Ship | Gradio demo on Spaces, final README, model card + dataset card review. | ⬜ End of v1 (~June 15) |
-| v2 (later) | Reasoning-trace distillation; with-vs-without ablation. | ⬜ After v1 ships |
+| Eval design | Judge prompt + rubric, eval harness, 50 human ratings. | ✓ Done (June 6–7) — analytic four-axis rubric (ADRs 0027–0036). |
+| Baseline | Run base Qwen3-1.7B on the eval split; record all five metrics. | ✓ Done (June 8–11) — feat-collapse confirmed; judge validated against 50 human ratings. |
+| Train v1 | QLoRA via vanilla transformers + PEFT + TRL SFTTrainer on HPC, iterate, push adapters, log to W&B. | ✓ Done (June 12–14) — adapter on Hub, W&B tracked. |
+| Final eval | Full eval on fine-tune vs. baseline; judge-vs-human correlation; stretch ablations if time. | ✓ Done (June 16) — before/after landed (FINDINGS_v1). |
+| Serve | Merge adapter, quantize to GGUF, GBNF grammar, FastAPI endpoint, Docker, benchmarks. | ✓ Done (June 17–18) — fine-tuned GGUF pinned as serving artifact (ADR 0048). |
+| Ship | Gradio demo on Spaces, final README, model card + dataset card review, local CLI. | ✓ Done (June 20–22) — `git diff \| committed` install path; v1 complete. |
+| v2 (next) | v2-i1: Qwen3-0.6B controlled comparison; then multi-line commits, specificity data fix, reasoning-trace distillation, reasoning toggle. | ⬜ Next |
 
 _Routine code commits go through git.
 Anything that changes design, stack, scope, or infrastructure goes through the decision-log flow._

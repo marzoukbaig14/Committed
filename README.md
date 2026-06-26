@@ -188,10 +188,9 @@ committed/
 │   ├── train/                      # config, train
 │   ├── eval/                       # metrics, judge_gemini, human_rate, run_eval
 │   ├── inference/                  # engine, prompt, grammar.gbnf
-│   ├── serving/                    # api.py (FastAPI), Dockerfile
-│   └── utils/
+│   └── serving/                    # api.py (FastAPI), Dockerfile
 ├── app/
-│   └── gradio_app.py
+│   └── app.py                      # Gradio demo (HF Space)
 ├── configs/
 ├── analysis/                       # exploration scripts + saved eval results
 └── tests/

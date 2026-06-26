@@ -9,7 +9,7 @@ graph TD
   n0003["0003: Use Qwen3-1.7B as the primary base model"]:::accepted
   n0004["0004: Pull the production serving layer into v1"]:::accepted
   n0005["0005: Serve via llama.cpp and GGUF on CPU, not bitsandbytes"]:::accepted
-  n0006["0006: Split dependencies into a CPU/dev group and a GPU/train group"]:::accepted
+  n0006["0006: Split dependencies into a CPU/dev group and a GPU/train group"]:::superseded
   n0007["0007: Use Codespaces plus a committed devcontainer as the canonical dev environment"]:::accepted
   n0008["0008: Use claude-haiku-4-5 as the LLM-as-judge"]:::superseded
   n0009["0009: Constrain decoding to a Conventional Commits grammar (GBNF)"]:::accepted
@@ -52,6 +52,7 @@ graph TD
   n0046["0046: Track raw eval evidence in the repo"]:::accepted
   n0047["0047: Split dependencies into a serve-minimal required set with eval/train/dev groups"]:::accepted
   n0048["0048: Pin the fine-tuned GGUF as the serving artifact of record; default the serving layer to it"]:::accepted
+  n0049["0049: v2 iteration 1 scope: Qwen3-0.6B controlled comparison"]:::accepted
   n0003 --- n0002
   n0004 --- n0002
   n0005 --- n0004
@@ -131,10 +132,13 @@ graph TD
   n0045 --- n0040
   n0045 --- n0037
   n0046 --- n0045
+  n0006 -. superseded by .-> n0047
   n0047 --- n0005
-  n0047 --- n0006
   n0047 --- n0024
   n0047 --- n0043
+  n0049 --- n0045
+  n0049 --- n0011
+  n0049 --- n0003
   classDef proposed fill:#fff7e6,stroke:#d4a017;
   classDef accepted fill:#e6f4ea,stroke:#137333;
   classDef superseded fill:#f1f3f4,stroke:#9aa0a6,color:#5f6368;

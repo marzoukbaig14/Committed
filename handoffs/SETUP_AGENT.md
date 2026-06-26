@@ -74,11 +74,11 @@ Verify: `uv run ruff --version` and `uv run pytest --version` both succeed. Have
 This is the step that prevents dependency hell.
 
 - The default (CPU) dependencies install in the Codespace. Add them as a group, for example a `cpu` or default group: `datasets`, `pandas`, `transformers`, `llama-cpp-python`, `gradio`, `fastapi`, `uvicorn`, `evaluate`, `sacrebleu`, `rouge-score`, `scikit-learn`, `anthropic`, `wandb`, `pyyaml`.
-- The GPU training stack goes in a separate `train` group that is **not installed in the Codespace**: `unsloth`, `bitsandbytes`, `accelerate`, `peft`, `trl`. These need CUDA and belong on Colab or the cluster.
+- The GPU training stack goes in a separate `train` group that is **not installed in the Codespace**: `bitsandbytes`, `accelerate`, `peft`, `trl`, `torch`. These need CUDA and belong on Colab or the cluster.
 
 Use `uv` dependency groups so the two sets are declared separately and the Codespace only installs the CPU set.
 
-Teach: `bitsandbytes` and `unsloth` are built for NVIDIA GPUs. Installing them in a CPU container is where the previous session went wrong, since the install tries and fails to find CUDA. Keeping them in a `train` group that only the GPU machine installs removes the whole problem. Add the dependencies incrementally and verify each `uv sync` succeeds before adding more, so that if one package pulls a conflict you catch it immediately rather than ten packages later.
+Teach: `bitsandbytes` is built for NVIDIA GPUs. Installing it in a CPU container is where the previous session went wrong, since the install tries and fails to find CUDA. Keeping them in a `train` group that only the GPU machine installs removes the whole problem. Add the dependencies incrementally and verify each `uv sync` succeeds before adding more, so that if one package pulls a conflict you catch it immediately rather than ten packages later.
 
 Verify: after the CPU group installs, run a one-line import smoke test (next step). Do not install the `train` group here.
 
