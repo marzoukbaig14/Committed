@@ -37,18 +37,15 @@ curl -X POST localhost:7860/generate -H 'content-type: application/json' \
 > `llama-cpp-python` needs a C/C++ compiler and does not build on the human's bare Windows
 > machine (ADR 0041). Run serving in Docker, on CI/Linux, or on the Space.
 
-## Docker / HF Docker Space
+## Deployment (HF Docker Space)
 
-```bash
-docker build -f src/committed/serving/Dockerfile -t committed-serve .
-docker run -p 7860:7860 -e COMMITTED_CORS_ORIGINS="https://your-portfolio.vercel.app" committed-serve
-```
+The live demo is **not** deployed from this package. It is served by the standalone
+`marzoukbaig14/committed-api` Hugging Face **Docker** Space, which has its own root Dockerfile
+that bakes no model and pulls the fine-tuned GGUF (`marzoukbaig14/committed-gguf /
+committed-finetuned-Q4_K_M.gguf`, ADR 0048) from the Hub at runtime, serving it via
+`committed.serving.api:app`. Set `COMMITTED_CORS_ORIGINS` in the Space variables. Verify deploy
+behavior against the committed-api Space repo, not this package.
 
-This Dockerfile is a local / reference build and is **not** the deployed surface. The live demo
-is served by the standalone `marzoukbaig14/committed-api` Hugging Face Space, which has its own
-root Dockerfile that bakes no model and pulls the fine-tuned GGUF (`marzoukbaig14/committed-gguf`,
-ADR 0048) at runtime — so production serves the correct model and there is no pre-warm mismatch
-there. This reference Dockerfile happens to pre-warm the baseline base GGUF
-(`ggml-org/Qwen3-1.7B-GGUF`): fine for a local smoke test, but not what production runs. Verify
-deploy behavior against the committed-api Space repo, not this file. The free Docker Space sleeps
-after ~48 h idle; the frontend handles the cold-start wake via `/health` (ADR 0043).
+The Space repo has no GitHub auto-sync, so shipping a backend change requires a **Factory rebuild**
+of the Space, not just a restart. The free Docker Space sleeps after ~48 h idle; the frontend
+handles the cold-start wake via `/health` (ADR 0043).
