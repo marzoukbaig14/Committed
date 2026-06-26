@@ -79,7 +79,22 @@ The fine-tune was evaluated against the un-tuned Qwen3-1.7B base on a 442-exampl
 | Graded mean (0–3) | 1.207 | **2.188** |
 | Faithfulness | 0.43 | **0.86** |
 
-The base model's dominant failure was "feat-collapse" — it labeled ~95% of all diffs `feat` regardless of content, scoring below a trivial always-guess-`fix` baseline (0.489) on type. Fine-tuning broke the collapse. One axis (specificity) regressed, 0.81 → 0.71; the full breakdown, the regression analysis, and sample outputs are on the **[project page](PORTFOLIO_COMMITTED_URL)**.
+The base model's dominant failure was "feat-collapse" — it labeled ~95% of all diffs `feat` regardless of content, scoring below a trivial always-guess-`fix` baseline (0.489) on type. Fine-tuning broke the collapse. One axis (specificity) regressed, 0.81 → 0.71.
+
+The full before/after, the regression analysis, and the two-stories breakdown of where the model disagrees with gold (sometimes the model is right, sometimes it isn't) are in **[`docs/eval/FINDINGS_v1.md`](docs/eval/FINDINGS_v1.md)**. Curated side-by-side outputs with verdicts are in **[`docs/eval/examples_v1_i1.md`](docs/eval/examples_v1_i1.md)**. You can also try the model yourself on the **[live demo](https://my-portfolio-ten-rosy-36.vercel.app/committed)**.
+
+---
+
+## Going deeper
+
+The depth behind the headline lives in a few places, depending on what you want:
+
+- **The full eval writeup** → [`docs/eval/FINDINGS_v1.md`](docs/eval/FINDINGS_v1.md). The honest before/after: how the fine-tune beat the zero-shot baseline, the one axis that regressed and why, and why the residual errors are a correctable data problem rather than a modeling dead end. Read this if you want to know whether the results hold up.
+- **Worked examples** → [`docs/eval/examples_v1_i1.md`](docs/eval/examples_v1_i1.md). Side-by-side model-vs-gold cases with per-example verdicts — including where the model beats noisy gold labels and where its `fix`-bias misfires.
+- **The design and methodology** → [`MASTER.md`](MASTER.md). The single source of truth for the whole design: thesis, scope, data plan, training plan, serving plan, eval plan. Read this if you want the *what and why* of the build, not just the results.
+- **Every decision, with rationale** → [`docs/DECISION_LOG.md`](docs/DECISION_LOG.md). The full Architecture Decision Record trail (0001–0048): why Qwen3-1.7B, why llama.cpp and GGUF, why the judge rubric is shaped the way it is, why the dataset is filtered and balanced the way it is. This is the real, timestamped methodology record — more complete than any single writeup.
+- **The judge rubric** → [`docs/eval/judge_rubric.md`](docs/eval/judge_rubric.md). The exact per-axis rubric the LLM judge applies, synced to ADR 0035.
+- **The artifacts on the Hub** → [GGUF model](https://huggingface.co/marzoukbaig14/committed-gguf) · [LoRA adapter](https://huggingface.co/marzoukbaig14/committed-qwen3-1.7b-lora) · [training dataset](https://huggingface.co/datasets/marzoukbaig14/committed-train).
 
 ---
 
@@ -138,7 +153,7 @@ Five metrics, chosen to cover different failure modes:
 | LLM-as-judge (Gemini 2.5 Flash free tier) | Four orthogonal axes: type-correctness, faithfulness, completeness, specificity | Headline metric |
 | Human ratings (50 examples) | Same axes, rated by a human | Used to validate the judge; judge-vs-human agreement is reported |
 
-The judge-vs-human agreement is the key number — it gives the judge score an honest confidence bound rather than reporting it as ground truth. The judge applies an analytic per-axis rubric: faithfulness is a hard gate (an unfaithful message fails regardless of other axes), and the headline is the conjunctive pass-rate — the fraction of outputs that clear all four axes. Headline numbers are reweighted to the true deployment commit-type distribution (ADR 0037).
+The judge-vs-human agreement is the key number — it gives the judge score an honest confidence bound rather than reporting it as ground truth. The judge applies an analytic per-axis rubric: faithfulness is a hard gate (an unfaithful message fails regardless of other axes), and the headline is the conjunctive pass-rate — the fraction of outputs that clear all four axes. Headline numbers are reweighted to the true deployment commit-type distribution (ADR 0037). The full writeup with the regression analysis is in [`docs/eval/FINDINGS_v1.md`](docs/eval/FINDINGS_v1.md).
 
 ---
 
@@ -159,7 +174,10 @@ committed/
 │       └── ci.yml                  # ruff + pytest gate
 ├── docs/
 │   ├── decisions/                  # ADR records, one file per decision
-│   ├── eval/judge_rubric.md        # the judge rubric (synced to ADR 0035)
+│   ├── eval/
+│   │   ├── FINDINGS_v1.md          # the v1 eval writeup
+│   │   ├── examples_v1_i1.md       # curated side-by-side examples
+│   │   └── judge_rubric.md         # the judge rubric (synced to ADR 0035)
 │   ├── DECISION_LOG.md             # generated, do not edit by hand
 │   └── decision-tree.md            # generated, do not edit by hand
 ├── scripts/
@@ -219,7 +237,7 @@ Production layer:
 
 ## Decision log
 
-Every significant design and development decision is logged as an Architecture Decision Record in `docs/decisions/` (48 records and counting). The full log with a relationship diagram is in `docs/DECISION_LOG.md` and `docs/decision-tree.md`, both auto-generated by `scripts/build_decision_log.py`. Start with `docs/decisions/0001-adopt-adr-logging.md` and read forward.
+The decision log linked above is an append-only set of Architecture Decision Records in `docs/decisions/` (48 and counting), one file per significant design or dev choice. The human-readable table is `docs/DECISION_LOG.md` and a relationship diagram is `docs/decision-tree.md`, both auto-generated by `scripts/build_decision_log.py` — never edited by hand. To read the project's evolution chronologically, start at `docs/decisions/0001-adopt-adr-logging.md` and go forward.
 
 ---
 
