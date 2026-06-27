@@ -13,6 +13,10 @@ export PATH="$HOME/.local/bin:$PATH"
 cd "$SLURM_SUBMIT_DIR"
 mkdir -p logs
 
+# Config path: defaults to the v2-i1 0.6B run; pass a path as the first arg to
+# reuse this script for other configs (e.g. the v1 1.7B record).
+CONFIG="${1:-configs/qwen3-0.6b-lora-r16.yaml}"
+
 : "${HF_TOKEN:?export HF_TOKEN before sbatch}"
 export WANDB_PROJECT=committed
 export WANDB_MODE=offline
@@ -29,4 +33,4 @@ uv run --no-sync python -c "import torch; print('torch', torch.__version__, 'cud
 uv run --no-sync python -c "import transformers, peft, trl, bitsandbytes, accelerate, datasets; print('imports ok')"
 
 # Launch.
-uv run --no-sync python -m committed.train.train --config configs/qwen3-1.7b-lora-r16.yaml
+uv run --no-sync python -m committed.train.train --config "$CONFIG"
