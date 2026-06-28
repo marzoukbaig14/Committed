@@ -43,7 +43,8 @@ schedule:
   seed: 3407
 
 io:
-  output_dir: outputs/qwen3-1.7b-lora-r16
+  output_dir: outputs/qwen3-0.6b-lora-r16
+  resume_from_checkpoint: false   # fresh run; set true only to continue an interrupted run from output_dir
   logging_steps: 10
   eval_strategy: steps
   eval_steps: 500
