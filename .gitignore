@@ -40,4 +40,9 @@ analysis/browse_examples.py
 !analysis/results/baseline_judge_log.jsonl
 !analysis/results/finetune_strata442.jsonl
 !analysis/results/finetune_judge_log.jsonl
+# v2-i1 (0.6B) eval evidence
+!analysis/results/baseline_0.6b_strata442.jsonl
+!analysis/results/baseline_0.6b_judge_log.jsonl
+!analysis/results/finetune_0.6b_strata442.jsonl
+!analysis/results/finetune_0.6b_judge_log.jsonl
 .claude/
