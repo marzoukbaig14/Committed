@@ -1,0 +1,152 @@
+{
+  "model": "deepseek",
+  "deterministic": {
+    "bleu": 0.8565275636660643,
+    "rouge_l": 0.12080234364912977,
+    "prefix": {
+      "accuracy": 0.11764705882352941,
+      "n": 442,
+      "per_type": {
+        "feat": {
+          "n": 50,
+          "accuracy": 0.92
+        },
+        "chore": {
+          "n": 50,
+          "accuracy": 0.0
+        },
+        "fix": {
+          "n": 50,
+          "accuracy": 0.06
+        },
+        "perf": {
+          "n": 21,
+          "accuracy": 0.0
+        },
+        "refactor": {
+          "n": 50,
+          "accuracy": 0.02
+        },
+        "test": {
+          "n": 50,
+          "accuracy": 0.0
+        },
+        "docs": {
+          "n": 50,
+          "accuracy": 0.0
+        },
+        "build": {
+          "n": 28,
+          "accuracy": 0.07142857142857142
+        },
+        "style": {
+          "n": 43,
+          "accuracy": 0.0
+        },
+        "ci": {
+          "n": 50,
+          "accuracy": 0.0
+        }
+      },
+      "always_fix_floor": 0.11312217194570136,
+      "unparseable_candidates": 0
+    }
+  },
+  "composite": {
+    "n": 442,
+    "per_axis_vector": {
+      "type_correctness": {
+        "pass": 0.29638009049773756,
+        "fail": 0.7036199095022625
+      },
+      "faithfulness": {
+        "pass": 0.2850678733031674,
+        "fail": 0.7149321266968326
+      },
+      "completeness": {
+        "pass": 0.35294117647058826,
+        "fail": 0.6470588235294118
+      },
+      "specificity": {
+        "pass": 0.41402714932126694,
+        "fail": 0.5859728506787331
+      }
+    },
+    "conjunctive_pass_rate": 0.08597285067873303,
+    "graded_mean": 0.6719457013574661,
+    "graded_max": 3.0,
+    "type_gated": false,
+    "per_type": {
+      "feat": {
+        "n": 50,
+        "conjunctive_pass_rate": 0.24,
+        "graded_mean": 1.02
+      },
+      "chore": {
+        "n": 50,
+        "conjunctive_pass_rate": 0.06,
+        "graded_mean": 0.62
+      },
+      "fix": {
+        "n": 50,
+        "conjunctive_pass_rate": 0.1,
+        "graded_mean": 0.88
+      },
+      "perf": {
+        "n": 21,
+        "conjunctive_pass_rate": 0.047619047619047616,
+        "graded_mean": 0.38095238095238093
+      },
+      "refactor": {
+        "n": 50,
+        "conjunctive_pass_rate": 0.02,
+        "graded_mean": 0.38
+      },
+      "test": {
+        "n": 50,
+        "conjunctive_pass_rate": 0.08,
+        "graded_mean": 0.62
+      },
+      "docs": {
+        "n": 50,
+        "conjunctive_pass_rate": 0.0,
+        "graded_mean": 0.38
+      },
+      "build": {
+        "n": 28,
+        "conjunctive_pass_rate": 0.07142857142857142,
+        "graded_mean": 0.7857142857142857
+      },
+      "style": {
+        "n": 43,
+        "conjunctive_pass_rate": 0.046511627906976744,
+        "graded_mean": 0.4186046511627907
+      },
+      "ci": {
+        "n": 50,
+        "conjunctive_pass_rate": 0.16,
+        "graded_mean": 1.08
+      }
+    }
+  },
+  "deployment": {
+    "note": "Headline. Per-type metrics measured on the equal-allocation strata sample, reweighted to the full test-split type distribution. The sample-level numbers in 'deterministic'/'composite' are diagnostic, not the deployment story.",
+    "type_weights": {
+      "fix": 0.4893029675638371,
+      "feat": 0.13285024154589373,
+      "chore": 0.1028295376121463,
+      "test": 0.09006211180124224,
+      "refactor": 0.0873015873015873,
+      "docs": 0.04278812974465148,
+      "ci": 0.023119392684610076,
+      "style": 0.014837819185645272,
+      "build": 0.00966183574879227,
+      "perf": 0.007246376811594203
+    },
+    "prefix_accuracy": 0.1540165631469979,
+    "always_fix_floor": 0.4893029675638371,
+    "conjunctive_pass_rate": 0.10135955831608003,
+    "graded_mean": 0.7766528640441682
+  },
+  "validation": null
+}
