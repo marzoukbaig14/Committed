@@ -171,10 +171,24 @@ def _is_insufficient_balance(e: Exception) -> bool:
     return "insufficient balance" in str(e).lower()
 
 
+def _strip_fences(text: str) -> str:
+    """Defensive cleanup: some models wrap JSON in ```json ... ``` despite json_object mode."""
+    t = (text or "").strip()
+    if t.startswith("```"):
+        t = t.split("\n", 1)[-1] if "\n" in t else t
+        if t.endswith("```"):
+            t = t[: t.rfind("```")]
+    return t.strip()
+
+
 def judge_one(client: OpenAI, diff: str, message: str, *, model: str = JUDGE_MODEL):
     """Score one (diff, candidate message) pair on all four axes. Returns (JudgeResult, usage).
     Retries transient errors (429/5xx/connection) and JSON-validation misses with exponential
-    backoff; raises BalanceExhausted on a 402 so the runner can stop and resume after top-up."""
+    backoff; raises BalanceExhausted on a 402 so the runner can stop and resume after top-up.
+
+    JSON-miss retries ESCALATE the temperature: at temperature=0 the model is deterministic, so a
+    malformed generation would repeat identically on every retry. Bumping temperature lets a retry
+    actually resample into valid JSON (the eval stays temp=0 for the first, normal attempt)."""
     if JUDGE_SYSTEM is None or build_judge_user is None:
         raise RuntimeError(
             "judge_prompt must expose JUDGE_SYSTEM (str, the rubric) and "
@@ -193,13 +207,14 @@ def judge_one(client: OpenAI, diff: str, message: str, *, model: str = JUDGE_MOD
     last_validation_err: Exception | None = None
     for attempt in range(MAX_RETRIES + 1):
         try:
+            temp = TEMPERATURE if attempt == 0 else min(0.2 * (attempt + 1), 0.8)
             resp = client.chat.completions.create(
                 model=model,
                 messages=messages,
-                temperature=TEMPERATURE,
+                temperature=temp,
                 response_format={"type": "json_object"},
             )
-            text = resp.choices[0].message.content
+            text = _strip_fences(resp.choices[0].message.content)
             try:
                 return JudgeResult.model_validate_json(text), getattr(resp, "usage", None)
             except (ValidationError, ValueError) as ve:
@@ -266,6 +281,7 @@ def judge_records(
     client = OpenAI(api_key=os.environ["DEEPSEEK_API_KEY"], base_url=BASE_URL)
 
     written = 0
+    skipped = 0
     total_cost = 0.0
     with out_path.open("a") as f:
         for rec in records:
@@ -285,6 +301,14 @@ def judge_records(
                     file=sys.stderr,
                 )
                 break
+            except Exception as e:
+                # One bad example (e.g. the model never returns schema-valid JSON even after
+                # temperature-escalated retries) must not kill the batch. Log and skip; a rerun
+                # retries skipped ids since they were never written to the log.
+                skipped += 1
+                print(f"[judge:deepseek] skipped id {ex_id} after retries: "
+                      f"{type(e).__name__}: {str(e)[:120]}", file=sys.stderr)
+                continue
 
             total_cost += _call_cost(model, usage)
             row = {
@@ -305,8 +329,8 @@ def judge_records(
             f.flush()
             written += 1
 
-    print(f"[judge:deepseek] {written} new judgments this run, est. cost ${total_cost:.4f} ({model})",
-          file=sys.stderr)
+    print(f"[judge:deepseek] {written} new judgments this run "
+          f"({skipped} skipped), est. cost ${total_cost:.4f} ({model})", file=sys.stderr)
     return written
 
 

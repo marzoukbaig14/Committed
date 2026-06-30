@@ -47,4 +47,5 @@ analysis/browse_examples.py
 !analysis/results/finetune_0.6b_judge_log.jsonl
 # v2-i1 DeepSeek-judged evidence (ADR 0050) — one allowlist entry per completed arm
 !analysis/results/baseline_0.6b_deepseek_judge_log.jsonl
+!analysis/results/finetune_0.6b_deepseek_judge_log.jsonl
 .claude/
