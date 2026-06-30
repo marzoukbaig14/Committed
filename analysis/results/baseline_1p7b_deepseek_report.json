@@ -1,0 +1,172 @@
+{
+  "model": "deepseek",
+  "deterministic": {
+    "bleu": 2.1734208506630663,
+    "rouge_l": 0.1558294853747008,
+    "prefix": {
+      "accuracy": 0.11312217194570136,
+      "n": 442,
+      "per_type": {
+        "feat": {
+          "n": 50,
+          "accuracy": 0.98
+        },
+        "chore": {
+          "n": 50,
+          "accuracy": 0.0
+        },
+        "fix": {
+          "n": 50,
+          "accuracy": 0.0
+        },
+        "perf": {
+          "n": 21,
+          "accuracy": 0.0
+        },
+        "refactor": {
+          "n": 50,
+          "accuracy": 0.0
+        },
+        "test": {
+          "n": 50,
+          "accuracy": 0.0
+        },
+        "docs": {
+          "n": 50,
+          "accuracy": 0.0
+        },
+        "build": {
+          "n": 28,
+          "accuracy": 0.0
+        },
+        "style": {
+          "n": 43,
+          "accuracy": 0.023255813953488372
+        },
+        "ci": {
+          "n": 50,
+          "accuracy": 0.0
+        }
+      },
+      "always_fix_floor": 0.11312217194570136,
+      "unparseable_candidates": 0
+    }
+  },
+  "composite": {
+    "n": 442,
+    "per_axis_vector": {
+      "type_correctness": {
+        "pass": 0.29638009049773756,
+        "fail": 0.7036199095022625
+      },
+      "faithfulness": {
+        "pass": 0.49095022624434387,
+        "fail": 0.5090497737556561
+      },
+      "completeness": {
+        "pass": 0.5429864253393665,
+        "fail": 0.45701357466063347
+      },
+      "specificity": {
+        "pass": 0.8144796380090498,
+        "fail": 0.18552036199095023
+      }
+    },
+    "conjunctive_pass_rate": 0.18552036199095023,
+    "graded_mean": 1.3167420814479638,
+    "graded_max": 3.0,
+    "type_gated": false,
+    "per_type": {
+      "feat": {
+        "n": 50,
+        "conjunctive_pass_rate": 0.46,
+        "graded_mean": 1.96
+      },
+      "chore": {
+        "n": 50,
+        "conjunctive_pass_rate": 0.16,
+        "graded_mean": 1.2
+      },
+      "fix": {
+        "n": 50,
+        "conjunctive_pass_rate": 0.12,
+        "graded_mean": 1.46
+      },
+      "perf": {
+        "n": 21,
+        "conjunctive_pass_rate": 0.14285714285714285,
+        "graded_mean": 1.4761904761904763
+      },
+      "refactor": {
+        "n": 50,
+        "conjunctive_pass_rate": 0.12,
+        "graded_mean": 1.0
+      },
+      "test": {
+        "n": 50,
+        "conjunctive_pass_rate": 0.14,
+        "graded_mean": 1.66
+      },
+      "docs": {
+        "n": 50,
+        "conjunctive_pass_rate": 0.12,
+        "graded_mean": 1.1
+      },
+      "build": {
+        "n": 28,
+        "conjunctive_pass_rate": 0.21428571428571427,
+        "graded_mean": 1.4642857142857142
+      },
+      "style": {
+        "n": 43,
+        "conjunctive_pass_rate": 0.09302325581395349,
+        "graded_mean": 0.46511627906976744
+      },
+      "ci": {
+        "n": 50,
+        "conjunctive_pass_rate": 0.26,
+        "graded_mean": 1.42
+      }
+    }
+  },
+  "deployment": {
+    "note": "Headline. Per-type metrics measured on the equal-allocation strata sample, reweighted to the full test-split type distribution. The sample-level numbers in 'deterministic'/'composite' are diagnostic, not the deployment story.",
+    "type_weights": {
+      "fix": 0.4893029675638371,
+      "feat": 0.13285024154589373,
+      "chore": 0.1028295376121463,
+      "test": 0.09006211180124224,
+      "refactor": 0.0873015873015873,
+      "docs": 0.04278812974465148,
+      "ci": 0.023119392684610076,
+      "style": 0.014837819185645272,
+      "build": 0.00966183574879227,
+      "perf": 0.007246376811594203
+    },
+    "prefix_accuracy": 0.13053830227743268,
+    "always_fix_floor": 0.4893029675638371,
+    "conjunctive_pass_rate": 0.1749965493443754,
+    "graded_mean": 1.4466114561766734
+  },
+  "validation": {
+    "n": 50,
+    "axes": {
+      "type_correctness": {
+        "raw_agreement": 0.82,
+        "cohen_kappa": 0.6059544658493871
+      },
+      "faithfulness": {
+        "raw_agreement": 0.78,
+        "cohen_kappa": 0.562798092209857
+      },
+      "completeness": {
+        "raw_agreement": 0.8,
+        "cohen_kappa": 0.6
+      },
+      "specificity": {
+        "raw_agreement": 0.88,
+        "cohen_kappa": 0.33628318584070793
+      }
+    }
+  }
+}
