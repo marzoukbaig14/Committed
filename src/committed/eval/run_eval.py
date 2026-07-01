@@ -322,8 +322,8 @@ def main() -> None:
     src.add_argument("--refs", help="Local jsonl of references (diff + message[+id]).")
     ap.add_argument("--split", default="test", help="Dataset split when using --dataset.")
     ap.add_argument("--candidates", required=True, help="jsonl of generations (message[+id]).")
-    ap.add_argument("--backend", choices=["gemini", "claude"], default="gemini",
-                    help="LLM judge backend (default: free Gemini).")
+    ap.add_argument("--backend", choices=["gemini", "claude", "deepseek"], default="gemini",
+                    help="LLM judge backend (default: Gemini; deepseek = OpenAI-compatible DeepSeek, ADR 0050).")
     ap.add_argument("--judge-log", required=True, help="JSONL path for judge output (resumable).")
     ap.add_argument("--report", required=True, help="Output path stem for the report (.json/.md).")
     ap.add_argument("--human-ratings", help="Optional jsonl of human axis labels for validation.")
@@ -352,10 +352,12 @@ def main() -> None:
     # 4. LLM judge (lazy backend import so we don't require both SDKs).
     if args.backend == "claude":
         from committed.eval import judge as backend
+    elif args.backend == "deepseek":
+        from committed.eval import judge_deepseek as backend
     else:
         from committed.eval import judge_gemini as backend
     judge_records_kwargs = {"limit": args.limit}
-    if args.backend == "gemini" and args.rpm is not None:
+    if args.backend in ("gemini", "deepseek") and args.rpm is not None:
         judge_records_kwargs["rpm"] = args.rpm
     if args.backend == "claude" and args.ceiling is not None:
         judge_records_kwargs["ceiling_usd"] = args.ceiling

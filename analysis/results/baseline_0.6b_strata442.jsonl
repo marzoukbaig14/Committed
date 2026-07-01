@@ -1,0 +1,442 @@
+{"id": 3, "message": "feat: Add error handling for exceptions in the Logger implementation. (object Logger)"}
+{"id": 4, "message": "feat: renderLink function updated to handle both path and href links, and added a scope in parentheses. (renderLink, path, href)"}
+{"id": 9, "message": "feat: Add compute capability check for RegionRestrictedConvolutionBackwardFilter in CUDA test cases. (add)"}
+{"id": 11, "message": "feat: Update media flow IDs in the ExpectedMediaItem type to include the media flow ID and path. This change affects the implementation of the iterateOnSLILike function. (update)"}
+{"id": 18, "message": "feat: Bump version to ${VERSION} in package.json (for ${DIR} in ${BUILDORDER})"}
+{"id": 23, "message": "feat: Add a gesture recognizer for vertical axis interactions. (ScrollVerticalDragGestureRecognizer)"}
+{"id": 35, "message": "feat: Add dependency to the dependencies list. (add, update, change)"}
+{"id": 42, "message": "feat: Define User primary and foreign keys, Eloquent model, and ID resolver in the User Keys, Model file. (User Keys, Model)"}
+{"id": 62, "message": "feat: Add a capability to return learning rates sorted by effective min and max. (class Course::LearningRateRecord)"}
+{"id": 63, "message": "feat: Add mask dimension and log scale parameters to the Resegmentation class. (mask, dimension, log_scale)"}
+{"id": 68, "message": "fix: fix the compression logic in the aggregate_stats function to properly handle the compressed size and bit rates. This commit will fix the compression logic in the aggregate_stats function. The most significant change is the fix to the compression logic. (aggregate_stats)"}
+{"id": 69, "message": "feat: Add logout endpoint for OAUTH2 IDP. (update)"}
+{"id": 97, "message": "feat: Define project name and PATH. (namespace, define, project)"}
+{"id": 101, "message": "feat: Add a new method to create a swap instruction in the OrcaSwap.Pool module. (extension OrcaSwap.Pool)"}
+{"id": 102, "message": "feat: Add support for handling fallback values in the dereference logic. (add)"}
+{"id": 113, "message": "feat: Add field handling for Discord embeds, specifically for adding fields with name and value. (add)"}
+{"id": 115, "message": "feat: Add a RequestCachingMiddleware that caches RPC endpoint results from the web3 library. (add)"}
+{"id": 123, "message": "feat: Add transition type from address bar to navigation pane. (Update)"}
+{"id": 131, "message": "feat: update the version of the project to 1.0.6. (build_path, config_path, deps_path)"}
+{"id": 153, "message": "feat: Add a new thread local storage implementation. (thread-local)"}
+{"id": 157, "message": "feat: Add a capability to handle resource path parameters in the IErrorHandler interface. (resource, pathParams) in the IErrorHandler interface. (resource, pathParams) in the IErrorHandler interface. (resource, pathParams) in the IErrorHandler interface. (resource, pathParams) in the IErrorHandler interface. (resource, pathParams) in the IErrorHandler interface. (resource, pathParams) in the IErrorHandler interface. (resource, pathParams) in the IErrorHandler interface. (resource, pathParams) in the IErrorHandler interface. (resource, pathParams) in the IErrorHandler interface. (resource, path"}
+{"id": 159, "message": "feat: Add a capability to the UiaCoreTypesApi namespace. (namespace)"}
+{"id": 166, "message": "feat: Add a capability to handle login flow in the LaunchActivity. (package com.chesire.malime.flow)"}
+{"id": 167, "message": "feat: Add functionality to change the play/pause icon state in the PlayButton class. (add)"}
+{"id": 176, "message": "feat: Add a pointer listener for touch and mouse events. (mixin RenderBox)"}
+{"id": 179, "message": "feat: Add a new property to the LightingScene class to store the ID of the scene. (namespace, file)"}
+{"id": 204, "message": "feat: Update the Readability Module Names check to correctly handle Pascal case naming. (in the file: Credo.Check.Readability.ModuleNames)"}
+{"id": 210, "message": "feat: adds a capability to handle authorization code grants. (public function getClientEntity, handlesGrant)"}
+{"id": 216, "message": "fix: fix the child array validation error in the DOM element handling. This commit will fix the error where the children array cannot be null. (add)"}
+{"id": 221, "message": "feat: Add a capability to set camera direction and location, and update the display mode. (speckleCommentView.ActiveViewport)"}
+{"id": 226, "message": "feat: Add a Receipt struct with a non-exhaustive enum for VmAction. (use crate::AccountId, Balance, Gas, PublicKey)"}
+{"id": 234, "message": "feat: Add a new method to handle image URL validation and type matching. (add)"}
+{"id": 244, "message": "feat: Add support for Chromeless mode in the PosterPlugin class. (open class PosterPlugin: UIContainerPlugin)"}
+{"id": 250, "message": "feat: range generator with Python-like syntax and range support for numbers in different ranges. (range)"}
+{"id": 256, "message": "feat: Add a capability to extract the lower 64-bit integer from a parameter. (add)"}
+{"id": 257, "message": "feat: Add a method to determine if a position is within the visible area of the parent node in scroll. (1 file)"}
+{"id": 258, "message": "feat: Add restore logic to handle database restoration from the backup list. (general.db_backup.restore)"}
+{"id": 272, "message": "feat: Add ability for allUsers to execute the Function"}
+{"id": 275, "message": "feat: Update the filter for proxy files or shell scripts echoing proxies one by one in the OpenBullet2.Native.Views.Dialogs namespace. (Update)"}
+{"id": 277, "message": "feat: Add a Perimeter calculation feature that converts a double value to a percentage. (height: 50.0.hp = 50%, width: 30.0.hp = 30%)"}
+{"id": 286, "message": "feat: Add a new service to handle deletion of buckets from the storage engine. (deleteService, deleteService)"}
+{"id": 294, "message": "feat: Add ListMentionsOptions class and builder class to the package. The most significant change is adding the ListMentionsOptions class and its builder. (workspaceId, entity) in parentheses. If applied, this commit will add the ListMentionsOptions class and its builder. (workspaceId, entity) in parentheses. If applied, this commit will add the ListMentionsOptions class and its builder. (workspaceId, entity) in parentheses. If applied, this commit will add the ListMentionsOptions class and its builder. (workspaceId, entity) in parentheses. If applied, this commit will add the ListM"}
+{"id": 301, "message": "fix: fix the execution state handling in the result_download_handler function. The diff shows that the code is updating the execution state handling logic in the result_download_handler function. (In the context of the file, it's in the result_download_handler function, and the scope is the function.)"}
+{"id": 313, "message": "feat: Add support for extracting text plugin in the CSS loaders. (extractTextPlugin)"}
+{"id": 325, "message": "fix: static sessions configured but no JWT private key is installed: either install JWT or enable allow_unsigned_callbacks in configuration. (conf.StaticSessions)"}
+{"id": 332, "message": "feat: Add a preview widget for file selection in the FileChooserDialog class. (DialogSettings::~DialogSettings() = default; namespace { ... })"}
+{"id": 350, "message": "feat: update endpoints for us-gov-west-1 and us-gov-east-1 in the `sagemaker` module. (sagemaker)"}
+{"id": 353, "message": "feat: Add a new scale parameter to the compression settings adapter. (namespace acl)"}
+{"id": 362, "message": "feat: Add environment variable support for IMMUDB_DIR, NETWORK, ADDRESS, and PORT. (scope: package server)"}
+{"id": 380, "message": "feat: Add a member nick change functionality. This commit will add a member nick change functionality. The most significant change is adding a member nick change functionality. (member_get, member_change_nick)"}
+{"id": 388, "message": "feat: Add a capability to handle seek to messages. (mPlayer.mBSCbArg = arg; mPlayer.ChangePlayerStatus(PLAYER_INITIALZED))"}
+{"id": 393, "message": "build: Build frontend completed in 1000ms. (BuildFrontendUtil)"}
+{"id": 396, "message": "fix: Certificate class updated to include the required fields and methods from the src directory. (scope: Certificate)"}
+{"id": 397, "message": "feat: Add a method to set the configuration in the Schema class. (class Schema)"}
+{"id": 399, "message": "feat: Add a capability to handle real-time data streams in the Realtime.MixProject module. (Realtime.MixProject)"}
+{"id": 414, "message": "feat: Update npm whoami detection logic in the Travis CI configuration file. (file: .travis.yml)"}
+{"id": 425, "message": "feat: Add new views for Unary request, response, error, elapsed, and streaming hub data. (specific)"}
+{"id": 430, "message": "feat: Add a capability to handle blend modes in the `paint` method of the `CircleParticle` class. (circleParticle)"}
+{"id": 437, "message": "fix: PvmActivity, CANCEL_EVENT_SCOPE, activity, executeActivity"}
+{"id": 440, "message": "feat: Add a capability to wipe the metadata and the first 4MB of the data partition. (add)"}
+{"id": 449, "message": "fix: Fixing the async execution of the RestClient class to handle cancellation tokens. This commit will update the implementation to include a cancellation token parameter. (public partial class RestClient)"}
+{"id": 464, "message": "feat: Add groupedRowReader struct and implementation for handling row reading in the SQL engine. (params: map[string]interface{}, selectors: []Selector)"}
+{"id": 468, "message": "feat: This commit adds a method to the GraphicalInstantaneousDynamicExpression class to handle the FillEmptyMeasuresWithWholeRests functionality in the OpenSheetMusicDisplay. (imported from \"../../OpenSheetMusicDisplay/OSMDOptions\")"}
+{"id": 481, "message": "feat: Add a capability to handle governance key updates and chain management in the `AnteHandle` method of the `RestrictedTx` struct. (update)"}
+{"id": 488, "message": "feat: Add internal logging functionality for Netcode logging. This change adds a new method to log information messages on the server. (internal logging)"}
+{"id": 506, "message": "feat: Set environment variables (empty string) is not implemented for this platform. (public static void SetEnvironmentVariable)"}
+{"id": 508, "message": "fix: fix the aggregate type function to correctly handle the resource and aggregate parameters. (in the file: Ash.Resource.Info)"}
+{"id": 528, "message": "feat: Add encoding of string inline content without wrapping in <span> when a part of inline content. (InlineContent::String)"}
+{"id": 541, "message": "feat: Add support for logging fatal discovery and recommendation fetching. (add)"}
+{"id": 549, "message": "feat: Refactor the ClassClonerVisitor class to improve performance. (class ClassClonerVisitor extends NodeVisitorAbstract)"}
+{"id": 554, "message": "feat: Add support for provisioning updates in iOS development. (xcodebuild)"}
+{"id": 557, "message": "fix: update the alert title to use \"immediate\" instead of \"needsRedirectToThirdParty\""}
+{"id": 560, "message": "feat: Add support for RSpec/InstanceVariable in the Carto::Api::ApiKeysController. (spec_helper_min)"}
+{"id": 564, "message": "fix: update the configuration of the PreApplePayComponent to use ApplePay with test-specific parameters. (preApplePayComponent)"}
+{"id": 567, "message": "feat: Adds a new dependency for the AWS SAM CLI tool. (root_url updated)"}
+{"id": 568, "message": "feat: Update copyright information in the codebase. (import 'dart:ui';)"}
+{"id": 580, "message": "feat: Update link target and target id in the Redis command class. (add)"}
+{"id": 584, "message": "feat: Update the Abigen implementation to include ContractFilter, ExcludeContracts, and SelectContracts. (This is a single file or area clearly owning the change)"}
+{"id": 586, "message": "feat: Add support for TypeScript in Jest tests. (moduleDirectories: [ \"node_modules\", \"src\" ])"}
+{"id": 590, "message": "feat: Update the title display to show \"Share\" instead of \"Speaker Details\" in the ShareEventFragment. (public class ShareEventFragment extends BaseFragment implements ShareEventView)"}
+{"id": 593, "message": "feat: Add subscription size calculation for Carto::DoLicensingService::CARTO_DO_PUBLIC_PROJECT and Carto::DoLicensingService::CARTO_DO_PROJECT. (subscripted)"}
+{"id": 595, "message": "feat: Add admin navigation options for locales, fields, themes, and snippets. (I18n::$locale, $flextype->registry->set(...))"}
+{"id": 596, "message": "feat: Add visibility property to RenderStyle enum, update the visibility set method to handle the new enum. (mixin CSSVisibilityMixin)"}
+{"id": 605, "message": "feat: Add media control visibility state to the kMediaControlAlwaysVisible and kDisableDefaultPlugins properties. (public let kMediaControlAlwaysVisible = \"mediaControlAlwaysVisible\", public let kDisableDefaultPlugins = \"disableDefaultPlugins\")"}
+{"id": 606, "message": "feat: Update the height of the CenteredView component based on the platform (ios: 200, android: 50) and style. (ios)"}
+{"id": 610, "message": "fix: the interrupt configuration for the KSCAN matrix is updated to handle GPIO interrupts correctly. (kscan_gpio_enable_interrupts_##n, kscan_gpio_disable_interrupts_##n)"}
+{"id": 615, "message": "feat: Update dependency for ktor from 1.5.4 to 1.6.0. (val ktor = \"1.6.0\")"}
+{"id": 629, "message": "feat: Update the environment variables for the WDM service URL to use the correct endpoint. (PROD_ENV_VARS)"}
+{"id": 630, "message": "feat: This commit updates the cloudNet version to \"4.0.0-RC2\" and sets the cloudNetCodeName to \"Blizzard\". (internal versions)"}
+{"id": 640, "message": "feat: Improved styling for media objects in the Box component. This change affects the styling of the Box component. (space)"}
+{"id": 644, "message": "feat: Add time util support for the testing framework. (absl/memory/memory.h)"}
+{"id": 645, "message": "feat: Skip building Docker function, as it is missing Dockerfile or DockerContext metadata. (docker_context)"}
+{"id": 647, "message": "feat: Add MockAlertGroup and MockAlert types from mocks to store alerts. (mocks, alerts)"}
+{"id": 652, "message": "feat: Add a capability to handle user input for choosing options in the program. (Update)"}
+{"id": 655, "message": "feat: Add a billing account creation method to the BillingTest module. (in the BillingTest file)"}
+{"id": 658, "message": "feat: Add constraints for inner scrolling content box of overflow element to allow children overflow. (inner-scrolling-content-box)"}
+{"id": 661, "message": "feat: Add a capability to handle PubSub subscriptions in the Ash.DocIndex.AshDocIndex module. (This is a single file or area clearly owning the change)"}
+{"id": 662, "message": "feat: Add support for multi-class classification in the LabelingTask class. (from pyannote.database.database)"}
+{"id": 666, "message": "build: update the build script with the correct Kotlin plugin version. (buildscript)"}
+{"id": 681, "message": "feat: Build KUMA components for the ENVOY version. (KUMA_COMPONENTS)"}
+{"id": 692, "message": "feat: Add a Segment class to handle the segmentation of time windows. (1 file)"}
+{"id": 697, "message": "feat: Add support for handling a \"Aborted query, because the server is shutting down or the query was killed.\" error case. (in the implementation of ProcessorAsyncTask)"}
+{"id": 727, "message": "feat: Add a function to calculate the price of an order of apples based on the number of apples bought. (More than 40 at once, each apple only costs 1!)"}
+{"id": 768, "message": "feat: Update theme styles to include a new theme link and update the theme link in the theme file. (link)"}
+{"id": 852, "message": "feat: Add a function to normalize registry paths. (add)"}
+{"id": 853, "message": "feat: Add a capability to check for size constraints in text channel retrieval. (254,7)"}
+{"id": 854, "message": "feat: Adds a new query to find public samples by joining with projects and filtering on public access and date parameters. (project)"}
+{"id": 922, "message": "fix: Fix the layoutSubviews() method call in the SeekBubble class. This change affects the layout of the bubble and label. (parentView)"}
+{"id": 930, "message": "feat: Add support for grouping by group manager in the `my_managers` method. This change adds a new method to the `CourseUser` class that allows the retrieval of the group manager's ID from the course groups. The scope is clear for this change. (group_manager)"}
+{"id": 960, "message": "feat: migrate task owner id (add missing owner IDs to some legacy tasks)"}
+{"id": 980, "message": "feat: Add support for adding JSValue objects to the storage. (namespace, file)"}
+{"id": 988, "message": "feat: Adds a method to safely retrieve a value from a form data map. (public class PluginUtils)"}
+{"id": 1058, "message": "feat: Update Swagger example generation logic for media types in the Swagger API documentation. (namespace Swashbuckle.AspNetCore.SwaggerGen)"}
+{"id": 1068, "message": "feat: Add CSS file generation for the website theme. (website_theme)"}
+{"id": 1074, "message": "feat: Add a capability to add and drop database roles with a new role parent and child. (spanner_add_and_drop_database_role)"}
+{"id": 1080, "message": "feat: add acl token to available options in the resolveOptions method. (in the file: Client)"}
+{"id": 1099, "message": "feat: Add authorization logic for Magento payment processing. (DaffMagentoAuthorizeNetService)"}
+{"id": 1103, "message": "feat: Add Gpu availability check in the getImages() function. (in the RouteHandler)"}
+{"id": 1104, "message": "feat: Add internal IP lookup functionality for nodes in the controller. (internalIP)"}
+{"id": 1109, "message": "feat: Add stream subscription support to ReactionWidgetState. This commit adds a stream subscription to the widget, which allows it to track messages in real-time. (add)"}
+{"id": 1160, "message": "feat: Add a new method to the PeerLogic class to handle outbound peer connections. (add)"}
+{"id": 1253, "message": "feat: Add a capability to handle application quit and disable events in the NetworkDiscoveryBase class. (This commit shows several changes to the code)"}
+{"id": 1274, "message": "feat: comp node _get_device function returns a CompNode object, which is a significant change. (comp node)"}
+{"id": 1280, "message": "build: build_and_push_image, build_and_push_image, build_and_push_image, build_and_push_image, build_and_push_image, build_and_push_image, build_and_push_image, build_and_push_image, build_and_push_image, build_and_push_image, build_and_push_image, build_and_push_image, build_and_push_image, build_and_push_image, build_and_push_image, build_and_push_image, build_and_push_image, build_and_push_image, build_and_push_image, build_and_push_image, build_and_push_image, build_and_push_image, build_and_push_image, build_and_push_image, build_and_push_image, build"}
+{"id": 1310, "message": "feat: updated the vote request flag in the Container class. (var voteReq: Boolean = true)"}
+{"id": 1340, "message": "feat: Add a capability to check context in the Authorizer module. (add)"}
+{"id": 1341, "message": "feat: Add a capability to handle raw transaction sending with a web3 interface context and network URL. (BCHAR*)tx_ptr->wallet_ptr->web3intf_context_ptr->web3_result_string_buf.field_ptr, TRIMBIN_TRIM_NO, BOAT_FALSE)"}
+{"id": 1439, "message": "feat: Add a TEST_P macro to the test suite information class to allow for parameterized test setup. (This is a single file or area clearly owning the change)"}
+{"id": 1470, "message": "feat: Improve text layout performance by clipping text when overflow is not displayed fully. (Update)"}
+{"id": 1481, "message": "feat: Rebuild index projection job for saga timeout projection version. (RebuildIndex_ProjectionIndex_Job, sagaTimeout.ProjectionVersionRequest.Version)"}
+{"id": 1486, "message": "feat: Add a capability to handle parallelism in the loop processing. (add)"}
+{"id": 1499, "message": "feat: Add domain rules for DIRECT and other domains. (add)"}
+{"id": 1507, "message": "feat: Update source code to include additional packages and fix some separator formatting. (update)"}
+{"id": 1554, "message": "feat: Add log for the game engine's renderer to track performance changes. (multiple files)"}
+{"id": 1608, "message": "feat: Add Pinia Nuxt plugin for Vue app integration. (Pinia)"}
+{"id": 1612, "message": "feat: update the code to handle invalid UTF-8 encoding. (update, code)"}
+{"id": 1644, "message": "feat: Add a capability to handle ZK client ping period calculation. (ZK session timeout=%d sec)"}
+{"id": 1665, "message": "feat: Add retry animation to AvatarView. (private struct AvatarView: View)"}
+{"id": 1667, "message": "fix: update the locale for the formatter. (formatter)"}
+{"id": 1711, "message": "feat: Update GeoProxy min Y coordinate based on the current position. (updateGeoProxyMinY)"}
+{"id": 1713, "message": "feat: Add a new component to render article media with the Commentsquare icon. (imported from '@schibstedspain/sui-svgiconset/lib/Commentsquare')"}
+{"id": 1729, "message": "feat: Update the NodeUpdater class to use the legacy VAADIN_FORM_PKG_LEGACY_VERSION flag. (This is a single file or area)"}
+{"id": 1771, "message": "feat: Update current answer flag and save validation logic. (current answer, save, validate)"}
+{"id": 1808, "message": "feat: Add tracking script for Google Tag Manager with tracking ID. (trackingScriptPresent)"}
+{"id": 1839, "message": "feat: Add support for handling nil values in attribute constraints. (add, change, file, flag, endpoint)"}
+{"id": 1875, "message": "feat: Add a new method to the BoaProfiler struct to handle event tracking with a new SerializationSink. (type: \"BoaProfiler\", file: \"BoaProfiler\", flag: \"profiler\")"}
+{"id": 1924, "message": "build: buildResource, executableName, isWindows, buildType, srcRoot, lastBuildTimeStamp, outDir, executablePath, buildDir, mainBinary, dev, buildType, dev, buildType, dev, buildType, mainBinary, mainBinary, mainBinary, mainBinary, mainBinary, mainBinary, mainBinary, mainBinary, mainBinary, mainBinary, mainBinary, mainBinary, mainBinary, mainBinary, mainBinary, mainBinary, mainBinary, mainBinary, mainBinary, mainBinary, mainBinary, mainBinary, mainBinary, mainBinary, mainBinary, mainBinary, mainBinary"}
+{"id": 1947, "message": "fix: fix the error handling for deleting a document in the `delete_doc` function. This commit will fix the error when a document is deleted. (parenttype, parent, parentfield) is the most significant change. (update)"}
+{"id": 2026, "message": "feat: Refactor layout logic to improve performance and reduce unnecessary layout calculations. (add)"}
+{"id": 2092, "message": "feat: Update the layout for the event details and events fragments. (add, add, add, add)"}
+{"id": 2101, "message": "feat: Add a reference to the current position in the GradientDescentOptimizer2 class. (add)"}
+{"id": 2102, "message": "feat: Add support for handling nested schema paths in the getIndexes function. (specifies the most significant change)"}
+{"id": 2103, "message": "feat: Add a capability to handle multihash generation for Cidv0. (block_buffer, buffer)"}
+{"id": 2104, "message": "feat: encode() function with a new zero-copy buffer implementation. (add)"}
+{"id": 2105, "message": "feat: Add ReadBytes method to read bytes from a stream. (internal unsafe T ReadBlittable<T>())"}
+{"id": 2106, "message": "feat: Add support for dynamic instrumentation in the perf event handling framework. (arch_perfAnalyze)"}
+{"id": 2107, "message": "feat: Add equiv function from @thi.ng/api/equiv and update diff function with equiv logic. (equiv, diff)"}
+{"id": 2108, "message": "feat: Add support for SVG rendering in ReactShape. (add)"}
+{"id": 2109, "message": "feat: Add support for performance chart rendering in the Perf repository. This change adds a function to render performance measurements. (add)"}
+{"id": 2110, "message": "feat: Add support for filtering SQL queries with sub-queries and MySQL functions. This commit will add support for filtering SQL queries with sub-queries and MySQL functions. (sub_query_regex, IS_QUERY_PATTERN, FIELD_QUOTE_PATTERN, FIELD_COMMA_PATTERN, IS_QUERY_PREDICATE_PATTERN, FIELD_QUOTE_PATTERN, FIELD_COMMA_PATTERN, IS_QUERY_PATTERN, IS_QUERY_PREDICATE_PATTERN, IS_QUERY_PATTERN, IS_QUERY_PATTERN, IS_QUERY_PATTERN, IS_QUERY_PATTERN, IS_QUERY_PATTERN, IS_QUERY_PATTERN, IS_QUERY_PATTERN, IS_QUERY_PATTERN, IS_QUERY_PATTERN, IS_QUERY_PATTERN, IS_QUERY_PATTERN, IS_QUERY_PATTERN,"}
+{"id": 2111, "message": "fix: improve performance by optimizing the template and script processing logic. (templateTs_semantic, scriptTs_semantic)"}
+{"id": 2112, "message": "fix: _set_authentication_details \u2014 Set Authentication based off auth. This commit fixes an issue where the authentication details were not being set correctly. The most significant change is the implementation of the authentication logic. (set_authentication_details)"}
+{"id": 2113, "message": "feat: Add support for language guessing in frappe's translation system. (from frappe.translate import get_lang_code, guess_language)"}
+{"id": 2114, "message": "feat: Add a new method to the perfEventRing struct to handle closing the event ring. (file: perfEventRing, flag: Close)"}
+{"id": 2115, "message": "feat: compressing the binary representation of a number in a way that aligns with the given diff. (This is the most significant change)"}
+{"id": 2116, "message": "feat: Adds a new event processing loop to handle LCUI events in the main loop. (LCUI_ProcessEvents())"}
+{"id": 2117, "message": "feat: optimize array validation by skipping invalid array elements. (update)"}
+{"id": 2118, "message": "fix: fix the issue with the Intel CPU detection logic. This commit will fix the Intel CPU detection logic in the PackageUtils class. The most significant change is the fix to the Intel CPU detection logic. (in the context of the PackageUtils class)"}
+{"id": 2119, "message": "feat: Add route ID mapping for fare system. This commit will add a route ID mapping to the fare system, which is described in the class javadoc. The change is in the `fareIdForRouteId` field. (file: MixedSystemInRoutingFareCalculator)"}
+{"id": 2120, "message": "feat: Add a new action to the ActionMenu component. The change is in the ActionMenu component. (file: ActionMenu)"}
+{"id": 2121, "message": "feat: Refactored the get_file method to handle decompression and exception handling, improving code structure and performance. (update, GoogleCloudStorageInterface)"}
+{"id": 2131, "message": "feat: Try to remove a component from a compound. (public class Terms)"}
+{"id": 2136, "message": "feat: update the slug field in the fetch_single entry of the entries storage. (update, entries)"}
+{"id": 2142, "message": "feat: Add support for external links in the sidebar menu. (update)"}
+{"id": 2151, "message": "feat: Add dynamic metadata for the request: `x_request_id_` in the `FilterHeadersStatus` function. (metadata)"}
+{"id": 2152, "message": "fix: update the analysis status display logic to reflect the current analysis status. (update, analysis)"}
+{"id": 2154, "message": "feat: pip_install_package handles distribution metadata for Python packages. (add)"}
+{"id": 2156, "message": "feat: Add fullscreen functionality for entering and exiting the app. (struct FullscreenByApp: FullscreenStateHandler)"}
+{"id": 2164, "message": "feat: Update media option list in the Playback class. (file: Playback.java)"}
+{"id": 2169, "message": "feat: Add Python 3.7 support for GraphQL parser. (add)"}
+{"id": 2170, "message": "feat: Copy public headers to ios/Bugsnag. (rsync)"}
+{"id": 2177, "message": "feat: Add a capability to handle dimensioned groups in the Options struct. (add)"}
+{"id": 2183, "message": "feat: Add a capability to delete a team by ID. (class Team < ActiveRecord::Base)"}
+{"id": 2188, "message": "feat: ESLToggleablePlaceholder updates the allowed attributes and connects the element to its origin. (This change affects multiple files and areas.)"}
+{"id": 2191, "message": "fix: fix the setup method to correctly initialize the node with the menu item attributes. This commit will fix the setup method to properly initialize the node with the menu item attributes. This commit will ensure that the node is properly initialized with the required attributes. (add scope)"}
+{"id": 2194, "message": "feat: Add engine close method to handle temporary data removal. (engine, close)"}
+{"id": 2200, "message": "feat: Add support for splitting pages in the QPDF writer. (static void do_split_pages(QPDF& pdf, Options& o))"}
+{"id": 2216, "message": "fix: fix a bug in the Box implementation. This commit will fix the issue with the Box implementation. The file is not changed. (no scope)"}
+{"id": 2220, "message": "feat: Add visibility and opacity settings to the overlay box. (this.overlayBox)"}
+{"id": 2224, "message": "feat: Add a capability to play the playback. (scope: \"PosterPlugin\")"}
+{"id": 2225, "message": "feat: Add custom callable resolver for PSR-15 middlewares. (namespace, file, flag, scope)"}
+{"id": 2230, "message": "fix: update the configuration for the locale and time zone in the RestrictedApplication component. (update)"}
+{"id": 2232, "message": "feat: Add support for YAML file handling in Django's static files system. (from django.contrib.staticfiles import finders)"}
+{"id": 2236, "message": "feat: Add a capability to set plugin settings directory. (Update)"}
+{"id": 2239, "message": "feat: Adds a new attribute to the LifeCycle class that tracks the number of instances created per test case. (This is a single file or area clearly owning the change)"}
+{"id": 2241, "message": "feat: Update stop status display logic in the VehicleTooltip component. (update)"}
+{"id": 2246, "message": "feat: add column reference for the first column of the input rows. (update)"}
+{"id": 2247, "message": "feat: Add player layer and set audio session category to improve accessibility. (playerLayer, setAudioSessionCategory)"}
+{"id": 2248, "message": "feat: Add a lock to the reorder frame map to prevent race conditions in the reorder process. (mReorderMutex)"}
+{"id": 2267, "message": "fix: update the form fields to include the new switch and upload functionality. (added to the file)"}
+{"id": 2269, "message": "feat: Add a capability to handle the BoatPlatone transaction result parsing in the `BoatPlatonePraseRpcResponseResult` function. (update)"}
+{"id": 2270, "message": "feat: Add PDU outlier detection logic from the outlier tree. (add)"}
+{"id": 2271, "message": "feat: Add a new method to the MachineLearningCompletionConfigurable class to configure the PORT_FIELD_WIDTH field. (This is a single file or area clearly owning the change)"}
+{"id": 2272, "message": "feat: Refactor the logic for determining if the player is in a Dvr window. (private var currentDynamicWindowDurationInSeconds: Long = 0L)"}
+{"id": 2279, "message": "feat: add a capability to handle grouping by columns from different sources in the join operation. (lhsGrouping, rhsGrouping, groupingOffsets, nil)"}
+{"id": 2283, "message": "feat: Add back all unwanted cards to the end of the list (cardsOrder)"}
+{"id": 2285, "message": "feat: Update the binary conversion logic to handle half-byte values correctly. (BINARY conversion logic)"}
+{"id": 2293, "message": "feat: Add a capability to unify variables in the task and belief statements. (public class RuleTables)"}
+{"id": 2309, "message": "feat: Add a new implementation of the make_compressed_database function in the acl namespace. (namespace acl)"}
+{"id": 2315, "message": "feat: Add default genesis state for BasicManager interface in AppModuleBasic. (Add, HasGenesisBasics)"}
+{"id": 2321, "message": "feat: Update SDK directory path to use `dirname` twice to find the common parent of the SDK and app. (SDK_DIR=\"$tmp/Rocket.Chat.Kotlin.SDK\")"}
+{"id": 2326, "message": "refactor(void): Refactor the code to handle the demuxer reload logic in the SuperMediaPlayer class. (mSourceListener->enableRetry(), mDemuxerService->getDemuxerHandle())"}
+{"id": 2341, "message": "fix: Team do, describe '#user?' do, context 'when users in current team includes the parameterized user' do, it 'returns true' do, expect(team.user? user).to be true, + expect(team.user?(user)).to be true end, context 'when users in current team does not include the parameterized user' do, it 'returns false' do, expect(team.user? user2).to be false, + expect(team.user?(user2)).to be false end, end, describe '.import_team_members' do, context 'when cannot find a user by name' do, it 'raises"}
+{"id": 2342, "message": "feat: Add width and height calculation logic to the RenderBox mixin. (mixin CSSComputedMixin on RenderBox)"}
+{"id": 2343, "message": "feat: Provider initialized without a service collection has zero services by default. (DummyServiceWithDependencyOnAnotherDummyService)"}
+{"id": 2353, "message": "fix: update the useEffect hook to use the correct state management library. (useEffect, useState)"}
+{"id": 2354, "message": "feat: Add TCP server initialization logic for hatcheries cache. (in the file: `src/service.go`)"}
+{"id": 2359, "message": "feat: Add configuration for registry authentication with username and password. (image-resource-resolver:latest)"}
+{"id": 2367, "message": "feat: Add velocity, acceleration, and deceleration attributes to the Creature class. (private class TestCreature extends Creature)"}
+{"id": 2370, "message": "feat: Add a new method to handle vectorized I/O operations. (This change touches several areas, including the WasiFile implementation and I/O handling.)"}
+{"id": 2371, "message": "feat: Add support for ordering by group name in the `SVR_AnimeGroup` and `SVR_GroupFilter` types. (This is a single file or area clearly owning the change)"}
+{"id": 2376, "message": "feat: Add a warning acknowledgment system that hides the acknowledged warning. (lxc warning ack)"}
+{"id": 2385, "message": "feat: Add support for partner transaction ID and out-trade no in the QueryPlugin. This change affects several files and areas. The most significant change is adding support for partner transaction ID and out-trade no. (WeChat)"}
+{"id": 2388, "message": "feat: Add support for checking health status in a shared server context. (server_fixture)"}
+{"id": 2394, "message": "fix: improve performance in the OptionsUnboxerTests context. (optionsUnboxer)"}
+{"id": 2398, "message": "feat: Add support for credential checks in the NodeManager configuration. (node_dir, skip_defaults, enable_credential_checks)"}
+{"id": 2399, "message": "feat: Testing HTTP methods handling in the app's middleware. The diff shows that the app's middleware for HTTP methods is correctly set. (update)"}
+{"id": 2401, "message": "feat: Test querying forkdns1 for AAAA record when equivalent A record is on forkdns2 network, and test querying forkdns1 for PTR record that is on forkdns2 network. (test_clustering_dns)"}
+{"id": 2416, "message": "fix: testGenericsMthOverride \u2014 this commit fixes the test to correctly check the method implementation in the TestCls class. (testGenericsMthOverride)"}
+{"id": 2423, "message": "feat: delete a client registration provider from the system. (ClientRegistrationProvider)"}
+{"id": 2431, "message": "feat: Add support for Spanner types like bytes, date, json, numeric, timestamp, and testing utilities. (spanner)"}
+{"id": 2433, "message": "fix: fix the tracing component support in the client options. (file: google/cloud/bigtable/client_options.h)"}
+{"id": 2434, "message": "feat: Add a mock connection data structure to the MockInstance class. (connection_data_)"}
+{"id": 2435, "message": "feat: Update pagination settings for the \"Discussion:: Topics\" section in the \"Course: Administration\" feature. (in the \"settings_topics_component_pagination\" field)"}
+{"id": 2439, "message": "feat: Add support for testing the vault's secrets sum in a watch condition. (add)"}
+{"id": 2445, "message": "feat: Add a capability to run coverage collector with parallel execution. (in the scope of the file)"}
+{"id": 2448, "message": "feat: Adds a permission to the user's permissions in the user's group. (this is a single file)"}
+{"id": 2452, "message": "feat: Add MongoDB 3.4 support for testing operators in the `graphLookup` function. (Mongo 3.4 operators)"}
+{"id": 2459, "message": "fix: fix API key validation logic in the test suite. The diff shows that the test suite is being updated to handle API key validation correctly. The scope is clear, and the function is specific. (API Keys)"}
+{"id": 2468, "message": "feat: Add a new method to the CommandLineWrapper class to handle process execution with async capabilities. (namespace TestServerlessApp.IntegrationTests.Helpers)"}
+{"id": 2477, "message": "feat: add support for timezone conversion in TimezoneTests. (add, change, update, style, refactor, perf, test, build, ci, chore)"}
+{"id": 2481, "message": "feat: Add a new error injection mechanism to the rpc_loopback_error_injector class. (inline sstring read(serializer, Input& in, rpc::type<sstring>))"}
+{"id": 2484, "message": "feat: build the yaegi command with race detection and output handling. (build, yaegi)"}
+{"id": 2487, "message": "fix: Fixing the test to ensure that during restart, no traffic is dropped using Egress + Ingress Traffic. This change ensures that the test suite is more robust and handles edge cases. (var _ = Describe(\"RuntimeChaos\", func() { ... }))"}
+{"id": 2490, "message": "fix: fix - corrects a bug (the code was incorrectly allowing gzipped POST bodies)"}
+{"id": 2496, "message": "feat: Add type checking for initializing objects of type T by using `type(of: ...)` instead of `init()`. This change affects several files and areas. (scope: files, scope: Y, scope: Y2, scope: MultipleMemberAccesses)"}
+{"id": 2503, "message": "feat: Update the test suite to include a new test for handling the topic key lookup. (n=%d, n=%d)"}
+{"id": 2508, "message": "feat: Adds a view renderer for the JsonLd test class. (private $target->setView(...))"}
+{"id": 2515, "message": "feat: Create One-Time Wallet with Null Configuration. (START_TEST(test_001CreateWallet_0003CreatePersistWalletSuccess))"}
+{"id": 2519, "message": "feat: Add support for the spmd_driver/solver configuration flag in the solver configuration file. (solver_dir)"}
+{"id": 2520, "message": "feat: course_assessment_answer_forum_post creates a new forum post with a forum topic and a post. (course, forum_topic_id, post_id, post_text, post_creator_id)"}
+{"id": 2526, "message": "feat: update the contextBridge function to listen on a different port. (server.listen(0, '127.0.0.1', resolve))"}
+{"id": 2528, "message": "fix: fix the timeout handling in the test suite to allow up to 5 seconds before a match is reached. (DPATH_COMMON, FLB_TESTS_DATA_PATH)"}
+{"id": 2530, "message": "fix: update submission logs to show one more attempt. (in the diff, the change is in one file, specifically the submission logs)"}
+{"id": 2531, "message": "feat: Add support for SideEffect with a default value of an empty side effect. (mod tests)"}
+{"id": 2541, "message": "fix: fix the test suite to ensure that the solver name and solution uniqueness are correctly reflected in the test results. (network_r.generators_t.p.loc[:,network.generators.index],network_r.generators_t.p.loc[:,network.generators.index],decimal=4)"}
+{"id": 2543, "message": "feat: Add support for checking container output with specific container names and command execution. This commit will add functionality to verify container output with specific names and execute commands. The most significant change is adding support for checking container output with specific names and executing commands. (add)"}
+{"id": 2553, "message": "feat: added service flag for Kitsu to UserItemDtoMapperTests. (service)"}
+{"id": 2554, "message": "feat: Update the state transition logic for `state_prevoutput_after_previnit` and update the `prevtx_no_inputs` flag. (update, prevtx)"}
+{"id": 2559, "message": "feat: Add a capability to handle Windows-specific PowerShell execution in scripts. (Only Windows contains Powershell.)"}
+{"id": 2574, "message": "feat: Add a test to check that the ExternalInputPluginTest class correctly triggers a KEY_PRESSED event for the BACK button. (private)"}
+{"id": 2577, "message": "feat: add support for triggering an ERROR event in the PlayerError class. (add)"}
+{"id": 2581, "message": "feat: Update the right of full interval parameter in the test suite. This change updates the ID and marks to match the expected behavior. (update)"}
+{"id": 2601, "message": "feat: Add support for setting node URL in the wallet initialization process. (START_TEST)"}
+{"id": 2616, "message": "fix: Update the position check to handle floating-point precision errors in the test suite. (namespace Unity.Netcode.RuntimeTests)"}
+{"id": 2621, "message": "fix: apply the test to set the description and example from the Uri type property summary and example tags. (private XmlCommentsRequestBodyFilter)"}
+{"id": 2623, "message": "feat: Adds a capability to handle classcastings in the TtlExecutorsTest class. (private class BizComparableTask)"}
+{"id": 2624, "message": "feat: Add support for converting double numbers to time intervals with hours, minutes, and seconds. (package io.clappr.player.extensions)"}
+{"id": 2625, "message": "feat: Add test for \"Constant value replace\" in the `TestCls` class. This commit adds a test case that checks for the presence of the `Integer.MIN_VALUE` in the code. (Test scope: TestCls)"}
+{"id": 2632, "message": "feat: Add playback state capabilities to the NoOpPlaybackTests. (context: playback states)"}
+{"id": 2634, "message": "fix: zoom level is updated to include a 3-unit offset. (mapviewposition)"}
+{"id": 2638, "message": "feat: Add a capability to handle POST requests to \"/rita\" in the \"app\" function. (add)"}
+{"id": 2639, "message": "feat: Add a new component for rendering RSX expressions and fragments. (This is a significant change)"}
+{"id": 2641, "message": "feat: Add support for handling pull requests on the master branch when the repository is empty. (on master, BUILDKITE_PULL_REQUEST_REPO is empty)"}
+{"id": 2646, "message": "feat: Adds a capability to raise exceptions from the logger in the environments specified in the $reraiseInEnvironments array. (private)"}
+{"id": 2649, "message": "feat: Add layout documentation for the LayoutDocs component. (add)"}
+{"id": 2650, "message": "feat: Adds a DraggableEmber component to the DraggablesExample class. (add)"}
+{"id": 2651, "message": "feat: Add keyset metadata to fetch next/previous pages. (keyset)"}
+{"id": 2653, "message": "fix: fix the syntax error in the `MembersResponse` struct declaration. (This is a single file or area clearly owning the change)"}
+{"id": 2654, "message": "feat: Replace ITK_HAS_CPP11_ALIGNAS with ITK_COMPILER_CXX_ALIGNAS. (namespace)"}
+{"id": 2655, "message": "feat: Create a new to-be-signed group info. (GroupInfoTBS)"}
+{"id": 2661, "message": "feat: Add ANSI encoding logic for locale-specific ANSI character handling. (namespace bs)"}
+{"id": 2662, "message": "feat: Add a method to get the user ID, requires authentication to be set. (update)"}
+{"id": 2664, "message": "feat: Set the requested buffer capacity in frames. (Update)"}
+{"id": 2670, "message": "feat: Add functionality to transpose axes in a 3D array. (5, 4, 3)"}
+{"id": 2672, "message": "fix: fix the enum LogLevel declaration to match the implementation in the LogHelper class. (namespace MLAPI.Logging)"}
+{"id": 2674, "message": "feat: Add a search hash functionality to the SnippetsIT class. This change adds a method to search threat hashes based on a given URI and threat type. (snippet)"}
+{"id": 2675, "message": "feat: Add test adapter for writing buffer implementations. (add)"}
+{"id": 2677, "message": "feat: Add native method to check network file descriptors. (public final class Net)"}
+{"id": 2681, "message": "feat: Element-wise PReLU function. (prelude)"}
+{"id": 2683, "message": "feat: Add support for parsing component IDs in the AWK command line arguments. (Update: This change affects only the AWK command line arguments.)"}
+{"id": 2688, "message": "feat: Adds a new feature to handle password hashing using the crypto algorithm. (password, authelia)"}
+{"id": 2693, "message": "feat: NavigationTabs, handleClick, sends item information and position in the array. (By clicking on every single tab, `handleClick` is triggered and sends an object with the item information and position in the array.)"}
+{"id": 2695, "message": "feat: Add a capability to handle related commands in the GenReSTCustom function. (Add a scope in parentheses only when a single file or area clearly owns the change)"}
+{"id": 2696, "message": "feat: Add associativity support for `F.chain` in the `Apply` function. (1.0.0)"}
+{"id": 2697, "message": "feat: Add a function to check if a number is an [Armstrong/Narcissistic number](https://en.wikipedia.org/wiki/Narcissistic_number) in decimal system. (update)"}
+{"id": 2699, "message": "feat: Add network statistics logging to the Zmqlet class. (profile_logger)"}
+{"id": 2701, "message": "fix: fix the charting logic for the portfolio value and asset price, moving averages, and cash. (add scope)"}
+{"id": 2702, "message": "feat: Add a capability to handle locks with a lock() function. (Locks, func)"}
+{"id": 2705, "message": "feat: Add a capability to print BigLetters with the default CenterPrinter. (package main)"}
+{"id": 2707, "message": "feat: Set error in keys metadata (only a single error can be written to the key)"}
+{"id": 2709, "message": "feat: Add support for rendering panels with text in a default box format. (package main)"}
+{"id": 2711, "message": "fix: This commit fixes an issue where the AtClientManager class was not properly initialized when the AtServiceFactory was provided. The code was missing the necessary initialization logic, which caused errors when attempting to create AtClients. The owner is a class file, and the scope is specific to the AtClientManager class. (class AtClientManager)"}
+{"id": 2713, "message": "feat: Add connection for OCI8 in the Connection class. (add)"}
+{"id": 2714, "message": "feat: Add formatted code component to handle nullable types. (scope: FormattedCode)"}
+{"id": 2715, "message": "feat: Update the `equals` method to accept an array of parameters instead of a single string. (Update)"}
+{"id": 2717, "message": "feat: Update the Convert function to pass ownership of the data buffer from the itk image to the nifti image. (This is a single file or area clearly owning the change.)"}
+{"id": 2719, "message": "feat: Add a capability to handle environment variables for bot token management. (public async Task MainAsync())"}
+{"id": 2722, "message": "feat: Add a section for field label with checkboxes and input fields. (in checkbox)"}
+{"id": 2723, "message": "feat: Add error code datatype and define ORCA_OK. (update)"}
+{"id": 2726, "message": "feat: Add the oneAPI namespace as an alias to the ::dnnl namespace. (namespace oneapi)"}
+{"id": 2728, "message": "feat: Add a policy to override the default key policy for KMS keys. (the default for new projects)"}
+{"id": 2729, "message": "feat: update RTP packet statistics for simulcast stream management. (update, frameIsNew, nowMs, pkt)"}
+{"id": 2730, "message": "feat: Add a capability to track RateStatistics in the TreeMap keyed by RTP timestamps. (private final TreeMap<Long, SourceFrameDesc> frames)"}
+{"id": 2737, "message": "fix: The diff shows that the ConnectedClients dictionary is updated on the server, and the ConnectedClientsList is also updated. This is a change in the data structure and logic. The most significant change is updating the dictionary with the server's data. (server)"}
+{"id": 2739, "message": "feat: Add a new view for handling back presses in the LibrariesSnippet2() function. (private object LibrariesSnippet2{})"}
+{"id": 2746, "message": "feat: Add URL validation logic for plugin metadata during local development. (add)"}
+{"id": 2748, "message": "feat: Add custom property mapping for Order.customer to the ExtendedListQueryOptions type. (customPropertyMap)"}
+{"id": 2755, "message": "feat: Add support for non-existing email addresses and rate limiting. (update)"}
+{"id": 2758, "message": "fix: resolve to a callable that the router can dispatch. (final class CallableResolver implements CallableResolverInterface)"}
+{"id": 2759, "message": "feat: Add support for linking documentation files from the doc directory. (DOC_DIR=\"@CMAKE_SOURCE_DIR@/doc\")"}
+{"id": 2760, "message": "feat: Update the antd version to the latest stable release. (ZORROVERSION)"}
+{"id": 2761, "message": "feat: Update CUDA_COPY_LIB_LIST for different SDK versions. (CUDA_LIB_DIR)"}
+{"id": 2762, "message": "fix: fix the timeout setting in the HTTP client when the client is initialized. (This is a single file or area)"}
+{"id": 2763, "message": "feat: add I/O tracing support for mod stub, in the `init()` function. (mod stub)"}
+{"id": 2764, "message": "fix: can be used to verify the checksum. Generated sha: \\t\\tpath. (path is tarball_path + \".sha1\")"}
+{"id": 2765, "message": "feat: Add a toolchain with Java 17 support. (subprojects, toolchain)"}
+{"id": 2766, "message": "feat: Add support for React's require-default-props flag in the module exports. (react/require-default-props)"}
+{"id": 2767, "message": "feat: Add support for semantic-release commit analyzer. (npm install --save-dev @semantic-release/commit-analyzer)"}
+{"id": 2768, "message": "feat: Add support for maintaining features in the environment variables. (KNOWN_FEATURES,KNOWN_TYPES)"}
+{"id": 2769, "message": "feat: Add support for ZIP-compressed files in the zip_open function. (from zipfile: ZipFile)"}
+{"id": 2770, "message": "feat: Add support for UEFI and BIOS bootloader configurations in the Rust build system. (This change affects several files and areas.)"}
+{"id": 2771, "message": "feat: Add a test to verify that the parser can execute as fail fast rather than waiting till after the build to find out. (build shared libraries)"}
+{"id": 2772, "message": "feat: Add a capability to publish to NPM, update the CHANGELOGs and tags, and backmerge to master. (lerna version, latest)"}
+{"id": 2773, "message": "feat: Add a new audio filter that supports true audio processing. (namespace Cicada)"}
+{"id": 2774, "message": "fix: cleanup the docker images for the release channel. (cleanup_artifact)"}
+{"id": 2775, "message": "feat: Refactored the workflow runner logic to improve performance and clarity. (add)"}
+{"id": 2776, "message": "build: build Boost for macOS on arm64 and x86_64. (build_boost_macos)"}
+{"id": 2777, "message": "feat: Add support for the pyramid_map module in the citest_basic function. (add)"}
+{"id": 2778, "message": "feat: Update file name format to use os and arch instead of version. (local file)"}
+{"id": 2779, "message": "feat: Ensure all *.proto changes include *.java generated code. (update)"}
+{"id": 2780, "message": "feat: Add support for searching in URLs with a timeout and retry mechanism. (universalTest())"}
+{"id": 2781, "message": "build: CreateDirectory \"$NuGetPackageRoot\" (in Build file) and install dotnet from $DOTNET_INSTALL_DIR (in Build file) \u2014 If applied, this commit will create the necessary directory structure for the NuGet package and install the .NET CLI tool. (in Build file)"}
+{"id": 2782, "message": "feat: Add a capability to handle helm installation with a workaround for CI failures. (add)"}
+{"id": 2783, "message": "feat: Add support for checking if a name is in an order array. (update)"}
+{"id": 2784, "message": "feat: Add copyright year validation to `oauth2_http/java/com/google/auth/http/WrongYear.java` (scope: `oauth2_http/java/com/google/auth/http/WrongYear.java`)"}
+{"id": 2785, "message": "feat: Add operator YAML file for OCP and OKD deployments. (operator_file)"}
+{"id": 2786, "message": "feat: Add a capability to handle prerelease versions in the documentation. (add)"}
+{"id": 2787, "message": "fix: Fix the TraceWriter implementation to handle buffer exhaustion scenarios, ensuring data is dropped until the SMB is freed up and the TraceWriter can get a new chunk. (in the context of the test)"}
+{"id": 2788, "message": "feat: Add a capability to calculate elapsed time in nanoseconds. (class GetTotalElapsedNanoMicroSecondsCest)"}
+{"id": 2789, "message": "feat: Add 4 at a time in SIMD (namespace acl)"}
+{"id": 2790, "message": "feat: Update docstatus mapping for workflow state. This commit updates the docstatus mapping for the workflow state field. (update)"}
+{"id": 2791, "message": "feat: Add a new enum type for pixel types in the PixelType struct. (struct PixelType<short>, struct PixelType<unsigned short>, struct PixelType<int>, struct PixelType<unsigned int>, struct PixelType<long>)"}
+{"id": 2792, "message": "feat: Add support for handling base64-encoded file content in the File class. This change adds a new method to the File class that allows for the processing of base64-encoded file content. (File, base64)"}
+{"id": 2793, "message": "feat: Add support for handling job order overrides in the job order loading logic. This change affects several files and areas. The most significant change is adding support for handling job order overrides in the job order loading logic. (add)"}
+{"id": 2794, "message": "feat: Add a NetworkShowHideTestComponent to the Unity.Netcode.RuntimeTests namespace. This commit adds a class to handle network behavior for ShowHide objects. (Update)"}
+{"id": 2795, "message": "feat: Add support for zero points in the zero_points_ attribute. (diff touches several things)"}
+{"id": 2796, "message": "feat: updated copyright information for the MIT License (MIT) in the project documentation. (The scope is the file \"The MIT License (MIT)\"). If applied, this commit will update the copyright information in the project documentation. (The most significant change is the copyright information)"}
+{"id": 2797, "message": "feat: Add image header parsing logic for multiple image files. (file2)"}
+{"id": 2798, "message": "feat: Add short description and required action fields to the known exploited vulnerability in the ReportTool class. (public class ReportTool)"}
+{"id": 2799, "message": "feat: Add support for avx512_core_bf16_amx_bf16 in the CPU ISA support. (avx512_core_bf16_amx_bf16)"}
+{"id": 2800, "message": "feat: Add support for numeric traits in the `min()` and `max()` functions. This change adds a macro to the `ITKNUMERIC_TRAITS_MIN_MAX_MACRO()` function. (ItkCommon)"}
+{"id": 2801, "message": "feat: Update the select component to handle max items message correctly, in the appropriate file and scope. (Update)"}
+{"id": 2802, "message": "feat: update infiniteScroll to support passing a promise inside `waitFor()` within the `infinite` output event handler. (infiniteScroll)"}
+{"id": 2803, "message": "feat: Add a new memory management function to optimize memory usage in the mkldnn primitive execution. (mkldnn_primitive_at_t inputs[1]; const_mkldnn_primitive_t outputs[1];)"}
+{"id": 2804, "message": "feat: Update system property name of the initial value of the estimation, in bits per second. (per second)"}
+{"id": 2805, "message": "feat: Add a capability to update the invoice summary. (add)"}
+{"id": 2806, "message": "feat: Add a parameter to the Simple1 class to store an attribute value. (namespace Bunit.TestAssets.SampleComponents)"}
+{"id": 2807, "message": "feat: Add a new function to generate the structure definition. (void)"}
+{"id": 2808, "message": "feat: Add parameter file handling logic for ParameterObject. (ParameterObject::ReadParameterFile)"}
+{"id": 2809, "message": "feat: Add support for handling UINT_MAX in the CLINT library. This commit adds the necessary header file to support the UINT_MAX constant. (In the scope of the namespace elastix)"}
+{"id": 2810, "message": "feat: Add a way to override the Get name() method in the itkGetMacro function. (static const char * elxGetClassNameStatic(void) const)"}
+{"id": 2811, "message": "feat: Add wallet configuration validation logic for the BoatWalletCreate function. (BoatWalletPriKeyCtx, WalletConfig)"}
+{"id": 2812, "message": "feat: Add backward data execution logic for convolution bwd data. (diff touches several things)"}
+{"id": 2813, "message": "feat: Add a capability to handle array data access from a context manager. (add, add, add)"}
+{"id": 2814, "message": "feat: Update transform origin in CSSOrigin implementation. (CSSOrigin)"}
+{"id": 2815, "message": "feat: Add Gauss-Seidel iteration implementation for solving linear systems. (Dinv=None)"}
+{"id": 2816, "message": "feat: Add support for checking if an ITK transform is derived from a given type. This commit will check for IsDerivedTransformOfType in the ITK transform types. (It touches several files and areas)"}
+{"id": 2817, "message": "feat: Refactor the algorithm logic to improve performance and clarity. (namespace cpu)"}
+{"id": 2818, "message": "feat: Add support for transforming vector types in the StackTransform class. This change affects several files and areas. The most significant change is adding support for transforming vector types in the StackTransform class. (Add a scope in parentheses only when a single file or area clearly owns the change)"}
+{"id": 2819, "message": "feat: Add a capability to handle Alexa media notifications. (devices: List[AlexaMediaNotificationSensor])"}
+{"id": 2820, "message": "feat: Add support for CSS style matching and computation in DevWebsocket class. (nodeType is Element: ${node is Element}, nodeType is What: ${node.nodeType})"}
+{"id": 2821, "message": "feat: Add a capability to close the search on clicking anywhere outside the search area. (searchPad)"}
+{"id": 2822, "message": "feat: Add a capability to optimize intensity mapping using a lookup table. (protected)"}
+{"id": 2823, "message": "feat: Add a capability to delete deployments in the InstallStrategyDeploymentClientForNamespace. (Update)"}
+{"id": 2824, "message": "feat: Update the `arg_scale.from_str()` method to use the `scale_str` directly instead of the `c_str()` method. (update)"}
+{"id": 2825, "message": "feat: Add parameter file queueing functionality for Mevis Dicom Tiff support. (parameterFileList size)"}
+{"id": 2826, "message": "feat: Add support for namespace context in the XPath expression factory. (add)"}
+{"id": 2827, "message": "feat: Add method to retrieve component names from the graph. (BlueprintImpl)"}
+{"id": 2828, "message": "fix: update the CHANGELOG.md file with the new change log. (gsql_algo_name)"}
+{"id": 2829, "message": "feat: Add quat_normalize4 function to normalize rotation matrices in the code. (namespace acl)"}
+{"id": 2830, "message": "feat: Add a method to handle sending targets with a callback function. (CStreamMapType m_CTargetCells; XStreamMapType m_XTargetCells; bool m_Call)"}
+{"id": 2831, "message": "feat: Add support for parsing configuration in the embedded pytest plugin. (from _pytest.embedded.plugin import parse_configuration) (from pytest_embedded.plugin)"}
+{"id": 2832, "message": "feat: Add support for specifying upstream branch to compare against (default is `master`), update the `long_options` array with the correct options. (specify the most significant change)"}
+{"id": 2833, "message": "feat: Add Sphinx documentation generation tools for Python projects. (megengine/core/ops/builtin/*)"}
+{"id": 2835, "message": "feat: Update the formatting of a float in the dcmqi namespace. (namespace dcmqi)"}
+{"id": 2838, "message": "build: build_install_shim_v2() \u2014 update the build process to include Rust installation. (build_install_shim_v2())"}
+{"id": 2839, "message": "fix: update the build script to handle manual trigger configuration and manage service account key rotation. (account, key)"}
+{"id": 2840, "message": "feat: Add clang-tidy configuration check for job types. (io::log_yellow \"clang-tidy config:\" and clang-tidy -dump-config)"}
+{"id": 2841, "message": "feat: Add a dependency for the depends flag in the Docker execution configuration. (BEGIN_FOLD depends) (END_FOLD)"}
+{"id": 2842, "message": "feat: Install Python dependencies (python3-devel) for use in systems without user space. (Python dependencies)"}
+{"id": 2843, "message": "feat: rebasePullRequest() \u2014 updates the logic to skip rebase when the event is not a pull request. (update)"}
+{"id": 2844, "message": "feat: Update performance thresholds for SDIO throughput in the performance flags. (update)"}
+{"id": 2845, "message": "fix: build system or dependencies. (build)"}
+{"id": 2846, "message": "feat: Add GCP project ID selection logic to the script. (source secrets/aws-dev-svc-acc-env.sh)"}
+{"id": 2847, "message": "feat: Update yq version from 3.1.0 to 3.4.1, updating the version used in runtime and osbuilder repos. (yq_version, yq_url)"}
+{"id": 2849, "message": "feat: Add a dummy command to the GdbController class to consume initial output by issuing a dummy command with timeout. (update)"}
+{"id": 2851, "message": "fix: fix the test coverage reporting logic to handle skipped tests and error reporting. (in the diff, the code is in a file, so the scope is \"run_plugin\")"}
+{"id": 2852, "message": "feat: Add new AFF3CT builds ($GIT_HASH) to the build process. (BUILD_CSV, N_BUILDS_TO_KEEP)"}
+{"id": 2853, "message": "feat: add lint codebase quick feedback in bash ci/check-if-docs-pr.sh and install yarn workspace dependencies. (add)"}
+{"id": 2854, "message": "feat: Update package installation logic to handle non-network access. (go_packages)"}
+{"id": 2855, "message": "feat: Add support for handling dependency versions in the build system. (runtime_repo_dir, versions_file)"}
+{"id": 2857, "message": "feat: Update the console configurations for Debian sid and riscv64, which is a significant change. (RootStock-NG.sh)"}
+{"id": 2858, "message": "feat: Add a capability to read answers from a non-local editor or files changed in the repo. (read -r answer)"}
+{"id": 2861, "message": "feat: Update platform information to use kernel and machine details. (source \"${PROJECT_ROOT}/ci/etc/install-config.sh\")"}
+{"id": 2862, "message": "feat: Update the installation path for the QEMU EFI file. (Update)"}
+{"id": 2863, "message": "feat: Update branch hash and namespace for production environment. (ES_INDEX_PREFIX, K8S_NAMESPACE)"}
+{"id": 2864, "message": "feat: Update the deployment and daemonset commands to use the short flag instead of the full flag. (apps_v1.Deployment, apps_v1.DaemonSet)"}
+{"id": 2865, "message": "feat: update the installation process to include a new dependency, specifically the krew install command. (cd -)"}
+{"id": 2866, "message": "feat: Add memory utilization monitoring for process memory usage. (from queue, threading, framework)"}
+{"id": 2867, "message": "feat: Add support for HTTP error status codes to the check_url() function. (update)"}
+{"id": 2868, "message": "feat: Add IdfApp class to the fixture system. This commit will add the IdfApp class to the fixture system. (IdfApp)"}
+{"id": 2869, "message": "feat: Add OS build check for nightly builds and ensure compatibility with SUT. (add)"}
+{"id": 2872, "message": "feat: Add testing logging for test exceptions in Gradle dependencies. (imported from org.gradle.api.tasks.testing.logging)"}
+{"id": 2873, "message": "feat: Add CI configuration for GCP project ID from a random sharding process. (OPSTRACE_GCP_PROJECT_ID is used as a placeholder for the actual GCP project ID)"}
+{"id": 2875, "message": "feat: Add support for semantic release configuration validation in Feast. This commit adds a configuration validation step for the semantic release pattern. (possible_branches)"}
+{"id": 2876, "message": "feat: Add test coverage for Urkel tree tests. (pushd ekiden, popd)"}
+{"id": 2878, "message": "feat: Add support for Ubuntu 16.04 build system. (script location updated, build configuration set for Ubuntu 16.04, and build system set to use old libc with CGO enabled)"}
+{"id": 2879, "message": "feat: Add undersize flash size configuration to sdkconfig. (main/main.c, sdkconfig)"}
+{"id": 2880, "message": "feat: creates an anon-user-access clusterrolebinding for cluster-admin, used by kubeadm env. (clusterrolebinding)"}
+{"id": 2881, "message": "feat: Update the release candidate status check to use the git hash instead of the current version. This change affects one file. (GITHUB_WORKSPACE)"}
+{"id": 2882, "message": "build: build Makefile, run autogen.sh, and build with make. (build)"}
+{"id": 2883, "message": "feat: Add a release version to the `release` branch. (execSync call)"}
+{"id": 2884, "message": "feat: Add a build step to handle looker development environments (cd test/test-remote/containers/looker; make image; make publish) and update the build configuration to run `yarn --frozen-lockfile` for playwright. (cd test/test-remote; yarn run tsc -v ./tsconfig.json)"}
+{"id": 2885, "message": "feat: Add a new configuration parameter for capturing browser disconnections. (captureTimeout, browserDisconnectTolerance, browserNoActivityTimeout)"}
+{"id": 2886, "message": "feat: Add a function to check for Docker Hub watchers in the -branches_list variable. (branches_list)"}
+{"id": 2888, "message": "feat: Add documentation for secure remote access tunnels (INLET_DOCS, INLET_EXAMPLES) and update the TOOLS_DIR variable. (INLET_SOURCE)"}
+{"id": 2889, "message": "feat: Fix a bug in the CI configuration file to handle manual work requests. (source ci/test-cli/cli-tests-with-cluster.sh)"}
+{"id": 2890, "message": "feat: Add a release note to the CHANGELOG file. (git diff)"}
+{"id": 2891, "message": "feat: json files are not sorted!! Please sort them with \"make sort\" in \"images/capi\" before commit. Unsorted file: json_files. (json_files)"}
+{"id": 2892, "message": "feat: Add common install dependencies for PKG_COMMON_EXTRA and PIP_INST. (PKG_COMMON_EXTRA, PIP_INST)"}
+{"id": 2896, "message": "feat: Refactor code to handle TexText rendering with proper options. (import textext, import tempfile, import subprocess)"}

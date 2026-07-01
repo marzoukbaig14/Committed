@@ -10,12 +10,13 @@ Precision: bf16 (Ampere+ GPUs like the A100). bf16 has fp32's dynamic range, so
 NO GradScaler is used — which is why the fp16-scaler bf16 crash (trl#4901) cannot
 occur here. Requires an Ampere or newer GPU.
 
-Resume: trainer.train(resume_from_checkpoint=True) continues from the latest
-checkpoint in output_dir. See the monkeypatch block below for the two transformers
-5.9 / torch 2.5.1 load gates we neutralize to load our own checkpoint.
+Resume: controlled by io.resume_from_checkpoint in the config (default False —
+fresh start). When true, trainer.train resumes from the latest checkpoint in
+output_dir; see the monkeypatch block below for the two transformers 5.9 /
+torch 2.5.1 load gates we neutralize to load our own checkpoint.
 
 Run (A100 node only):
-    uv run --no-sync python -m committed.train.train --config configs/qwen3-1.7b-lora-r16.yaml
+    uv run --no-sync python -m committed.train.train --config configs/qwen3-0.6b-lora-r16.yaml
 """
 
 import os
@@ -146,9 +147,14 @@ def main():
         args=sft_config,
     )
 
-    # resume_from_checkpoint=True picks the highest-numbered checkpoint in
-    # output_dir and restores step/optimizer/scheduler, continuing to the end.
-    trainer.train(resume_from_checkpoint=True)
+    # Resume is config-driven and defaults to False: a fresh run starts clean.
+    # Set io.resume_from_checkpoint: true to continue an interrupted run — it
+    # picks the highest-numbered checkpoint in output_dir and restores
+    # step/optimizer/scheduler. (Resuming requires output_dir to hold checkpoints
+    # from the SAME base model; pointing a model at another model's checkpoints
+    # is what crashed the first 0.6B attempt.)
+    resume_from_checkpoint = io.get("resume_from_checkpoint", False)
+    trainer.train(resume_from_checkpoint=resume_from_checkpoint)
     trainer.save_model(io["output_dir"])
     if io["push_to_hub"]:
         trainer.push_to_hub()

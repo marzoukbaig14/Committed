@@ -53,6 +53,7 @@ graph TD
   n0047["0047: Split dependencies into a serve-minimal required set with eval/train/dev groups"]:::accepted
   n0048["0048: Pin the fine-tuned GGUF as the serving artifact of record; default the serving layer to it"]:::accepted
   n0049["0049: v2 iteration 1 scope: Qwen3-0.6B controlled comparison"]:::accepted
+  n0050["0050: Switch the LLM judge to DeepSeek (OpenAI-compatible) after Gemini credits depleted"]:::accepted
   n0003 --- n0002
   n0004 --- n0002
   n0005 --- n0004
@@ -139,6 +140,9 @@ graph TD
   n0049 --- n0045
   n0049 --- n0011
   n0049 --- n0003
+  n0050 --- n0011
+  n0050 --- n0045
+  n0050 --- n0049
   classDef proposed fill:#fff7e6,stroke:#d4a017;
   classDef accepted fill:#e6f4ea,stroke:#137333;
   classDef superseded fill:#f1f3f4,stroke:#9aa0a6,color:#5f6368;
