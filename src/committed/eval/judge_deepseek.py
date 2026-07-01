@@ -41,7 +41,7 @@ from pydantic import BaseModel, ValidationError
 # this module lazily — only when --backend deepseek is selected — so it never burdens the
 # Gemini/Claude paths.
 from openai import OpenAI
-from openai import APIError, APIStatusError, APIConnectionError, RateLimitError
+from openai import APIStatusError, APIConnectionError, RateLimitError
 
 # The rubric wording — imported UNCHANGED from the shared prompt module. Guarded so the
 # module still imports if judge_prompt is absent (mirrors judge_gemini.py).
@@ -225,7 +225,7 @@ def judge_one(client: OpenAI, diff: str, message: str, *, model: str = JUDGE_MOD
                     delay *= 2
                     continue
                 raise
-        except (RateLimitError, APIConnectionError) as e:
+        except (RateLimitError, APIConnectionError):
             if attempt < MAX_RETRIES:
                 time.sleep(delay + random.uniform(0, delay * 0.25))
                 delay *= 2
